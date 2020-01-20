@@ -18,7 +18,6 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     private float baseFOV;
     private float sprintFOVModifier;
 
-    [SerializeField]
     private bool isPaused;
 
     void Start()
@@ -57,14 +56,14 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         }
     }
 
-//    void OnApplicationFocus(bool hasFocus)
-//    {
-//        // If not me, don't update!
-//        if (!photonView.IsMine) return;
-//
-//
-//        isPaused = !hasFocus;
-//    }
+    void OnApplicationFocus(bool hasFocus)
+    {
+        // If not me, don't update!
+        if (!photonView.IsMine) return;
+
+
+        isPaused = !hasFocus;
+    }
 
     void Move()
     {

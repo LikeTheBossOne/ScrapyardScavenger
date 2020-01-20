@@ -100,7 +100,6 @@ MonoBehaviour:
   ground:
     serializedVersion: 2
     m_Bits: 512
-  isPaused: 0
 --- !u!114 &2724544771462636879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,7 +117,6 @@ MonoBehaviour:
   xSensitivity: 100
   ySensitivity: 100
   maxAngle: 60
-  isPaused: 0
 --- !u!114 &8603247497564246353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,7 +146,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SynchronizeVelocity: 1
   m_SynchronizeAngularVelocity: 0
-  m_TeleportEnabled: 0
+  m_TeleportEnabled: 1
   m_TeleportIfDistanceGreaterThan: 3
 --- !u!1 &1248274289960452639
 GameObject:
@@ -174,7 +172,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1248274289960452639}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.004, z: 0}
+  m_LocalPosition: {x: 0, y: -0.992, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8430503266108689288}

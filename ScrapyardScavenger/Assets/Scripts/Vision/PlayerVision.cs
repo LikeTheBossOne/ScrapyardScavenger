@@ -15,7 +15,6 @@ public class PlayerVision : MonoBehaviourPunCallbacks
 
     private Quaternion camCenter;
 
-    [SerializeField]
     private bool isPaused;
 
     void Start()
@@ -45,19 +44,14 @@ public class PlayerVision : MonoBehaviourPunCallbacks
         
     }
 
-//    void OnApplicationFocus(bool hasFocus)
-//    {
-//        // If not me, don't update!
-//        if (!photonView.IsMine) return;
-//
-//
-//        isPaused = !hasFocus;
-//        if (isPaused)
-//        {
-//            Cursor.lockState = CursorLockMode.None;
-//            Cursor.visible = true;
-//        }
-//    }
+    void OnApplicationFocus(bool hasFocus)
+    {
+        // If not me, don't update!
+        if (!photonView.IsMine) return;
+
+
+        isPaused = !hasFocus;
+    }
 
     void AdjustY()
     {
