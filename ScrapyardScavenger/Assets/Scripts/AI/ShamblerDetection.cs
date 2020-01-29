@@ -9,7 +9,7 @@ public class ShamblerDetection : MonoBehaviour
     //in unity distance units
     public float visionLimit = 60.0F;
     public Transform detected;
-    public PlayerManager pManager;
+    public AIPlayerManager pManager;
     public bool success;
     public bool run;
     public Collider colliderCheck;
@@ -20,7 +20,7 @@ public class ShamblerDetection : MonoBehaviour
     void Start()
     {
         timeShotAt = Mathf.NegativeInfinity;
-        pManager = FindObjectOfType<PlayerManager>();
+        pManager = FindObjectOfType<AIPlayerManager>();
         success = false;
         run = false;
     }

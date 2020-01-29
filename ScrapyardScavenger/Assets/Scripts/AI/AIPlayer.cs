@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class AIPlayer : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        FindObjectOfType<PlayerManager>().register(this.transform);
+        FindObjectOfType<AIPlayerManager>().register(this.transform);
     }
 
     

@@ -7,7 +7,7 @@ public class ShamblerAI : MonoBehaviour
 {
     public Vector3 moveTo;
     public NavMeshAgent nav;
-    public PlayerManager players;
+    public AIPlayerManager players;
     //intent, second based countdown
     //public int resetDelay = 600;
     //private int timer;
@@ -25,7 +25,7 @@ public class ShamblerAI : MonoBehaviour
         aggroTimeLimit = 10;
         senses = GetComponent<ShamblerDetection>();
         nav = GetComponentInParent<NavMeshAgent>();
-        players = FindObjectOfType<PlayerManager>();
+        players = FindObjectOfType<AIPlayerManager>();
         wandOffset = 10;
         toPlayerOffset = 20;
         wandAngle = 60;
@@ -38,8 +38,8 @@ public class ShamblerAI : MonoBehaviour
     {
         //key decision points: player detected, unit shot recently
         //Time.time-senses.timeShotAt <= aggroTimeLimit ||
-        senses.visionCheck();
-        System.Console.WriteLine(senses.success);
+        //senses.visionCheck();
+        //System.Console.WriteLine(senses.success);
         if ( senses.detected )
         {
             //set target destination to detected/aggressing player or use follow command if there is one
