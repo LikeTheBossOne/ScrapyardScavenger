@@ -38,13 +38,13 @@ public class ShamblerAI : MonoBehaviour
     {
         //key decision points: player detected, unit shot recently
         //Time.time-senses.timeShotAt <= aggroTimeLimit ||
-        //senses.visionCheck();
+        senses.visionCheck();
         //System.Console.WriteLine(senses.success);
         if ( senses.detected )
         {
             //set target destination to detected/aggressing player or use follow command if there is one
             //Need to add reorientation/ "lockon camera" for enemy
-            System.Console.WriteLine("Player seen.");
+            //System.Console.WriteLine("Player seen.");
             transform.LookAt(senses.detected.position, transform.up);
             setDestination(senses.detected.position);
         }
