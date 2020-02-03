@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a7361f3a02a47848b4d5b281f0a69a3, type: 3}
   m_Name: AR
   m_EditorClassIdentifier: 
-  name: 
+  name: Assault Rifle
   prefab: {fileID: 1766406241958178707, guid: 78b28d2f1639042419884345402801b8, type: 3}
   baseDamage: 30
   headShotMultiplier: 2
