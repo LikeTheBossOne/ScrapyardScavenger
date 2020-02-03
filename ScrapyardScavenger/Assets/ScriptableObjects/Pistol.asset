@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a7361f3a02a47848b4d5b281f0a69a3, type: 3}
   m_Name: Pistol
   m_EditorClassIdentifier: 
-  name: 
+  name: Pistol
   prefab: {fileID: 7589069519001578698, guid: b2b79960e09c15f4a9fa996c4c9699d0, type: 3}
   baseDamage: 30
   headShotMultiplier: 2
