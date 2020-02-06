@@ -40,11 +40,10 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
         currentIndex = -1;
         if (!photonView.IsMine)
         {
-            byte evCode = 1; // Custom Event 1: Used as "MoveUnitsToTargetPosition" event
-            object[] content = new object[] { }; // Array contains the target position and the IDs of the selected units
-            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others }; // You would have to set the Receivers to All in order to receive this event on the local client as well
+            object[] content = new object[] { };
+            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
             SendOptions sendOptions = new SendOptions { Reliability = true };
-            PhotonNetwork.RaiseEvent(evCode, content, raiseEventOptions, sendOptions);
+            PhotonNetwork.RaiseEvent((byte) NetworkCodes.PlayerJoined, content, raiseEventOptions, sendOptions);
         }
     }
 
@@ -97,11 +96,10 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
         {
             if (photonView.IsMine)
             {
-                byte evCode = 2; // Sending equipmentData
-                object[] content = new object[] { currentIndex, photonView.ViewID }; // Array contains the target position and the IDs of the selected units
-                RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others }; // You would have to set the Receivers to All in order to receive this event on the local client as well
+                object[] content = new object[] { currentIndex, photonView.ViewID };
+                RaiseEventOptions raiseEventOptions = new RaiseEventOptions {Receivers = ReceiverGroup.Others};
                 SendOptions sendOptions = new SendOptions { Reliability = true };
-                PhotonNetwork.RaiseEvent(evCode, content, raiseEventOptions, sendOptions);
+                PhotonNetwork.RaiseEvent((byte) NetworkCodes.PlayerJoinedResponse, content, raiseEventOptions, sendOptions);
             }
         }
 
