@@ -5,10 +5,10 @@ using UnityEngine;
 /**
  * Used by the player to recover health
  */
-[CreateAssetMenu(fileName = "New Item", menuName = "Resources/Medpack")]
+[CreateAssetMenu(fileName = "New Item", menuName = "Items/Medpack")]
 public class Medpack : Item
 {
-    public Medpack()
+    public Medpack(int id) : base(id, "Medpack", "Medpack description here", null)
     {
         // do nothing
     }
