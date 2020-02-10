@@ -17,7 +17,9 @@ GameObject:
   - component: {fileID: 4043475223431235187}
   - component: {fileID: 4409935238073015456}
   - component: {fileID: -983653605404609805}
-  m_Layer: 0
+  - component: {fileID: 6350825017522366800}
+  - component: {fileID: 3090191438698549941}
+  m_Layer: 11
   m_Name: PhotonPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,6 +185,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   capacity: 50
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564345459977318626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 562f6a67fc338cd4e936eaed88605dfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 3072
+  bulletHolePrefab: {fileID: 2382075669171864034, guid: 0d13e92df2a663542b9b60f72dd02408,
+    type: 3}
+--- !u!114 &3090191438698549941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564345459977318626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8a7f353bdd3d4e41a9e21e7e0103d6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
 --- !u!1 &647147794768695746
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,7 +286,7 @@ GameObject:
   - component: {fileID: 7169021776900864766}
   - component: {fileID: 5124101003332894228}
   - component: {fileID: 5210219131092621708}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -378,7 +409,7 @@ GameObject:
   - component: {fileID: 2087496450417705439}
   - component: {fileID: 7927462593606362706}
   - component: {fileID: 7533283650023664358}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
