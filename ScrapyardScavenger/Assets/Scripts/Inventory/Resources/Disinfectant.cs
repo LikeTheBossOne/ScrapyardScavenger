@@ -9,8 +9,11 @@ using UnityEngine;
 public class Disinfectant : Resource
 {
 
-    public Disinfectant(int id) : base(id, "Disinfectant", "Description here", null)
+    public Disinfectant(int id)
     {
-        // do nothing
+        this.id = id;
+        name = "Disinfectant";
+        description = "Disinfectant here";
+        icon = null;
     }
 }

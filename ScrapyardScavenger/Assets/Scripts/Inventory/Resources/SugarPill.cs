@@ -9,8 +9,11 @@ using UnityEngine;
 public class SugarPill : Resource
 {
 
-    public SugarPill(int id) : base(id, "SugarPill", "Description here", null)
+    public SugarPill(int id)
     {
-        // do nothing
+        this.id = id;
+        name = "SugarPill";
+        description = "Sugar pill description here";
+        icon = null;
     }
 }

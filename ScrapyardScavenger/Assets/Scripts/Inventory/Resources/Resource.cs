@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Resource", menuName = "Inventory/Resource")]
-public class Resource : ScriptableObject
+public abstract class Resource : ScriptableObject
 {
     public int id;
     public string name;
@@ -11,13 +11,10 @@ public class Resource : ScriptableObject
     public bool showInInventory = true;
     public Sprite icon = null;
 
-    public Resource(int id, string name, string description, Sprite icon)
+    /*public Resource(int id)
     {
         this.id = id;
-        this.name = name;
-        this.description = description;
-        this.icon = icon;
-    }
+    }*/
 
     // Start is called before the first frame update
     void Start()

@@ -9,8 +9,11 @@ using UnityEngine;
 public class Gauze : Resource
 {
 
-    public Gauze(int id) : base(id, "Gauze", "Description here", null)
+    public Gauze(int id)
     {
-        // do nothing
+        this.id = id;
+        name = "Gauze";
+        description = "Gauze description here";
+        icon = null;
     }
 }

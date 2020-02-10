@@ -9,8 +9,11 @@ using UnityEngine;
 public class SafetyPin : Resource
 {
 
-    public SafetyPin(int id) : base(id, "SafetyPin", "Description here", null)
+    public SafetyPin(int id)
     {
-        // do nothing
+        this.id = id;
+        name = "SafetyPin";
+        description = "Safety pin description here";
+        icon = null;
     }
 }

@@ -9,8 +9,11 @@ using UnityEngine;
 public class RustedCoil : Resource
 {
 
-    public RustedCoil(int id) : base(id, "RustedCoil", "Description here", null)
+    public RustedCoil(int id)
     {
-        // do nothing
+        this.id = id;
+        name = "RustedCoil";
+        description = "Rusted coil description here";
+        icon = null;
     }
 }

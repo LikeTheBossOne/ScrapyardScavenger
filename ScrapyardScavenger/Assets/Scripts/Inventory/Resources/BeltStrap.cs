@@ -10,8 +10,11 @@ using UnityEngine;
 public class BeltStrap : Resource
 {
 
-    public BeltStrap(int id) : base(id, "BeltStrap", "Description here", null)
+    public BeltStrap(int id)
     {
-        // do nothing
+        this.id = id;
+        name = "BeltStrap";
+        description = "Belt strap here";
+        icon = null;
     }
 }
