@@ -9,8 +9,11 @@ using UnityEngine;
 public class Leather : Resource
 {
 
-    public Leather(int id) : base(id, "Leather", "Description here", null)
+    public Leather(int id)
     {
-        // do nothing
+        this.id = id;
+        name = "Leather";
+        description = "Leather description here";
+        icon = null;
     }
 }

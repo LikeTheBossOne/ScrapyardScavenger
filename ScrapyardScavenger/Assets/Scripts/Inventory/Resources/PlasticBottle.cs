@@ -9,8 +9,11 @@ using UnityEngine;
 public class PlasticBottle : Resource
 {
 
-    public PlasticBottle(int id) : base(id, "PlasticBottle", "Description here", null)
+    public PlasticBottle(int id)
     {
-        // do nothing
+        this.id = id;
+        name = "PlasticBottle";
+        description = "Plastic bottle description here";
+        icon = null;
     }
 }

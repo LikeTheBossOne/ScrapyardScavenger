@@ -5,11 +5,14 @@ using UnityEngine;
 /**
  * Used by the player to increase defense temporarily
  */
-[CreateAssetMenu(fileName = "New Item", menuName = "Resources/EnergyDrink")]
+[CreateAssetMenu(fileName = "New Item", menuName = "Items/EnergyDrink")]
 public class EnergyDrink : Item
 {
-    public EnergyDrink()
+    public EnergyDrink(int id)
     {
-        // do nothing
+        this.id = id;
+        name = "EnergyDrink";
+        description = "Energy drink here";
+        icon = null;
     }
 }

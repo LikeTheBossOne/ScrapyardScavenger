@@ -9,8 +9,11 @@ using UnityEngine;
 public class ShoulderPlate : Resource
 {
 
-    public ShoulderPlate(int id) : base(id, "ShoulderPlate", "Description here", null)
+    public ShoulderPlate(int id)
     {
-        // do nothing
+        this.id = id;
+        name = "ShoulderPlate";
+        description = "Shoulder plate description here";
+        icon = null;
     }
 }

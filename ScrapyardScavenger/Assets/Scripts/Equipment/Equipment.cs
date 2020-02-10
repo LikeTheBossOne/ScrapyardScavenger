@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Equipment : ScriptableObject
+public class Equipment : CraftableObject
 {
     public new string name;
     public GameObject prefab;

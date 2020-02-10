@@ -5,14 +5,18 @@ using UnityEngine;
 /**
  * Used by the player for different effects
  */
-[CreateAssetMenu(fileName = "New Item", menuName = "Resources/Item")]
-public class Item : ScriptableObject
+[CreateAssetMenu(fileName = "New Item", menuName = "Items/Item")]
+public abstract class Item : CraftableObject
 {
-    // consider having this implement Craftable
-    // thereby inheriting attributes
+    // consider having this inherit attributes from Craftable
+    public int id;
+    public string name;
+    public string description;
+    public bool showInInventory = true;
+    public Sprite icon = null;
 
-    public Item()
+    /*public Item(int id)
     {
-        // wait until I decide to implement Craftable
-    }
+        this.id = id;
+    }*/
 }
