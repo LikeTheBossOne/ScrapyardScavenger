@@ -10,8 +10,11 @@ using UnityEngine;
 public class MetalBox : Resource
 {
 
-    public MetalBox(int id) : base(id, "MetalBox", "Description here", null)
+    public MetalBox(int id)
     {
-        // do nothing
+        this.id = id;
+        name = "MetalBox";
+        description = "Metal box description here";
+        icon = null;
     }
 }

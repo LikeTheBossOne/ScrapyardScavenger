@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7cb70810a99fb0749ab977212c743d53, type: 3}
-  m_Name: Gauze
+  m_Script: {fileID: 11500000, guid: 8e66e843f4104f64a9bf76c42bcaf88d, type: 3}
+  m_Name: Disinfectant
   m_EditorClassIdentifier: 
   id: 0
-  name: 
-  description: 
+  name: Disinfectant
+  description: Disinfectant description
   showInInventory: 0
   icon: {fileID: 0}

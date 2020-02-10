@@ -9,8 +9,11 @@ using UnityEngine;
 public class Handle : Resource
 {
 
-    public Handle(int id) : base(id, "Handle", "Description here", null)
+    public Handle(int id)
     {
-        // do nothing
+        this.id = id;
+        name = "Handle";
+        description = "Handle description here";
+        icon = null;
     }
 }

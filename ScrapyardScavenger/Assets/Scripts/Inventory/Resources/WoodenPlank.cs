@@ -9,8 +9,11 @@ using UnityEngine;
 public class WoodenPlank : Resource
 {
 
-    public WoodenPlank(int id) : base(id, "WoodenPlank", "Description here", null)
+    public WoodenPlank(int id)
     {
-        // do nothing
+        this.id = id;
+        name = "WoodenPlank";
+        description = "Wooden plank description here";
+        icon = null;
     }
 }

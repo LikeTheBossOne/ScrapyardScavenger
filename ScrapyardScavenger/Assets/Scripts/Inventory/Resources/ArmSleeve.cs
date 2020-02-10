@@ -10,8 +10,11 @@ using UnityEngine;
 public class ArmSleeve : Resource
 {
 
-    public ArmSleeve(int id) : base(id, "ArmSleeve", "Description here", null)
+    public ArmSleeve(int id)
     {
-        // do nothing
+        this.id = id;
+        name = "ArmSleeve";
+        description = "Arm sleeve here";
+        icon = null;
     }
 }

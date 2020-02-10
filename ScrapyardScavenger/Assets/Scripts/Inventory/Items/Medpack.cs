@@ -8,8 +8,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item", menuName = "Items/Medpack")]
 public class Medpack : Item
 {
-    public Medpack(int id) : base(id, "Medpack", "Medpack description here", null)
+    public Medpack(int id)
     {
-        // do nothing
+        this.id = id;
+        name = "Medpack";
+        description = "Medpack description here";
+        icon = null;
     }
 }

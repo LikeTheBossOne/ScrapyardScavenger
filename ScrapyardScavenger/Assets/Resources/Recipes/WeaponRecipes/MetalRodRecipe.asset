@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a96de3144212bbb4c80bdb9b995b5ae2, type: 3}
-  m_Name: WoodenBatRecipe
+  m_Name: MetalRodRecipe
   m_EditorClassIdentifier: 
   materials:
-  - item: {fileID: 11400000, guid: 5aaca4ef33baa1f48a6eef8d937d3a69, type: 2}
-    amount: 5
+  - item: {fileID: 11400000, guid: 532d2393d3638a84882e487aaad5888c, type: 2}
+    amount: 6
   - item: {fileID: 11400000, guid: 6c1a51b8ac2325446b83a944ddfc4f3a, type: 2}
     amount: 1
-  result: {fileID: 11400000, guid: 18fe4acb1ad3b3d48ab1ebbd8068f61d, type: 2}
+  result: {fileID: 11400000, guid: 0dff40c41d8fa7c4b8cc236050976d13, type: 2}
+  howdy: yes

@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a96de3144212bbb4c80bdb9b995b5ae2, type: 3}
-  m_Name: MedpackRecipe
+  m_Name: EnergyDrinkRecipe
   m_EditorClassIdentifier: 
   materials:
-  - item: {fileID: 11400000, guid: d905896bd1d1f744ba1398bb56455114, type: 2}
-    amount: 2
-  - item: {fileID: 11400000, guid: 35cea0a380d19dc40a37d29d7d9e8595, type: 2}
+  - item: {fileID: 11400000, guid: 3b2f3243657b55442b50f0eabbd6e89d, type: 2}
+    amount: 4
+  - item: {fileID: 11400000, guid: 1d28b19d0202fc0498e588ce1189bcbd, type: 2}
     amount: 1
-  result: {fileID: 11400000, guid: aa830eef00a220145a877faa6cdb1802, type: 2}
+  result: {fileID: 11400000, guid: dfeb334c2af116d488c57211e1de4b6a, type: 2}
+  howdy: yes

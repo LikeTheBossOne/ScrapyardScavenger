@@ -8,8 +8,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item", menuName = "Items/EnergyDrink")]
 public class EnergyDrink : Item
 {
-    public EnergyDrink(int id) : base(id, "EnergyDrink", "Energy drink description here", null)
+    public EnergyDrink(int id)
     {
-        // do nothing
+        this.id = id;
+        name = "EnergyDrink";
+        description = "Energy drink here";
+        icon = null;
     }
 }

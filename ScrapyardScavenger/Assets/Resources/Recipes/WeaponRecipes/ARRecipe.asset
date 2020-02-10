@@ -22,3 +22,4 @@ MonoBehaviour:
   - item: {fileID: 11400000, guid: 89bc1442a5e7f884cbcffff7e079e196, type: 2}
     amount: 1
   result: {fileID: 11400000, guid: 11200d79ddcef964bb0b20339ec304f1, type: 2}
+  howdy: yes

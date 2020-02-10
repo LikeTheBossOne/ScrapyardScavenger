@@ -9,8 +9,11 @@ using UnityEngine;
 public class GunStock : Resource
 {
 
-    public GunStock(int id) : base(id, "GunStock", "Description here", null)
+    public GunStock(int id)
     {
-        // do nothing
+        this.id = id;
+        name = "GunStock";
+        description = "Gun stock description here";
+        icon = null;
     }
 }

@@ -28,16 +28,20 @@ public class CraftingRecipe : ScriptableObject
     // craftable objects that are created as a result of this craft
     //public List<CraftAmount> results;
     public CraftableObject result;
+    public string howdy = "yes";
 
-    /*public bool CanCraft(InventoryManager inventory)
+    public bool CanCraft(InventoryManager inventory)
     {
         foreach (ResourceAmount resourceAmount in materials)
         {
-            if (inventory.ItemCount() < resourceAmount.amount)
+            Debug.Log("Checking resource " + resourceAmount.item.name);
+            if (inventory.ResourceCount(resourceAmount.item) < resourceAmount.amount)
             {
+                Debug.Log("Cannot craft");
                 return false;
             }
         }
+        Debug.Log("Can craft");
         return true;
     }
 
@@ -49,14 +53,15 @@ public class CraftingRecipe : ScriptableObject
             {
                 for (int i = 0; i < resourceAmount.amount; i++)
                 {
-                    inventory.RemoveItem(resourceAmount.item);
+                    Debug.Log("Removing " + resourceAmount.item.name);
+                    inventory.RemoveResource(resourceAmount.item);
                 }
             }
 
             // add the crafted item
-            inventory.AddItem(result);
+            inventory.AddCraft(result);
 
         }
-    }*/
+    }
     
 }
