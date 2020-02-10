@@ -17,8 +17,8 @@ GameObject:
   - component: {fileID: 4043475223431235187}
   - component: {fileID: 4409935238073015456}
   - component: {fileID: -983653605404609805}
-  - component: {fileID: 6350825017522366800}
   - component: {fileID: 3090191438698549941}
+  - component: {fileID: 6728999789569742380}
   m_Layer: 11
   m_Name: PhotonPlayer
   m_TagString: Untagged
@@ -185,6 +185,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   capacity: 50
+--- !u!114 &3090191438698549941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564345459977318626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8a7f353bdd3d4e41a9e21e7e0103d6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+--- !u!114 &6728999789569742380
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -201,19 +215,6 @@ MonoBehaviour:
     m_Bits: 3072
   bulletHolePrefab: {fileID: 2382075669171864034, guid: 0d13e92df2a663542b9b60f72dd02408,
     type: 3}
---- !u!114 &3090191438698549941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 564345459977318626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a7f353bdd3d4e41a9e21e7e0103d6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 100
 --- !u!1 &647147794768695746
 GameObject:
   m_ObjectHideFlags: 0
