@@ -60,6 +60,30 @@ public class InventoryManager : MonoBehaviour
             PrintCrafts();
             PrintResources();
         }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            // use a medpack!
+            // so find a craft that is a medpack
+            bool found = false;
+            for (int i = 0; i < crafts.Count; i++)
+            {
+                if (crafts[i].name == "Medpack")
+                {
+                    // then call .Use(this) on it
+                    Debug.Log("Using a medpack!");
+                    found = true;
+                    ((Medpack) crafts[i]).Use(this);
+                    break;
+                }
+            }
+            if (!found)
+            {
+                Debug.Log("No medpack found so could not use....");
+            }
+            
+            
+        }
     }
 
     public bool AddResource(Resource resource)
@@ -131,6 +155,12 @@ public class InventoryManager : MonoBehaviour
         {
             Debug.Log(res.name);
         }
+    }
+
+    public bool RemoveCraft(CraftableObject craft)
+    {
+        crafts.Remove(craft);
+        return true;
     }
 
 }

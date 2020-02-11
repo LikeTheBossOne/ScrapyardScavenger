@@ -26,4 +26,13 @@ public class Health : MonoBehaviourPunCallbacks
             Debug.Log(currentHealth);
         }
     }
+
+    public void Heal()
+    {
+        TakeDamage(50);
+        Debug.Log("About to heal, current health: " + currentHealth);
+        currentHealth = maxHealth;
+        Debug.Log("Healed, current health: " + currentHealth);
+        
+    }
 }

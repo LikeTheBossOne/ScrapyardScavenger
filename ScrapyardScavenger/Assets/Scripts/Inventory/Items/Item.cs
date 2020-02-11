@@ -15,6 +15,8 @@ public abstract class Item : CraftableObject
     public bool showInInventory = true;
     public Sprite icon = null;
 
+    public abstract void Use(InventoryManager manager);
+
     /*public Item(int id)
     {
         this.id = id;

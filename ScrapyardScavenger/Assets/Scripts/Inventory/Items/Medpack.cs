@@ -15,4 +15,13 @@ public class Medpack : Item
         description = "Medpack description here";
         icon = null;
     }
+
+    
+    public override void Use(InventoryManager manager)
+    {
+        // use medpack
+        manager.GetComponent<Health>().Heal();
+        // remove this from the manager?
+        manager.RemoveCraft(this);
+    }
 }

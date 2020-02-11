@@ -15,4 +15,9 @@ public class EnergyDrink : Item
         description = "Energy drink here";
         icon = null;
     }
+
+    public override void Use(InventoryManager manager)
+    {
+        // use energy drink
+    }
 }
