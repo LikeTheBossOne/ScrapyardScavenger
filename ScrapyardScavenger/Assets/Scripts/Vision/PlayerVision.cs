@@ -7,7 +7,7 @@ public class PlayerVision : MonoBehaviourPunCallbacks
 {
     public Transform player;
     public Transform cams;
-    // public Transform weapon;
+    public Transform weapon;
 
     public float xSensitivity;
     public float ySensitivity;
@@ -64,7 +64,7 @@ public class PlayerVision : MonoBehaviourPunCallbacks
             cams.localRotation = delta;
         }
 
-        // weapon.rotation = cams.rotation;
+        weapon.rotation = cams.rotation;
     }
 
     void AdjustX()
