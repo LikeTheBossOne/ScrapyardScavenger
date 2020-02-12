@@ -20,6 +20,9 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 
 	void Start() {
 		playerHealthSlider = GameObject.FindWithTag("Health").GetComponent<Slider>();
+
+		// The photon view is mine check is necessary here, otherwise everyone's health bar will be reset
+		if (!photonView.IsMine) return;
 		playerHealthSlider.value = 100;
 	}
 
@@ -27,10 +30,6 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 	{
 		// If not me, don't update!
 		if (!photonView.IsMine) return;
-
-		// Example of health changes; remove later
-		if (getHealthSlider().value > 0)
-			takeDamage(0.1f);
 
 	}
 
@@ -41,7 +40,8 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 	}
 
 	public void takeDamage(float dmg) {
-		playerHealthSlider.value -= dmg;
+		if (getHealthSlider().value > 0)
+			playerHealthSlider.value -= dmg;
 	}
 
 	public void heal(float healAmt) {
