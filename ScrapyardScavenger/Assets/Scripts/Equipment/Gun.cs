@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewGun", menuName = "Gun")]
 public class Gun : Weapon
 {
+    public new string name;
     public float baseDamage = 30;
     public float headShotMultiplier = 2;
     public float baseRateOfFire = 25;

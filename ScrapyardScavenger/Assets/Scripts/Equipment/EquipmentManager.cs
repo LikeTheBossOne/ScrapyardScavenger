@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
 using Photon.Pun;
@@ -16,24 +17,11 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
     private Equipment[] equipment;
 
     private int currentIndex;
+
     private GameObject currentObject;
 
     public delegate void OnEquipmentSwitchedDelegate();
     public static OnEquipmentSwitchedDelegate EquipmentSwitched;
-
-    #region Singleton
-
-    public static EquipmentManager instance;
-
-    void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-    }
-
-    #endregion
 
     void Start()
     {
@@ -92,7 +80,7 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public void OnEvent(EventData photonEvent)
     {
         byte eventCode = photonEvent.Code;
-        if (eventCode == 1)
+        if (eventCode == (byte) NetworkCodes.PlayerJoined)
         {
             if (photonView.IsMine)
             {
@@ -103,11 +91,17 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
             }
         }
 
-        else if (eventCode == 2)
+        else if (eventCode == (byte) NetworkCodes.PlayerJoinedResponse)
         {
             object[] data = (object[])photonEvent.CustomData;
             if (photonView.ViewID == (int)data[1])
                 Equip((int)data[0]);
         }
+    }
+
+    public Equipment getCurrentEquipment()
+    {
+        if (currentIndex == -1) return null;
+        return equipment[currentIndex];
     }
 }
