@@ -81,8 +81,36 @@ public class InventoryManager : MonoBehaviour
             {
                 Debug.Log("No medpack found so could not use....");
             }
-            
-            
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            // use an energy drink!
+
+            // first make an energy drink for testing purposes
+            Debug.Log("Adding an Energy Drink");
+            EnergyDrink ed = Resources.Load<EnergyDrink>("Items/Energy Drink");
+            crafts.Add(ed);
+            Debug.Log("Craft count: " + crafts.Count);
+            //Debug.Log("EnergyD count: " + ResourceCount(g));
+
+            // so find a craft that is an energy drink
+            bool foundED = false;
+            for (int i = 0; i < crafts.Count; i++)
+            {
+                Debug.Log("name: " + crafts[i].name);
+                if (crafts[i].name == "Energy Drink")
+                {
+                    // then call .Use(this) on it
+                    Debug.Log("Using an energy drink!");
+                    foundED = true;
+                    ((EnergyDrink) crafts[i]).Use(this);
+                    break;
+                }
+            }
+            if (!foundED)
+            {
+                Debug.Log("No energy drink found so could not use....");
+            }
         }
     }
 

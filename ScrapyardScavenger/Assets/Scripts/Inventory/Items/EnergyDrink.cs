@@ -8,6 +8,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item", menuName = "Items/EnergyDrink")]
 public class EnergyDrink : Item
 {
+    public int seconds;
+
     public EnergyDrink(int id)
     {
         this.id = id;
@@ -19,5 +21,9 @@ public class EnergyDrink : Item
     public override void Use(InventoryManager manager)
     {
         // use energy drink
+        manager.GetComponent<PlayerMotor>().Energize(seconds);
+
+        // remove this from the manager?
+        manager.RemoveCraft(this);
     }
 }
