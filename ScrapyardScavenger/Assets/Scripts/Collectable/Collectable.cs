@@ -2,7 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollectableUI
+public interface Collectable<T>
 {
     public GameObject prefab;
+
+    void OnTriggerEnter(PhotonPlayer p)
+    {
+        Destroy(this);
+    }
 }
