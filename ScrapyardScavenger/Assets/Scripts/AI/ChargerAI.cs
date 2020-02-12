@@ -5,6 +5,15 @@ using UnityEngine.AI;
 //note: enemeyController may be useful to look at
 public class ChargerAI : MonoBehaviour
 {
+    public enum State
+    {
+        wander,
+        chase,
+        attack,
+        aggro,
+        charge,
+    }
+    public State state {get; private set;}
     public Vector3 moveTo;
     public NavMeshAgent nav;
     public AIPlayerManager players;
@@ -17,13 +26,14 @@ public class ChargerAI : MonoBehaviour
     public float wandAngle;
     public float wandRad;
     //public float playerOffset;
-    public ShamblerDetection senses;
+    public ChargerDetection senses;
+    
     // Start is called before the first frame update
     void Start()
     {
         //timer = 0;
         aggroTimeLimit = 10;
-        senses = GetComponent<ShamblerDetection>();
+        senses = GetComponent<ChargerDetection>();
         nav = GetComponentInParent<NavMeshAgent>();
         players = FindObjectOfType<AIPlayerManager>();
         wandOffset = 10;
@@ -34,8 +44,89 @@ public class ChargerAI : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
+        handleState();
+        changeState();
+    }
+    //updates state
+    void changeState()
+    {
+        //important points, player seen, charger aggroed from damage, player inrange of charge, player at close range
+        //order: attack range, charge range, aggro, chasing, wander
+        if (senses.vendeta)
+        {
+            state = State.aggro;
+        }
+        if (senses.visionCheck())
+        {
+            state = State.chase;
+        }
+        state = State.wander;
+    }
+    //executes state behavior
+    void handleState()
+    {
+        if (state == State.wander)
+        {
+            //wander in the direction of closest player
+            //need to rethink this with unity in mind
+            //need to rethink transform.rotate()
+            Vector3 wandDir = (transform.forward - transform.position).normalized;
+            //project the center of the imaginary circle
+            Vector3 center = wandDir * wandOffset;
+            center = center + transform.position;
+            //orient
+            float angle = Random.Range(-1, 1) * wandAngle;
+            //transform.Rotate(transform.up, angle);
+            float curOrient = transform.eulerAngles.y;
+            float newOrient = curOrient + angle;
+            Vector3 dir = transform.forward.normalized;
+            dir.x = Mathf.Sin(newOrient);
+            dir.z = Mathf.Cos(newOrient);
+            //project target spot on circle
+            Vector3 moveTarg = center + wandRad * dir;
+            //correct towards closest player
+            Transform close = findClosestPlayer();
+
+            Vector3 toPlayer = close.position - moveTarg;
+            toPlayer = toPlayer.normalized;
+            if (distanceToOther(close) < toPlayerOffset)
+            {
+                toPlayer = toPlayer * (float)distanceToOther(close);
+            }
+            else
+            {
+                toPlayer = toPlayer * toPlayerOffset;
+            }
+
+            moveTarg = moveTarg + toPlayer;
+            //this line is why the blue sphere warps around
+            //close.position = moveTarg;
+            //transform.LookAt(moveTarg, transform.up);
+            moveTo = moveTarg;
+            setDestination(moveTo);
+        }
+        if (state == State.chase)
+        {
+            transform.LookAt(senses.detected.position, transform.up);
+            setDestination(senses.detected.position);
+        }
+        if (state == State.charge)
+        {
+            //work out charge skill, probably play animation, position jump
+            //alternative, turn entire hitbox into a hurt box temporarily
+        }
+        if (state == State.aggro)
+        {
+            transform.LookAt(senses.vendeta.position, transform.up);
+            setDestination(senses.vendeta.position);
+        }
+        if (state == State.attack)
+        {
+
+        }
+        
         //key decision points: player detected, unit shot recently
         //Time.time-senses.timeShotAt <= aggroTimeLimit ||
         senses.visionCheck();
