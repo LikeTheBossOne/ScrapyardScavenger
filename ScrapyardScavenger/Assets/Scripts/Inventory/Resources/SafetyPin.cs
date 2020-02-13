@@ -8,12 +8,4 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Resource", menuName = "Resources/SafetyPin")]
 public class SafetyPin : Resource
 {
-
-    public SafetyPin(int id)
-    {
-        this.id = id;
-        name = "SafetyPin";
-        description = "Safety pin description here";
-        icon = null;
-    }
 }

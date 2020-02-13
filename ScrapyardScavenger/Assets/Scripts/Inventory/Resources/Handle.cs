@@ -8,12 +8,4 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Resource", menuName = "Resources/Handle")]
 public class Handle : Resource
 {
-
-    public Handle(int id)
-    {
-        this.id = id;
-        name = "Handle";
-        description = "Handle description here";
-        icon = null;
-    }
 }
