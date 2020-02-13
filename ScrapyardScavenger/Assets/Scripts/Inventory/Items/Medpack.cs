@@ -20,7 +20,12 @@ public class Medpack : Item
     public override void Use(InventoryManager manager)
     {
         // use medpack
-        manager.GetComponent<Health>().Heal();
+        float difference = manager.GetComponent<Health>().maxHealth - manager.GetComponent<Health>().currentHealth;
+        manager.GetComponent<Health>().Heal((int) difference);
+
+        // change the health in the UI as well
+        manager.GetComponent<PlayerHUD>().heal(difference);
+
         // remove this from the manager?
         manager.RemoveCraft(this);
     }

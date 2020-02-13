@@ -26,14 +26,15 @@ public class Health : MonoBehaviourPunCallbacks
         if (photonView.IsMine)
         {
 			pHud.takeDamage((float) damage);
+            currentHealth -= damage;
         }
     }
 
-    public void Heal()
+    public void Heal(int amount)
     {
-        TakeDamage(50);
+        //TakeDamage(50);
         Debug.Log("About to heal, current health: " + currentHealth);
-        currentHealth = maxHealth;
+        currentHealth += amount;
         Debug.Log("Healed, current health: " + currentHealth);
         
     }

@@ -17,4 +17,4 @@ MonoBehaviour:
   description: Energy drink description here
   showInInventory: 0
   icon: {fileID: 0}
-  seconds: 2
+  seconds: 10

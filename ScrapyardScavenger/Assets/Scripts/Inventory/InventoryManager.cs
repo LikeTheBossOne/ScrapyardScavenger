@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManager : MonoBehaviourPunCallbacks
 {
     private List<Resource> resources;
     private List<CraftableObject> crafts;
@@ -36,6 +37,9 @@ public class InventoryManager : MonoBehaviour
 
     void Update()
     {
+        // If not me, don't update!
+        if (!photonView.IsMine) return;
+
         if (Input.GetKeyDown(KeyCode.I))
         {
             // create a Gauze
