@@ -8,12 +8,4 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Resource", menuName = "Resources/Disinfectant")]
 public class Disinfectant : Resource
 {
-
-    public Disinfectant(int id)
-    {
-        this.id = id;
-        name = "Disinfectant";
-        description = "Disinfectant here";
-        icon = null;
-    }
 }

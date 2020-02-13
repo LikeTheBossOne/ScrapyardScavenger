@@ -9,12 +9,4 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Resource", menuName = "Resources/MetalBox")]
 public class MetalBox : Resource
 {
-
-    public MetalBox(int id)
-    {
-        this.id = id;
-        name = "MetalBox";
-        description = "Metal box description here";
-        icon = null;
-    }
 }

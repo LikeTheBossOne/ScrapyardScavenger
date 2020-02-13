@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Resource", menuName = "Inventory/Resource")]
-public abstract class Resource : ScriptableObject
+public class Resource : ScriptableObject
 {
     public int id;
     public string name;
@@ -11,20 +11,34 @@ public abstract class Resource : ScriptableObject
     public bool showInInventory = true;
     public Sprite icon = null;
 
-    /*public Resource(int id)
-    {
-        this.id = id;
-    }*/
-
-    // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    // Called when the resource is used in crafting or dropped in the inventory
     public void Use()
     {
-        // Resource is removed from the Inventory
+
     }
+}
+
+public enum ResourceType
+{
+    ArmSleeve = 0,
+    BeltStrap,
+    Disinfectant,
+    Gauze,
+    GunBarrel,
+    GunStock,
+    Gunpowder,
+    Handle,
+    Leather,
+    MetalBox,
+    PlasticBottle,
+    RustedCoil,
+    SafetyPin,
+    ShoulderPlate,
+    SugarPill,
+    WoodenPlank,
+    SIZE
 }

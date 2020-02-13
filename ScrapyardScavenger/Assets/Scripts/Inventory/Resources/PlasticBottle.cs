@@ -8,12 +8,4 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Resource", menuName = "Resources/PlasticBottle")]
 public class PlasticBottle : Resource
 {
-
-    public PlasticBottle(int id)
-    {
-        this.id = id;
-        name = "PlasticBottle";
-        description = "Plastic bottle description here";
-        icon = null;
-    }
 }

@@ -8,12 +8,4 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Resource", menuName = "Resources/Leather")]
 public class Leather : Resource
 {
-
-    public Leather(int id)
-    {
-        this.id = id;
-        name = "Leather";
-        description = "Leather description here";
-        icon = null;
-    }
 }

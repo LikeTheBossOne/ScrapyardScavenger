@@ -8,12 +8,4 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Resource", menuName = "Resources/WoodenPlank")]
 public class WoodenPlank : Resource
 {
-
-    public WoodenPlank(int id)
-    {
-        this.id = id;
-        name = "WoodenPlank";
-        description = "Wooden plank description here";
-        icon = null;
-    }
 }
