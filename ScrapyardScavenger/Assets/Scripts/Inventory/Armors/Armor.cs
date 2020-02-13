@@ -9,16 +9,4 @@ using UnityEngine;
  */
 public class Armor : CraftableObject
 {
-    public int id;
-    public string name;
-    public string description;
-    public Sprite icon = null;
-
-    public Armor(int id, string name, string description, Sprite icon)
-    {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.icon = icon;
-    }
 }

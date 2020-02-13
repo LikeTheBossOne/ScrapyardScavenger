@@ -8,12 +8,4 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Resource", menuName = "Resources/SugarPill")]
 public class SugarPill : Resource
 {
-
-    public SugarPill(int id)
-    {
-        this.id = id;
-        name = "SugarPill";
-        description = "Sugar pill description here";
-        icon = null;
-    }
 }
