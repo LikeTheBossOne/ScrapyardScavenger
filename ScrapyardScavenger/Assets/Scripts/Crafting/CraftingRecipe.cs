@@ -11,14 +11,6 @@ public struct ResourceAmount
     public int amount;
 }
 
-/*[Serializable]
-public struct CraftAmount
-{
-    public CraftableObject item;
-    [Range(1, 999)]
-    public int amount;
-}*/
-
 [CreateAssetMenu(fileName = "New Crafting Recipe", menuName = "Crafting/CraftingRecipe")]
 public class CraftingRecipe : ScriptableObject
 {

@@ -6,6 +6,14 @@ using UnityEngine;
  * Used by the player for different effects
  */
 [CreateAssetMenu(fileName = "New Item", menuName = "Items/Item")]
-public class Item : Equipment
+public abstract class Item : Equipment
 {
+    public abstract void Use(InventoryManager manager);
+}
+
+public enum ItemType
+{
+    EnergyDrink = 0,
+    Medpack,
+    SIZE
 }

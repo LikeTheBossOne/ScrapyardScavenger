@@ -16,6 +16,6 @@ public class EnergyDrink : Item
         manager.GetComponent<PlayerMotor>().Energize(seconds);
 
         // remove this from the manager?
-        manager.RemoveCraft(this);
+        manager.itemCounts[this.id]--;
     }
 }

@@ -3,11 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-<<<<<<< HEAD
-public class InventoryManager : MonoBehaviourPunCallbacks
-=======
 public class InventoryManager : MonoBehaviourPun
->>>>>>> sprint2-dev
 {
     // Resources and counts are indexed based on Resource's ID
     [SerializeField]
@@ -108,14 +104,6 @@ public class InventoryManager : MonoBehaviourPun
                 changeSlot = -1;
             }
 
-<<<<<<< HEAD
-    void Update()
-    {
-        // If not me, don't update!
-        if (!photonView.IsMine) return;
-
-        if (Input.GetKeyDown(KeyCode.I))
-=======
             if (changeSlot != 0)
             {
                 switch (invSet)
@@ -153,7 +141,6 @@ public class InventoryManager : MonoBehaviourPun
         }
 
         if (Input.GetKeyDown(KeyCode.G))
->>>>>>> sprint2-dev
         {
             resourceCounts[(int)ResourceType.Gauze]++;
             Debug.Log("Adding a Gauze");
@@ -162,82 +149,26 @@ public class InventoryManager : MonoBehaviourPun
         {
             resourceCounts[(int)ResourceType.Disinfectant]++;
             Debug.Log("Adding a Disinfectant");
-<<<<<<< HEAD
-            Disinfectant d = Resources.Load<Disinfectant>("Resources/Disinfectant");
-            AddResource(d);
-            Debug.Log("Disinfectant count: " + ResourceCount(d));
-        }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            // craft a medpack
-            Debug.Log("Attempting to craft a medpack");
-            medpackRecipe.Craft(this);
-            PrintCrafts();
-            PrintResources();
         }
 
         if (Input.GetKeyDown(KeyCode.L))
         {
-            // use a medpack!
-            // so find a craft that is a medpack
-            bool found = false;
-            for (int i = 0; i < crafts.Count; i++)
+            // use the selected item!
+            if (itemCounts[itemIndex] > 0)
             {
-                if (crafts[i].name == "Medpack")
-                {
-                    // then call .Use(this) on it
-                    Debug.Log("Using a medpack!");
-                    found = true;
-                    ((Medpack) crafts[i]).Use(this);
-                    break;
-                }
+                items[itemIndex].Use(this);
             }
-            if (!found)
+            else
             {
-                Debug.Log("No medpack found so could not use....");
+                Debug.Log("Could not use item");
             }
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
-            // use an energy drink!
-
-            // first make an energy drink for testing purposes
-            Debug.Log("Adding an Energy Drink");
-            EnergyDrink ed = Resources.Load<EnergyDrink>("Items/Energy Drink");
-            crafts.Add(ed);
-            Debug.Log("Craft count: " + crafts.Count);
-            //Debug.Log("EnergyD count: " + ResourceCount(g));
-
-            // so find a craft that is an energy drink
-            bool foundED = false;
-            for (int i = 0; i < crafts.Count; i++)
-            {
-                Debug.Log("name: " + crafts[i].name);
-                if (crafts[i].name == "Energy Drink")
-                {
-                    // then call .Use(this) on it
-                    Debug.Log("Using an energy drink!");
-                    foundED = true;
-                    ((EnergyDrink) crafts[i]).Use(this);
-                    break;
-                }
-            }
-            if (!foundED)
-            {
-                Debug.Log("No energy drink found so could not use....");
-            }
+            // make an energy drink!
+            itemCounts[(int)ItemType.EnergyDrink]++;
+            Debug.Log("Made an energy drink");
         }
-    }
-
-    public bool AddResource(Resource resource)
-    {
-        if (IsFull())
-        {
-            return false;
-=======
->>>>>>> sprint2-dev
-        }
-        
     }
 
     public int ResourceCount(Resource resource)
@@ -258,9 +189,9 @@ public class InventoryManager : MonoBehaviourPun
         return (resourceCounts[resource.id] > 0);
     }
 
-    public void PrintCrafts()
+    public void PrintItems()
     {
-        Debug.Log("Printing all crafted objects");
+        Debug.Log("Printing all items");
         foreach (CraftableObject craft in items)
         {
             Debug.Log(craft.name);
@@ -276,14 +207,6 @@ public class InventoryManager : MonoBehaviourPun
         }
     }
 
-<<<<<<< HEAD
-    public bool RemoveCraft(CraftableObject craft)
-    {
-        crafts.Remove(craft);
-        return true;
-    }
-
-=======
     public bool Craft(CraftableObject craft)
     {
         var recipeMaterials = craft.recipe.resources;
@@ -310,19 +233,18 @@ public class InventoryManager : MonoBehaviourPun
         {
             int resourceCount = resource.amount;
             resourceCounts[resource.item.id] -= resourceCount;
-
-            if (craft is Item)
-            {
-                itemCounts[craft.id]++;
-            }
-            else if (craft is Weapon)
-            {
-                weaponCounts[craft.id]++;
-            }
-            else if (craft is Armor)
-            {
-                armorCounts[craft.id]++;
-            }
+        }
+        if (craft is Item)
+        {
+            itemCounts[craft.id]++;
+        }
+        else if (craft is Weapon)
+        {
+            weaponCounts[craft.id]++;
+        }
+        else if (craft is Armor)
+        {
+            armorCounts[craft.id]++;
         }
 
         Debug.Log($"Crafted {craft.name}");
@@ -333,5 +255,4 @@ public class InventoryManager : MonoBehaviourPun
     {
         return (x % m + m) % m;
     }
->>>>>>> sprint2-dev
 }

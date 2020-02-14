@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   name: Energy Drink
-  description: Energy Drink desc
-  showInInventory: 0
+  description: Energy drink desc here
+  showInInventory: 1
   icon: {fileID: 0}
   recipe: {fileID: 11400000, guid: 44fdc5fadb14c40439da812debeb8a84, type: 2}
+  prefab: {fileID: 0}
+  seconds: 4
