@@ -32,10 +32,12 @@ public class Health : MonoBehaviourPunCallbacks
 
     public void Heal(int amount)
     {
-        //TakeDamage(50);
-        Debug.Log("About to heal, current health: " + currentHealth);
-        currentHealth += amount;
-        Debug.Log("Healed, current health: " + currentHealth);
+        if (photonView.IsMine)
+        {
+            Debug.Log("About to heal, current health: " + currentHealth);
+            currentHealth += amount;
+            Debug.Log("Healed, current health: " + currentHealth);
+        }
         
     }
 }
