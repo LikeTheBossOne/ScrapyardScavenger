@@ -45,7 +45,10 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 	}
 
 	public void heal(float healAmt) {
-		playerHealthSlider.value += healAmt;
+		if (photonView.IsMine)
+		{
+			playerHealthSlider.value += healAmt;
+		}
 	}
 
 

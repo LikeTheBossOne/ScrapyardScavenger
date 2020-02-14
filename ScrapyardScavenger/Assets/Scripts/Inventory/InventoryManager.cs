@@ -150,7 +150,25 @@ public class InventoryManager : MonoBehaviourPun
             resourceCounts[(int)ResourceType.Disinfectant]++;
             Debug.Log("Adding a Disinfectant");
         }
-        
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            // use the selected item!
+            if (itemCounts[itemIndex] > 0)
+            {
+                items[itemIndex].Use(this);
+            }
+            else
+            {
+                Debug.Log("Could not use item");
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            // make an energy drink!
+            itemCounts[(int)ItemType.EnergyDrink]++;
+            Debug.Log("Made an energy drink");
+        }
     }
 
     public int ResourceCount(Resource resource)
@@ -171,9 +189,9 @@ public class InventoryManager : MonoBehaviourPun
         return (resourceCounts[resource.id] > 0);
     }
 
-    public void PrintCrafts()
+    public void PrintItems()
     {
-        Debug.Log("Printing all crafted objects");
+        Debug.Log("Printing all items");
         foreach (CraftableObject craft in items)
         {
             Debug.Log(craft.name);
@@ -215,19 +233,18 @@ public class InventoryManager : MonoBehaviourPun
         {
             int resourceCount = resource.amount;
             resourceCounts[resource.item.id] -= resourceCount;
-
-            if (craft is Item)
-            {
-                itemCounts[craft.id]++;
-            }
-            else if (craft is Weapon)
-            {
-                weaponCounts[craft.id]++;
-            }
-            else if (craft is Armor)
-            {
-                armorCounts[craft.id]++;
-            }
+        }
+        if (craft is Item)
+        {
+            itemCounts[craft.id]++;
+        }
+        else if (craft is Weapon)
+        {
+            weaponCounts[craft.id]++;
+        }
+        else if (craft is Armor)
+        {
+            armorCounts[craft.id]++;
         }
 
         Debug.Log($"Crafted {craft.name}");

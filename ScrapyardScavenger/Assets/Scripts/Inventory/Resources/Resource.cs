@@ -6,20 +6,11 @@ using UnityEngine;
 public class Resource : ScriptableObject
 {
     public int id;
-    public string name;
+    public new string name;
     public string description;
     public bool showInInventory = true;
     public Sprite icon = null;
 
-    void Start()
-    {
-        
-    }
-
-    public void Use()
-    {
-
-    }
 }
 
 public enum ResourceType

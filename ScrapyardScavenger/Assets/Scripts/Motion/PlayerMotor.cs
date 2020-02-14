@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerMotor : MonoBehaviourPunCallbacks
 {
     public float speed;
+    public float speedModifier;
     public float sprintModifier;
     public float jumpForce;
     public Camera normalCam;
@@ -17,6 +18,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     private Rigidbody myRigidbody;
     private float baseFOV;
     private float sprintFOVModifier;
+    private bool isEnergized;
 
     private bool isPaused;
 
@@ -35,6 +37,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         sprintFOVModifier = 1.2f;
 
         isPaused = false;
+        isEnergized = false;
     }
 
     void Update()
@@ -96,6 +99,10 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         {
             adjustedSpeed *= sprintModifier;
         }
+        if (isEnergized)
+        {
+            adjustedSpeed *= speedModifier;
+        }
 
         Vector3 targetVelocity = transform.TransformDirection(direction) * adjustedSpeed * Time.fixedDeltaTime;
         targetVelocity.y = myRigidbody.velocity.y;
@@ -106,5 +113,21 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         normalCam.fieldOfView = isSprinting
             ? Mathf.Lerp(normalCam.fieldOfView, baseFOV * sprintFOVModifier, Time.fixedDeltaTime * 8f)
             : Mathf.Lerp(normalCam.fieldOfView, baseFOV, Time.fixedDeltaTime * 2f);
+    }
+
+    public void Energize(int seconds)
+    {
+        StartCoroutine(EnergizeRoutine(seconds));
+    }
+
+    public IEnumerator EnergizeRoutine(int seconds)
+    {
+        isEnergized = true;
+        yield return new WaitForSeconds(seconds);
+        Unenergize();
+    }
+
+    public void Unenergize() {
+        isEnergized = false;
     }
 }
