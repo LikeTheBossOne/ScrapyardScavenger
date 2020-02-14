@@ -21,7 +21,7 @@ MonoBehaviour:
   prefab: {fileID: 7589069519001578698, guid: b2b79960e09c15f4a9fa996c4c9699d0, type: 3}
   baseDamage: 30
   headShotMultiplier: 2
-  baseRateOfFire: 25
+  baseRateOfFire: 300
   baseClipSize: 25
   modifiers: []
   isAutomatic: 0
