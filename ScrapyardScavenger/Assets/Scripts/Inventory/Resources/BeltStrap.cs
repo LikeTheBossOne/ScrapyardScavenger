@@ -9,12 +9,4 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Resource", menuName = "Resources/BeltStrap")]
 public class BeltStrap : Resource
 {
-
-    public BeltStrap(int id)
-    {
-        this.id = id;
-        name = "BeltStrap";
-        description = "Belt strap here";
-        icon = null;
-    }
 }

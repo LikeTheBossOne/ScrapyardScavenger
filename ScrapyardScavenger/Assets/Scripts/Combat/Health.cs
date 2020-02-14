@@ -8,9 +8,12 @@ public class Health : MonoBehaviourPunCallbacks
     public int maxHealth;
     public int currentHealth { get; private set; }
 
+	public PlayerHUD pHud;
+
     void Start()
     {
         currentHealth = maxHealth;
+		pHud = GetComponent<PlayerHUD>();
     }
 
     void Update()
@@ -22,8 +25,19 @@ public class Health : MonoBehaviourPunCallbacks
     {
         if (photonView.IsMine)
         {
+			pHud.takeDamage((float) damage);
             currentHealth -= damage;
-            Debug.Log(currentHealth);
         }
+    }
+
+    public void Heal(int amount)
+    {
+        if (photonView.IsMine)
+        {
+            Debug.Log("About to heal, current health: " + currentHealth);
+            currentHealth += amount;
+            Debug.Log("Healed, current health: " + currentHealth);
+        }
+        
     }
 }

@@ -9,8 +9,4 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Armor", menuName = "Armors/ChainmailArmor")]
 public class ChainmailArmor : Armor
 {
-    public ChainmailArmor(int id) : base(id, "ChainmailArmor", "Chainmail Armor description here", null)
-    {
-        // do nothing
-    }
 }

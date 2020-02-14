@@ -1,89 +1,182 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManager : MonoBehaviourPun
 {
-    private List<Resource> resources;
-    private List<CraftableObject> crafts;
-    private CraftingRecipe medpackRecipe;
+    // Resources and counts are indexed based on Resource's ID
+    [SerializeField]
+    public Resource[] resources = null;
+    [SerializeField]
+    public int[] resourceCounts = null;
+    private int resourceIndex;
 
-    public int capacity;
+    // Crafts and counts are indexed based on the CraftableObject's ID
+    [SerializeField]
+    public Item[] items = null;
+    [SerializeField]
+    public int[] itemCounts = null;
+    private int itemIndex;
 
-    #region Singleton
+    // Crafts and counts are indexed based on the CraftableObject's ID
+    [SerializeField]
+    public Weapon[] weapons = null;
+    [SerializeField]
+    public int[] weaponCounts = null;
+    private int weaponIndex;
 
-    public static InventoryManager instance;
+    // Crafts and counts are indexed based on the CraftableObject's ID
+    [SerializeField]
+    public Armor[] armors = null;
+    [SerializeField]
+    public int[] armorCounts = null;
+    private int armorIndex;
 
-    void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-    }
+    // InvSet corresponds to whether we are going through items (0), weapons (1), or armors (2)
+    private int invSet;
 
-    #endregion
+    public bool isOpen;
 
     void Start()
     {
-        resources = new List<Resource>();
-        crafts = new List<CraftableObject>();
+        isOpen = false;
 
-        // Initialize Recipes
-        medpackRecipe = Resources.Load<CraftingRecipe>("Recipes/ItemRecipes/MedpackRecipe");
-        Debug.Log("Howdy?: " + medpackRecipe.howdy);
+        resourceIndex = 0;
+        itemIndex = 0;
+        weaponIndex = 0;
+        armorIndex = 0;
+
+        invSet = 0;
     }
 
     void Update()
     {
+        if (!photonView.IsMine) return;
+            
+
+        // Check if player is opening/closing inventory
         if (Input.GetKeyDown(KeyCode.I))
         {
-            // create a Gauze
+            isOpen = !isOpen;
+            if (isOpen)
+                Debug.Log("Opened Inventory");
+            else
+                Debug.Log("Closed Inventory");
+        }
+            
+
+
+        if (isOpen)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                invSet += 1;
+                invSet = mod(invSet, 3);
+
+                if (invSet == 0)
+                    Debug.Log("Switched to Items Inventory");
+                if (invSet == 1)
+                    Debug.Log("Switched to Weapons Inventory");
+                if (invSet == 2)
+                    Debug.Log("Switched to Armor Inventory");
+            }
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                invSet -= 1;
+                invSet = mod(invSet, 3);
+
+                if (invSet == 0)
+                    Debug.Log("Switched to Items Inventory");
+                if (invSet == 1)
+                    Debug.Log("Switched to Weapons Inventory");
+                if (invSet == 2)
+                    Debug.Log("Switched to Armor Inventory");
+            }
+
+            short changeSlot = 0;
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                changeSlot = 1;
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                changeSlot = -1;
+            }
+
+            if (changeSlot != 0)
+            {
+                switch (invSet)
+                {
+                    case 0:
+                        itemIndex += changeSlot;
+                        itemIndex = mod(itemIndex, items.Length);
+                        Debug.Log($"Item switched to {items[itemIndex].name}");
+                        break;
+                    case 1:
+                        weaponIndex += changeSlot;
+                        weaponIndex = mod(weaponIndex, weapons.Length);
+                        Debug.Log($"Weapon switched to {weapons[weaponIndex].name}");
+                        break;
+                    case 2:
+                        armorIndex += changeSlot;
+                        armorIndex = mod(armorIndex, armors.Length);
+                        Debug.Log($"Armor switched to {armors[armorIndex].name}");
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            // Craft current item
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                if (invSet == 0)
+                    Craft(items[itemIndex]);
+                if (invSet == 1)
+                    Craft(weapons[weaponIndex]);
+                if (invSet == 2)
+                    Craft(armors[armorIndex]);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            resourceCounts[(int)ResourceType.Gauze]++;
             Debug.Log("Adding a Gauze");
-            Gauze g = Resources.Load<Gauze>("Resources/Gauze");
-            AddResource(g);
-            Debug.Log("Gauze count: " + ResourceCount(g));
         }
         if (Input.GetKeyDown(KeyCode.O))
         {
-            // create a Disinfectant
+            resourceCounts[(int)ResourceType.Disinfectant]++;
             Debug.Log("Adding a Disinfectant");
-            Disinfectant d = Resources.Load<Disinfectant>("Resources/Disinfectant");
-            AddResource(d);
-            Debug.Log("Disinfectant count: " + ResourceCount(d));
         }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            // craft a medpack
-            Debug.Log("Attempting to craft a medpack");
-            medpackRecipe.Craft(this);
-            PrintCrafts();
-            PrintResources();
-        }
-    }
 
-    public bool AddResource(Resource resource)
-    {
-        if (IsFull())
+        if (Input.GetKeyDown(KeyCode.L))
         {
-            return false;
+            // use the selected item!
+            if (itemCounts[itemIndex] > 0)
+            {
+                items[itemIndex].Use(this);
+            }
+            else
+            {
+                Debug.Log("Could not use item");
+            }
         }
-        resources.Add(resource);
-        return true;
-    }
-
-    public bool RemoveResource(Resource resource)
-    {
-        resources.Remove(resource);
-        return true;
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            // make an energy drink!
+            itemCounts[(int)ItemType.EnergyDrink]++;
+            Debug.Log("Made an energy drink");
+        }
     }
 
     public int ResourceCount(Resource resource)
     {
         int count = 0;
-        for (int i = 0; i < resources.Count; i++)
+        foreach (var res in resources)
         {
-            if (resources[i].name == resource.name)
+            if (res.name == resource.name)
             {
                 count++;
             }
@@ -93,32 +186,13 @@ public class InventoryManager : MonoBehaviour
 
     public bool ContainsResource(Resource resource)
     {
-        for (int i = 0; i < resources.Count; i++)
-        {
-            if (resources[i].name == resource.name)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    public bool IsFull()
-    {
-        // not implemented yet
-        return false;
+        return (resourceCounts[resource.id] > 0);
     }
 
-    public bool AddCraft(CraftableObject craft)
+    public void PrintItems()
     {
-        crafts.Add(craft);
-        return true;
-    }
-
-    public void PrintCrafts()
-    {
-        Debug.Log("Printing all crafted objects");
-        foreach (CraftableObject craft in crafts)
+        Debug.Log("Printing all items");
+        foreach (CraftableObject craft in items)
         {
             Debug.Log(craft.name);
         }
@@ -133,4 +207,52 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public bool Craft(CraftableObject craft)
+    {
+        var recipeMaterials = craft.recipe.resources;
+
+        bool doCrafting = true;
+        foreach (var resource in recipeMaterials)
+        {
+            int resourceCount = resource.amount;
+            if (resourceCounts[resource.item.id] < resourceCount)
+            {
+                doCrafting = false;
+                break;
+            }
+
+        }
+
+        if (!doCrafting)
+        {
+            Debug.Log($"Can't Craft {craft.name}");
+            return false;
+        }
+
+        foreach (var resource in recipeMaterials)
+        {
+            int resourceCount = resource.amount;
+            resourceCounts[resource.item.id] -= resourceCount;
+        }
+        if (craft is Item)
+        {
+            itemCounts[craft.id]++;
+        }
+        else if (craft is Weapon)
+        {
+            weaponCounts[craft.id]++;
+        }
+        else if (craft is Armor)
+        {
+            armorCounts[craft.id]++;
+        }
+
+        Debug.Log($"Crafted {craft.name}");
+        return true;
+    }
+
+    private int mod(int x, int m)
+    {
+        return (x % m + m) % m;
+    }
 }
