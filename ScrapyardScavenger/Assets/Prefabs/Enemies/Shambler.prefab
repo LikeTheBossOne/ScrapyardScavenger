@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 6873522236085406830}
   - component: {fileID: 5901621620661214744}
   - component: {fileID: 5199182046450887696}
-  - component: {fileID: -5915565827594158817}
   - component: {fileID: 2311280877076479594}
   - component: {fileID: 1808746050388507659}
   - component: {fileID: 160201140544523198}
+  - component: {fileID: -1779150746289936395}
   m_Layer: 0
   m_Name: Shambler
   m_TagString: Untagged
@@ -97,18 +97,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-5915565827594158817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5386314075460651108}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e50051f1e501794468c3ec509f9fe560, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2311280877076479594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,3 +161,15 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &-1779150746289936395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5386314075460651108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e50051f1e501794468c3ec509f9fe560, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

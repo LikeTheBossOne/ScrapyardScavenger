@@ -1494,7 +1494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeShotAt: 0
-  visionLimit: 60
+  visionLimit: 20
   detected: {fileID: 0}
   pManager: {fileID: 0}
   success: 0
@@ -1514,6 +1514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed77aae83a824a84aae0e88685864f7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
   moveTo: {x: 0, y: 0, z: 0}
   nav: {fileID: 0}
   players: {fileID: 0}

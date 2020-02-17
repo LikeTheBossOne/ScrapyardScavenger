@@ -5,6 +5,13 @@ using UnityEngine.AI;
 //note: enemeyController may be useful to look at
 public class ShamblerAI : MonoBehaviour
 {
+   public enum State
+    {
+        wander,
+        chase,
+        attack,
+    }
+    public State currentState;
     public Vector3 moveTo;
     public NavMeshAgent nav;
     public AIPlayerManager players;
@@ -32,15 +39,36 @@ public class ShamblerAI : MonoBehaviour
         wandRad = 10;
         //playerOffset = 5;
     }
-
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        //key decision points: player detected, unit shot recently
-        //Time.time-senses.timeShotAt <= aggroTimeLimit ||
-        senses.visionCheck();
-        //System.Console.WriteLine(senses.success);
-        if ( senses.detected )
+        changeState();
+        handleState();
+
+    }
+    public void changeState()
+    {
+        if (senses.visionCheck())
+        {
+            /*if (false)
+            {
+                / target in attack range/
+                currentState = State.attack;
+            }
+            else
+            {
+                currentState = State.chase;
+            }*/
+            currentState = State.chase;
+        }
+        else
+        {
+            currentState = State.wander;
+        }
+    } 
+    // Update is called once per frame
+    public void handleState()
+    {
+        if (currentState == State.chase)
         {
             //set target destination to detected/aggressing player or use follow command if there is one
             //Need to add reorientation/ "lockon camera" for enemy
@@ -48,12 +76,12 @@ public class ShamblerAI : MonoBehaviour
             transform.LookAt(senses.detected.position, transform.up);
             setDestination(senses.detected.position);
         }
-        else
+        if (currentState == State.wander)
         {
             //wander in the direction of closest player
             //need to rethink this with unity in mind
             //need to rethink transform.rotate()
-            Vector3 wandDir = (transform.forward-transform.position).normalized;
+            Vector3 wandDir = (transform.forward - transform.position).normalized;
             //project the center of the imaginary circle
             Vector3 center = wandDir * wandOffset;
             center = center + transform.position;
@@ -66,10 +94,10 @@ public class ShamblerAI : MonoBehaviour
             dir.x = Mathf.Sin(newOrient);
             dir.z = Mathf.Cos(newOrient);
             //project target spot on circle
-            Vector3 moveTarg = center + wandRad*dir;
+            Vector3 moveTarg = center + wandRad * dir;
             //correct towards closest player
             Transform close = findClosestPlayer();
-            
+
             Vector3 toPlayer = close.position - moveTarg;
             toPlayer = toPlayer.normalized;
             if (distanceToOther(close) < toPlayerOffset)
@@ -80,7 +108,7 @@ public class ShamblerAI : MonoBehaviour
             {
                 toPlayer = toPlayer * toPlayerOffset;
             }
-            
+
             moveTarg = moveTarg + toPlayer;
             //this line is why the blue sphere warps around
             //close.position = moveTarg;
@@ -88,6 +116,19 @@ public class ShamblerAI : MonoBehaviour
             moveTo = moveTarg;
             setDestination(moveTo);
         }
+        if (currentState == State.attack)
+        {
+            setDestination(GetComponentInParent<Transform>().position);
+            /*if ()
+            {
+                //target in melee range
+            }
+            else
+            {
+                //target in spit range
+            }*/
+        }
+        
     }
 
     //Finds the closest player

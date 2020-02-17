@@ -38,6 +38,7 @@ public class ChargerDetection : MonoBehaviour
             if (aggroTimer <= 0)
             {
                 vendeta = null;
+                GetComponentInParent<ChargerAI>().state = ChargerAI.State.wander;
             }
         }
     }
@@ -91,7 +92,7 @@ public class ChargerDetection : MonoBehaviour
         return success;
     }
     //Handles being shot, probably an event handler in the future
-    private void onDamage(float damage, GameObject shooter, int status)
+    public void onDamage(float damage, GameObject shooter, int status)
     {
         if (Time.time - timeShotAt > aggroTimer)
         {

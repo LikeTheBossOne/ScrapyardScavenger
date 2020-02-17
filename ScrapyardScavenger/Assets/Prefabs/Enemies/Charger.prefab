@@ -286,8 +286,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5331245844859798062}
-  - component: {fileID: 2573974462174347101}
   - component: {fileID: -4462245220405857467}
+  - component: {fileID: 8210920670601218390}
   m_Layer: 0
   m_Name: Charger
   m_TagString: Untagged
@@ -318,18 +318,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
---- !u!114 &2573974462174347101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3716990964005608172}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b489c0d96ac83e64eae11afb4a29ecc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!195 &-4462245220405857467
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -352,6 +340,18 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &8210920670601218390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3716990964005608172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b489c0d96ac83e64eae11afb4a29ecc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3862181261417116131
 GameObject:
   m_ObjectHideFlags: 0

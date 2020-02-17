@@ -28,7 +28,7 @@ public class ShamblerDetection : MonoBehaviour
     //Handles seeing, capped distance ray cast, currently a detection sphere
     public bool visionCheck()
     {
-        //bool success = false;
+        bool success = false;
         //run = true;
         position = transform;
         
@@ -74,7 +74,7 @@ public class ShamblerDetection : MonoBehaviour
         return success;
     }
     //Handles being shot, probably an event handler in the future
-    private void gotShot(GameObject shooter)
+    public void gotShot(GameObject shooter)
     {
         timeShotAt = Time.time;
         detected = shooter.transform;

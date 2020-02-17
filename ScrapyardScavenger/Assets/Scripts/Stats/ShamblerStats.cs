@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShamblerStats : MonoBehaviour
+public class ShamblerStats : Stats
 {
-    public float health { get; private set; }
+    
     public float damage { get; private set; }
-    public float status { get; private set; }
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -23,12 +23,13 @@ public class ShamblerStats : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    void onDamage(float damage, GameObject damager, int atkStatus)
+    void onDamage(int damage, GameObject damager, int atkStatus)
     {
         health = health - damage;
         if (atkStatus > 0)
         {
             status = atkStatus;
         }
+        GetComponentInParent<ShamblerDetection>().gotShot(damager);
     }
 }

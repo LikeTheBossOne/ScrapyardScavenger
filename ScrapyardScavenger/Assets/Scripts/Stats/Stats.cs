@@ -1,19 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class ChargerStats : MonoBehaviour
+public class Stats : MonoBehaviour
 {
-    public float health { get; private set; }
-    public float damage { get; private set; }
-    public int status { get; private set; }
-    
+    public enum Condition{
+        normal,
+    }
+    public int maxHealth;
+    public int health;
+    public int status;
     // Start is called before the first frame update
     void Start()
     {
-        health = 200;
-        damage = 20;
-        status = 0;
+        
     }
 
     // Update is called once per frame
@@ -21,8 +22,8 @@ public class ChargerStats : MonoBehaviour
     {
         
     }
-
-    void onDamage(float damage, GameObject damager, int atkStatus)
+    [PunRPC]
+    protected void TakeDamage(int damage, GameObject damager, int atkStatus)
     {
         health = health - damage;
         if (atkStatus > 0)

@@ -13,7 +13,7 @@ public class ChargerAI : MonoBehaviour
         aggro,
         charge,
     }
-    public State state {get; private set;}
+    public State state {get; set;}
     public Vector3 moveTo;
     public NavMeshAgent nav;
     public AIPlayerManager players;
@@ -46,8 +46,9 @@ public class ChargerAI : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        handleState();
         changeState();
+        handleState();
+        
     }
     //updates state
     void changeState()
@@ -56,13 +57,35 @@ public class ChargerAI : MonoBehaviour
         //order: attack range, charge range, aggro, chasing, wander
         if (senses.vendeta)
         {
+            /*if (senses.distToVendeta <)
+            {
+                //attack range check, look at weapon system range
+                state = State.attack;
+            }else if (senses.distToVendeta <)
+            {
+                //charge range check
+                state = State.charge;
+            }*/
             state = State.aggro;
-        }
+        }else 
         if (senses.visionCheck())
         {
+            /*if (senses.distToDetected <)
+            {
+                //attack range check, look at weapon system range
+                state = State.attack;
+            }
+            else if (senses.distToDetected <)
+            {
+                //charge range check
+                state = State.charge;
+            }*/
             state = State.chase;
         }
-        state = State.wander;
+        else {
+            state = State.wander;
+        }
+        
     }
     //executes state behavior
     void handleState()
