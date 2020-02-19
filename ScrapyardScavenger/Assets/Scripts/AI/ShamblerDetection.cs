@@ -23,7 +23,7 @@ public class ShamblerDetection : MonoBehaviour
         pManager = FindObjectOfType<AIPlayerManager>();
         success = false;
         run = false;
-        Debug.Log("Does this even work?");
+        //Debug.Log("Does this even work?");
     }
     //Handles seeing, capped distance ray cast, currently a detection sphere
     public bool visionCheck()
@@ -36,17 +36,17 @@ public class ShamblerDetection : MonoBehaviour
         hitBox = self;
         RaycastHit closest = new RaycastHit();
         closest.distance = Mathf.Infinity;
-        Debug.Log("Outer loop.");
+        //Debug.Log("Outer loop.");
         foreach (var p in pManager.players)
         {
-            Debug.Log("In range.");
+            //Debug.Log("In range.");
             if (distance(p) < visionLimit) {
                 RaycastHit[] seen = Physics.RaycastAll(transform.position, p.position-transform.position, visionLimit);
-                Debug.Log(seen.Length);
+                //Debug.Log(seen.Length);
                 foreach (var next in seen)
                 {
-                    Debug.Log("Contains:" + self.Contains(next.collider));
-                    Debug.Log("Distance:" + (next.distance < closest.distance));
+                   // Debug.Log("Contains:" + self.Contains(next.collider));
+                    //Debug.Log("Distance:" + (next.distance < closest.distance));
                     if (!self.Contains(next.collider) && next.distance < closest.distance)
                     {
                         run = true;
@@ -70,7 +70,7 @@ public class ShamblerDetection : MonoBehaviour
             //detected = the playerObject that hit belongs to
             detected = closest.collider.GetComponentInParent<Transform>();
         }
-        System.Console.WriteLine(success);
+        //System.Console.WriteLine(success);
         return success;
     }
     //Handles being shot, probably an event handler in the future

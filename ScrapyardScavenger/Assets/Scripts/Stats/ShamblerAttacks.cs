@@ -5,41 +5,49 @@ using Photon.Pun;
 
 public class ShamblerAttacks : MonoBehaviour
 {
-    public int meleeRange;
-    public int meleeRecharge;
-    public int meleeDamage;
-    public int spitRange;
-    public int spitRecharge;
-    public int spitDamage;
-    private float coolDown;
+    public int meleeRange = 5;
+    public int meleeRecharge = 2;
+    public int meleeDamage = 5;
+    public int spitRange = 10;
+    public int spitRecharge = 10;
+    public int spitDamage = 2;
+    public float meleeCoolDown { get; private set; }
+    public float spitCoolDown { get; private set; }
+    public AcidSpit projectile;
     // Start is called before the first frame update
     void Start()
     {
-        
+        meleeCoolDown = 0;
+        spitCoolDown = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (coolDown > 0)
+        if (meleeCoolDown > 0)
         {
-            coolDown -= Time.deltaTime;
+            meleeCoolDown -= Time.deltaTime;
+        }
+        if (spitCoolDown > 0)
+        {
+            spitCoolDown -= Time.deltaTime;
         }
     }
 
     public void spit(GameObject target)
     {
-        //move this to AI just before call
-        //gameObject.transform.LookAt(target, );
-        if (coolDown <= 0)
+        
+        if (spitCoolDown <= 0)
         {
             
             Vector3 toTarg = gameObject.transform.position - target.transform.position;
             if (toTarg.magnitude <= spitRange)
             {
-                coolDown = spitRecharge;
+                spitCoolDown = spitRecharge;
+                AcidSpit shot = Instantiate(projectile, gameObject.transform.position, gameObject.transform.rotation);
+                shot.Shoot(gameObject);
                 //insert play animation
-                target.GetPhotonView().RPC("TakeDamage", RpcTarget.All, [spitDamage, gameObject, 1]);
+                //target.GetPhotonView().RPC("TakeDamage", RpcTarget.All, spitDamage, gameObject, 1);
             }
             
         }
@@ -47,15 +55,23 @@ public class ShamblerAttacks : MonoBehaviour
 
     public void bite(GameObject target)
     {
-        if (coolDown <= 0)
+        if (meleeCoolDown <= 0)
         {
             Vector3 toTarg = gameObject.transform.position - target.transform.position;
             if (toTarg.magnitude <= meleeRange)
             {
-                coolDown = meleeRecharge;
+                meleeCoolDown = meleeRecharge;
                 //insert play animation
-                target.GetPhotonView().RPC("TakeDamage", RpcTarget.All, [meleeDamage, gameObject, 0]);
+                target.GetPhotonView().RPC("TakeDamage", RpcTarget.All,  meleeDamage, gameObject, 0);
             }
         }
+    }
+    public bool meleeOnCoolDown()
+    {
+        return meleeCoolDown > 0;
+    }
+    public bool spitOnCoolDown()
+    {
+        return spitCoolDown > 0;
     }
 }

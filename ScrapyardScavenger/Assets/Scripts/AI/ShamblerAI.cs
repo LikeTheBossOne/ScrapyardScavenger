@@ -10,6 +10,8 @@ public class ShamblerAI : MonoBehaviour
         wander,
         chase,
         attack,
+        spit,
+        bite,
     }
     public State currentState;
     public Vector3 moveTo;
@@ -25,6 +27,7 @@ public class ShamblerAI : MonoBehaviour
     public float wandRad;
     //public float playerOffset;
     public ShamblerDetection senses;
+    public ShamblerAttacks weapons;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +40,7 @@ public class ShamblerAI : MonoBehaviour
         toPlayerOffset = 20;
         wandAngle = 60;
         wandRad = 10;
+        weapons = GetComponent<ShamblerAttacks>();
         //playerOffset = 5;
     }
     private void Update()
@@ -49,16 +53,24 @@ public class ShamblerAI : MonoBehaviour
     {
         if (senses.visionCheck())
         {
-            /*if (false)
+            //Debug.Log("Range check");
+            if (distanceToOther(senses.detected) <= weapons.meleeRange && !weapons.meleeOnCoolDown())
             {
-                / target in attack range/
-                currentState = State.attack;
+                Debug.Log("In bite range");
+                currentState = State.bite;
+            }else
+            if (distanceToOther(senses.detected) <= weapons.spitRange && !weapons.spitOnCoolDown())
+            {
+                Debug.Log("In spit range");
+                // target in attack range/
+                //currentState = State.attack;
+                currentState = State.spit;
             }
             else
             {
                 currentState = State.chase;
-            }*/
-            currentState = State.chase;
+            }
+            //currentState = State.chase;
         }
         else
         {
@@ -119,14 +131,29 @@ public class ShamblerAI : MonoBehaviour
         if (currentState == State.attack)
         {
             setDestination(GetComponentInParent<Transform>().position);
-            /*if ()
+            gameObject.transform.LookAt(senses.detected, gameObject.transform.up);
+            if (distanceToOther(senses.detected) <= weapons.meleeRange)
             {
                 //target in melee range
+                weapons.bite(senses.detected.gameObject);
             }
             else
             {
                 //target in spit range
-            }*/
+                weapons.spit(senses.detected.gameObject);
+            }
+        }
+        if (currentState == State.spit)
+        {
+            setDestination(GetComponentInParent<Transform>().position);
+            gameObject.transform.LookAt(senses.detected, gameObject.transform.up);
+            weapons.spit(senses.detected.gameObject);
+        }
+        if (currentState == State.bite)
+        {
+            setDestination(GetComponentInParent<Transform>().position);
+            gameObject.transform.LookAt(senses.detected, gameObject.transform.up);
+            weapons.bite(senses.detected.gameObject);
         }
         
     }
