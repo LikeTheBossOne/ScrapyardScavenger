@@ -5,13 +5,10 @@ using UnityEngine;
 
 public class ResourcePickup : MonoBehaviour
 {
-    public Transform[] players;
-    float radius = 5f;
 
     // Start is called before the first frame update
     void Start()
     {
-        players = new Transform[2];
 
     }
 
@@ -20,5 +17,13 @@ public class ResourcePickup : MonoBehaviour
     {
         // If either player is within certain radius of this prefab, destroy this from map and add it to the inventory
         
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Pick Up"))
+        {
+            other.gameObject.SetActive(false);
+        }
     }
 }
