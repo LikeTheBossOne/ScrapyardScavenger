@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1981925389819762771}
-  - component: {fileID: -5768344114043028994}
   m_Layer: 0
   m_Name: Collectable
   m_TagString: Pick Up
@@ -32,18 +31,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-5768344114043028994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4183550215993222447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6751ea712b28a144683eaa082f06f060, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5907562037972018902
 GameObject:
   m_ObjectHideFlags: 0
@@ -56,6 +43,7 @@ GameObject:
   - component: {fileID: 5087378066616627318}
   - component: {fileID: 8599627454047794608}
   - component: {fileID: 5106107691574517449}
+  - component: {fileID: 2360093691938422404}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Pick Up
@@ -136,6 +124,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2360093691938422404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5907562037972018902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6751ea712b28a144683eaa082f06f060, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 3
 --- !u!1 &8391949527987884920
 GameObject:
   m_ObjectHideFlags: 0

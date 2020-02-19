@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Gauze
   m_EditorClassIdentifier: 
   prefab: {fileID: 4183550215993222447, guid: c751d1fd3a6a3634180bc061aef4eda4, type: 3}
-  players: []
   id: 3
   name: 
   description: Gauze description here
   showInInventory: 0
   icon: {fileID: 0}
+  type: 3

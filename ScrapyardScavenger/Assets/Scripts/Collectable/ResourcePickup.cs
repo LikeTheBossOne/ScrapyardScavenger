@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ResourcePickup : MonoBehaviour
 {
+    public ResourceType type;
 
     // Start is called before the first frame update
     void Start()
@@ -21,9 +22,11 @@ public class ResourcePickup : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Pick Up"))
+        if (other.CompareTag("Player"))
         {
-            other.gameObject.SetActive(false);
+            Debug.Log(this.type);
+            other.transform.parent.GetComponent<InventoryManager>().resourceCounts[(int)this.type]++;
+            this.gameObject.SetActive(false);
         }
     }
 }
