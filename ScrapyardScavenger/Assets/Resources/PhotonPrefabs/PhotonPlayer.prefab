@@ -21,6 +21,8 @@ GameObject:
   - component: {fileID: 6728999789569742380}
   - component: {fileID: -286012869555450220}
   - component: {fileID: 8723326484718690294}
+  - component: {fileID: -3323660461705381311}
+  - component: {fileID: 1691280828377647608}
   m_Layer: 11
   m_Name: PhotonPlayer
   m_TagString: Untagged
@@ -322,6 +324,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealthSlider: {fileID: 0}
+--- !u!114 &-3323660461705381311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564345459977318626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f97b766630c6dde4982858bb22594765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerXP: 0
+  Attributes:
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &1691280828377647608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564345459977318626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435677624745955499eb3ff4291489e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skills:
+  - {fileID: 11400000, guid: b87ac9f63c1b84149b8954c66fc66be9, type: 2}
+  - {fileID: 11400000, guid: 3e580a4cb4f4e5a4a9b681a721b3e7f6, type: 2}
+  isOpen: 0
 --- !u!1 &647147794768695746
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,8 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     public float speed;
     public float speedModifier;
     public float sprintModifier;
+    private int sprintLimit; // how long the player can sprint for!
+
     public float jumpForce;
     public Camera normalCam;
     public GameObject cameraParent;
@@ -19,6 +21,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     private float baseFOV;
     private float sprintFOVModifier;
     private bool isEnergized;
+    private bool isSprinting;
 
     private bool isPaused;
 
@@ -35,9 +38,11 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
 
         baseFOV = normalCam.fieldOfView;
         sprintFOVModifier = 1.2f;
+        sprintLimit = 5; // 5 seconds
 
         isPaused = false;
         isEnergized = false;
+        isSprinting = false;
     }
 
     void Update()
@@ -80,7 +85,10 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         // States
         bool isGrounded = Physics.Raycast(groundDetector.position, Vector3.down, 0.1f, ground);
         bool isJumping = jumpPressed && isGrounded;
-        bool isSprinting = sprintPressed && (verticalInput > 0) && !isJumping && isGrounded;
+        if (sprintPressed && (verticalInput > 0) && !isJumping && isGrounded)
+        {
+            StartSprinting(sprintLimit);
+        }
 
 
         // Jumping
@@ -129,5 +137,17 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
 
     public void Unenergize() {
         isEnergized = false;
+    }
+
+    public void StartSprinting(int seconds)
+    {
+        StartCoroutine(SprintRoutine(seconds));
+    }
+
+    public IEnumerator SprintRoutine(int seconds)
+    {
+        isSprinting = true;
+        yield return new WaitForSeconds(seconds);
+        isSprinting = false;
     }
 }
