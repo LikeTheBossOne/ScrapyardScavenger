@@ -12,18 +12,35 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 
     public GameObject bulletHolePrefab;
 
+    private float nextFireTime = 0;
+
     void Start()
     {
         equipmentManager = GetComponent<EquipmentManager>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (!photonView.IsMine) return;
-        if (equipmentManager.getCurrentEquipment() as Gun == null) return;
+        Gun gun = equipmentManager.getCurrentEquipment() as Gun;
+        if (gun == null) return;
 
-        if (Input.GetMouseButtonDown((int)MouseButton.LeftMouse))
+
+        // Semi-Auto
+        if (Input.GetMouseButtonDown((int)MouseButton.LeftMouse)
+            && !gun.isAutomatic
+            && Time.time >= nextFireTime)
         {
+            nextFireTime = Time.time + 1 / ( gun.baseRateOfFire / 60);
+            photonView.RPC("Shoot", RpcTarget.All);
+        }
+
+        // Auto
+        if (Input.GetMouseButton((int)MouseButton.LeftMouse)
+            && gun.isAutomatic
+            && Time.time >= nextFireTime)
+        {
+            nextFireTime = Time.time + 1 / (gun.baseRateOfFire / 60);
             photonView.RPC("Shoot", RpcTarget.All);
         }
     }
