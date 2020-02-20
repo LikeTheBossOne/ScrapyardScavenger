@@ -10,6 +10,8 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     public float speedModifier;
     public float sprintModifier;
     private int sprintLimit; // how long the player can sprint for!
+    private int sprintCooldown; // how long the cooldown is between sprints
+    private bool pastSprintPressed;
 
     public float jumpForce;
     public Camera normalCam;
@@ -22,6 +24,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     private float sprintFOVModifier;
     private bool isEnergized;
     private bool isSprinting;
+    private bool isCoolingDown;
 
     private bool isPaused;
 
@@ -39,10 +42,13 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         baseFOV = normalCam.fieldOfView;
         sprintFOVModifier = 1.2f;
         sprintLimit = 5; // 5 seconds
+        sprintCooldown = 4; // 3 seconds
 
         isPaused = false;
         isEnergized = false;
         isSprinting = false;
+        isCoolingDown = false;
+        pastSprintPressed = false;
     }
 
     void Update()
@@ -85,9 +91,26 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         // States
         bool isGrounded = Physics.Raycast(groundDetector.position, Vector3.down, 0.1f, ground);
         bool isJumping = jumpPressed && isGrounded;
-        if (sprintPressed && (verticalInput > 0) && !isJumping && isGrounded)
+        if (!isSprinting && sprintPressed && (verticalInput > 0) && !isJumping && isGrounded && !isCoolingDown)
         {
-            StartSprinting(sprintLimit);
+            // only start if this is a new sprint?
+            if (!pastSprintPressed && sprintPressed && !isCoolingDown)
+            {
+                StartSprinting(sprintLimit);
+            }
+            
+        }
+        else
+        {
+            //Debug.Log("not sprinting");
+            //isSprinting = false;
+            if (pastSprintPressed && !sprintPressed && !isCoolingDown)
+            {
+                // start cool down?
+                isSprinting = false;
+                Debug.Log("Begin cool down in Move method");
+                CoolDown(sprintCooldown);
+            }
         }
 
 
@@ -121,6 +144,8 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         normalCam.fieldOfView = isSprinting
             ? Mathf.Lerp(normalCam.fieldOfView, baseFOV * sprintFOVModifier, Time.fixedDeltaTime * 8f)
             : Mathf.Lerp(normalCam.fieldOfView, baseFOV, Time.fixedDeltaTime * 2f);
+
+        pastSprintPressed = sprintPressed;
     }
 
     public void Energize(int seconds)
@@ -146,8 +171,35 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
 
     public IEnumerator SprintRoutine(int seconds)
     {
+        Debug.Log("Sprinting for " + seconds + " seconds");
         isSprinting = true;
         yield return new WaitForSeconds(seconds);
-        isSprinting = false;
+        if (isSprinting)
+        {
+            // still sprinting, so stop
+            Debug.Log("Stop sprinting in routine");
+            isSprinting = false;
+            CoolDown(sprintCooldown);
+        }
+        Debug.Log("Finished sprinting routine");
+    }
+
+    public void SetSprintLimit(int limit)
+    {
+        sprintLimit = limit;
+    }
+
+    public void CoolDown(int seconds)
+    {
+        StartCoroutine(CoolDownRoutine(seconds));
+    }
+
+    public IEnumerator CoolDownRoutine(int seconds)
+    {
+        Debug.Log("Starting cool down");
+        isCoolingDown = true;
+        yield return new WaitForSeconds(seconds);
+        isCoolingDown = false;
+        Debug.Log("Done cooling down");
     }
 }

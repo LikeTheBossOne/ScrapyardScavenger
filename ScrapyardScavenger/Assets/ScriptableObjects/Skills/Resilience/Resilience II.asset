@@ -15,4 +15,4 @@ MonoBehaviour:
   Icon: {fileID: 0}
   XPNeeded: 2500
   IsUnlocked: 0
-  Modifier: 0
+  Modifier: 1.5

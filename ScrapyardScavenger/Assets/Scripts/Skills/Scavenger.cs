@@ -11,8 +11,7 @@ public class Scavenger : Skill
 
     public override void Unlock(SkillLevel unlockedLevel, SkillManager skillManager)
     {
-        // increase the drop rate of resources somehow
-        // logic here
+        // increase the chance of collecting 2 resources instead of 1
         unlockedLevel.IsUnlocked = true;
     }
 
