@@ -15,13 +15,14 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     [SerializeField]
     private Equipment[] equipment = null;
+    public bool isReloading = false;
 
-    private int currentIndex;
+    public int currentIndex;
 
     private GameObject currentObject;
 
-    public delegate void OnEquipmentSwitchedDelegate();
-    public static OnEquipmentSwitchedDelegate EquipmentSwitched;
+    public delegate void EquipmentSwitched();
+    public event EquipmentSwitched OnEquipmentSwitched;
 
     void Start()
     {
@@ -33,13 +34,34 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
             SendOptions sendOptions = new SendOptions { Reliability = true };
             PhotonNetwork.RaiseEvent((byte) NetworkCodes.PlayerJoined, content, raiseEventOptions, sendOptions);
         }
+
+        for (int i = 0; i < equipment.Length; i++)
+        {
+            var equip = equipment[i];
+
+            if (equip != null)
+            {
+                Transform parent;
+                if (i == 0 || i == 1) parent = gunParent;
+                else if (i == 2) parent = meleeParent;
+                else if (i == 3) parent = grenadeParent;
+                else parent = medShotParent;
+
+                GameObject newObject = Instantiate(equip.prefab, parent.position, parent.rotation, parent);
+                newObject.transform.localPosition = Vector3.zero;
+                newObject.transform.localEulerAngles = Vector3.zero;
+                newObject.SetActive(false);
+            }
+        }
+
+        if (photonView.IsMine)
+            photonView.RPC("Equip", RpcTarget.All, 0);
     }
 
     void Update()
     {
         if (!photonView.IsMine)
             return;
-
 
         if (Input.GetKeyDown(KeyCode.Alpha1) && currentIndex != 0)
             photonView.RPC("Equip", RpcTarget.All, 0);
@@ -57,24 +79,25 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
     void Equip(int index)
     {
         if (currentObject != null)
-            Destroy(currentObject);
+            currentObject.SetActive(false);
 
 
         Transform parent;
-        if (index == 0 || index == 1) parent = gunParent;
+        if (index == 0) parent = gunParent;
+        else if (index == 1) parent = gunParent;
         else if (index == 2) parent = meleeParent;
         else if (index == 3) parent = grenadeParent;
         else if (index == 4) parent = medShotParent;
         else return;
 
-        
+        currentObject = parent.Equals(gunParent) ?
+            parent.GetChild(index).gameObject :
+            parent.GetChild(0).gameObject;
 
-        GameObject newObject = Instantiate(equipment[index].prefab, parent.position, parent.rotation, parent);
-        newObject.transform.localPosition = Vector3.zero;
-        newObject.transform.localEulerAngles = Vector3.zero;
-
+        currentObject.SetActive(true);
         currentIndex = index;
-        currentObject = newObject;
+
+        OnEquipmentSwitched?.Invoke();
     }
 
     public void OnEvent(EventData photonEvent)

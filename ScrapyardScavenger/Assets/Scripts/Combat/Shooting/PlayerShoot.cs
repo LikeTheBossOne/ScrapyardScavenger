@@ -12,11 +12,19 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 
     public GameObject bulletHolePrefab;
 
+    public PlayerHUD pHud;
+
+    public Transform gunParent;
+
     private float nextFireTime = 0;
+    private Coroutine reloadCoroutine;
 
     void Start()
     {
         equipmentManager = GetComponent<EquipmentManager>();
+        pHud = GetComponent<PlayerHUD>();
+
+        equipmentManager.OnEquipmentSwitched += EquipmentSwitched;
     }
 
     void FixedUpdate()
@@ -24,25 +32,66 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
         if (!photonView.IsMine) return;
         Gun gun = equipmentManager.getCurrentEquipment() as Gun;
         if (gun == null) return;
+        GunState gunState = gunParent.GetChild(equipmentManager.currentIndex).GetComponent<GunState>();
+
+        // No Ammo
+        if (gunState != null
+            && !equipmentManager.isReloading
+            && gunState.ammoCount <= 0)
+        {
+            reloadCoroutine = StartCoroutine(Reload(gun.reloadTime));
+        }
 
 
         // Semi-Auto
-        if (Input.GetMouseButtonDown((int)MouseButton.LeftMouse)
-            && !gun.isAutomatic
-            && Time.time >= nextFireTime)
+        if (!equipmentManager.isReloading
+            && gunState.ammoCount > 0)
         {
-            nextFireTime = Time.time + 1 / ( gun.baseRateOfFire / 60);
-            photonView.RPC("Shoot", RpcTarget.All);
+            if (Input.GetMouseButtonDown((int)MouseButton.LeftMouse)
+                && !gun.isAutomatic
+                && Time.time >= nextFireTime)
+            {
+                nextFireTime = Time.time + 1 / (gun.baseRateOfFire / 60);
+                photonView.RPC("Shoot", RpcTarget.All);
+            }
+
+            // Auto
+            if (Input.GetMouseButton((int)MouseButton.LeftMouse)
+                && gun.isAutomatic
+                && Time.time >= nextFireTime)
+            {
+                nextFireTime = Time.time + 1 / (gun.baseRateOfFire / 60);
+                photonView.RPC("Shoot", RpcTarget.All);
+            }
+
+            if (Input.GetKeyDown(KeyCode.R)
+                && gunState.ammoCount < gunState.baseAmmo)
+            {
+                reloadCoroutine = StartCoroutine(Reload(gun.reloadTime));
+            }
+        }
+        
+    }
+
+    IEnumerator Reload(float wait)
+    {
+        equipmentManager.isReloading = true;
+
+        // ANIMATION
+        var animator = gunParent.GetChild(equipmentManager.currentIndex).GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.speed = 1.0f / wait;
+            animator.Play("gun_reload", 0, 0);
         }
 
-        // Auto
-        if (Input.GetMouseButton((int)MouseButton.LeftMouse)
-            && gun.isAutomatic
-            && Time.time >= nextFireTime)
-        {
-            nextFireTime = Time.time + 1 / (gun.baseRateOfFire / 60);
-            photonView.RPC("Shoot", RpcTarget.All);
-        }
+        yield return new WaitForSeconds(wait);
+
+        Gun gun = equipmentManager.getCurrentEquipment() as Gun;
+        gunParent.GetChild(equipmentManager.currentIndex).GetComponent<GunState>().ammoCount = gun.baseClipSize;
+        pHud.AmmoChanged(gun.baseClipSize, gun.baseClipSize);
+
+        equipmentManager.isReloading = false;
     }
 
     [PunRPC]
@@ -67,6 +116,14 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
                 GameObject enemy = hit.collider.gameObject.transform.parent.gameObject;
                 enemy.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (int)gun.baseDamage);
             }
+
+            // Ammo
+            if (photonView.IsMine)
+            {
+                GunState gunState = gunParent.GetChild(equipmentManager.currentIndex).GetComponent<GunState>();
+                gunState.ammoCount--;
+                pHud.AmmoChanged(gunState.ammoCount, gunState.baseAmmo);
+            }
         }
     }
 
@@ -75,5 +132,14 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
     {
         GetComponent<Health>().TakeDamage(damage);
         Debug.Log("DAMAGE");
+    }
+
+    void EquipmentSwitched()
+    {
+        if (reloadCoroutine != null) StopCoroutine(reloadCoroutine);
+        equipmentManager.isReloading = false;
+
+        GunState gunState = gunParent.GetChild(equipmentManager.currentIndex).GetComponent<GunState>();
+        pHud.AmmoChanged(gunState.ammoCount, gunState.baseAmmo);
     }
 }
