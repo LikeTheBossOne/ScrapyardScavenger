@@ -851,6 +851,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxExistTime: 10
+  Velocity: 10
+  direction: {x: 0, y: 0, z: 0}
 --- !u!135 &1131562065
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1667,7 +1669,8 @@ MonoBehaviour:
   spitRange: 10
   spitRecharge: 10
   spitDamage: 2
-  projectile: {fileID: 0}
+  projectile: {fileID: 7758600212226562078, guid: 0ac2452e7ddb1cf42a28cc2c934bf81f,
+    type: 3}
 --- !u!114 &1990509049
 MonoBehaviour:
   m_ObjectHideFlags: 0

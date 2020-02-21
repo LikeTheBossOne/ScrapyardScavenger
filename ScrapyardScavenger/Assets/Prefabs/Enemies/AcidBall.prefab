@@ -92,3 +92,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxExistTime: 10
+  Velocity: 10
+  direction: {x: 0, y: 0, z: 0}

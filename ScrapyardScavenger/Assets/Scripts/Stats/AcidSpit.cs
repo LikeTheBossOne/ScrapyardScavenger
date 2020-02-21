@@ -8,8 +8,12 @@ public class AcidSpit : MonoBehaviour
     public GameObject shooter { get; set; }
     public AIPlayerManager pManage { get; set; }
     public int maxExistTime = 10;
-    public int maxV = 10;
+    public int Velocity = 10;
     public Vector3 direction;
+    private void Update()
+    {
+        gameObject.transform.position += direction * Velocity * Time.deltaTime;
+    }
     private void OnEnable()
     {
         pManage = FindObjectOfType<AIPlayerManager>();
@@ -23,6 +27,7 @@ public class AcidSpit : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("Collision detected");
         if (!collision.collider.bounds.Intersects(shooter.GetComponent<Collider>().bounds))
         {
             foreach (Transform player in pManage.players)
