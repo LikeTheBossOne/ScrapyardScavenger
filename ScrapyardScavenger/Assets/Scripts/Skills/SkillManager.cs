@@ -15,7 +15,15 @@ public class SkillManager : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
-        // no need to initialize since the 3 skills are assigned beforehand
+        // initialize all levels of the 3 skills to be locked
+        for (int i = 0; i < skills.Length; i++)
+        {
+            Skill currentLevel = skills[i];
+            for (int j = 0; j < currentLevel.levels.Length; j++)
+            {
+                currentLevel.levels[j].IsUnlocked = false;
+            }
+        }
 
         isOpen = false;
 

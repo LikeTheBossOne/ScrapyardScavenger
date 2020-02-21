@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec6ae2d959bd9747a3935d44563bb14, type: 3}
   m_Name: Plastic Bottle
   m_EditorClassIdentifier: 
+  prefab: {fileID: 0}
   id: 10
-  name: 
   description: 
   showInInventory: 0
   icon: {fileID: 0}
+  type: 10

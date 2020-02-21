@@ -355,6 +355,7 @@ MonoBehaviour:
   skills:
   - {fileID: 11400000, guid: b87ac9f63c1b84149b8954c66fc66be9, type: 2}
   - {fileID: 11400000, guid: 3e580a4cb4f4e5a4a9b681a721b3e7f6, type: 2}
+  - {fileID: 11400000, guid: 7881295dcd5041e47ad218da000104de, type: 2}
   isOpen: 0
 --- !u!1 &647147794768695746
 GameObject:

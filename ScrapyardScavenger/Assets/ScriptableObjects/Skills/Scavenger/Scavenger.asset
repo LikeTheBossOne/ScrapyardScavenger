@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af62c4ff0a46e74dadad5066519bf74, type: 3}
   m_Name: Scavenger
   m_EditorClassIdentifier: 
-  Description: 
-  levels: []
+  Description: Scavenger description here
+  levels:
+  - {fileID: 11400000, guid: f7a57a6d6de8a3f42af5d8743c9bbac1, type: 2}
+  - {fileID: 11400000, guid: 64db82bd2aa51234b9e13dcdd3b585a9, type: 2}
+  - {fileID: 11400000, guid: cf3843f94dfa6c54088d88c370d0e82d, type: 2}
