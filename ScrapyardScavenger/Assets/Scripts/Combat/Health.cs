@@ -9,11 +9,13 @@ public class Health : MonoBehaviourPunCallbacks
     public int currentHealth { get; private set; }
 
 	public PlayerHUD pHud;
+    public Death death;
 
     void Start()
     {
         currentHealth = maxHealth;
 		pHud = GetComponent<PlayerHUD>();
+        death = GetComponent<Death>();
     }
 
     void Update()
@@ -27,6 +29,10 @@ public class Health : MonoBehaviourPunCallbacks
         {
 			pHud.takeDamage((float) damage);
             currentHealth -= damage;
+        }
+        if (currentHealth <= 0)
+        {
+            death.hasDied();
         }
     }
 
