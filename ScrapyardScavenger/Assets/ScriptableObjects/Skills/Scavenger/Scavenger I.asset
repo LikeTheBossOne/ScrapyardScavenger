@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7cb1bd1f7ebbdd4796bea393fa82e2b, type: 3}
   m_Name: Scavenger I
   m_EditorClassIdentifier: 
-  Icon: {fileID: 0}
   XPNeeded: 900
   IsUnlocked: 0
   Modifier: 0.15

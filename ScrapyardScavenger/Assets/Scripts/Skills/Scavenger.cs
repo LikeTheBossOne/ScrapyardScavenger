@@ -13,6 +13,8 @@ public class Scavenger : Skill
     {
         // increase the chance of collecting 2 resources instead of 1
         unlockedLevel.IsUnlocked = true;
+
+
     }
 
 }

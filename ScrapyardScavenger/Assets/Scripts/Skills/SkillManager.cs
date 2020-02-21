@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public class SkillManager : MonoBehaviourPun
+public class SkillManager : MonoBehaviour
 {
 
     public Skill[] skills;
     private int skillIndex;
-    public bool isOpen;
-
     private int currentXP;
 
     // Start is called before the first frame update
@@ -22,10 +20,11 @@ public class SkillManager : MonoBehaviourPun
             for (int j = 0; j < currentLevel.levels.Length; j++)
             {
                 currentLevel.levels[j].IsUnlocked = false;
+                string canvasName = currentLevel.levels[j].name + " Skill";
+                Debug.Log("Canvas name: " + canvasName);
+                currentLevel.levels[j].SetCanvas(GameObject.Find(canvasName));
             }
         }
-
-        isOpen = false;
 
         skillIndex = 0;
         currentXP = 0;
@@ -34,55 +33,44 @@ public class SkillManager : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-        if (!photonView.IsMine) return;
+        //if (!photonView.IsMine) return;
 
-        // Check if player is opening/closing skill screen
-        if (Input.GetKeyDown(KeyCode.X))
+        
+
+        short changeSlot = 0;
+        if (Input.GetKeyDown(KeyCode.V))
         {
-            isOpen = !isOpen;
-            if (isOpen)
-                Debug.Log("Opened Skill Tree");
-            else
-                Debug.Log("Closed Skill Tree");
+            changeSlot = 1;
+        }
+        else if (Input.GetKeyDown(KeyCode.C))
+        {
+            changeSlot = -1;
         }
 
-        if (isOpen)
+        if (changeSlot != 0)
         {
-            short changeSlot = 0;
-            if (Input.GetKeyDown(KeyCode.V))
-            {
-                changeSlot = 1;
-            }
-            else if (Input.GetKeyDown(KeyCode.C))
-            {
-                changeSlot = -1;
-            }
+            skillIndex += changeSlot;
+            skillIndex = mod(skillIndex, skills.Length);
+            Debug.Log($"Skill switched to {skills[skillIndex].name}");
+        }
 
-            if (changeSlot != 0)
-            {
-                skillIndex += changeSlot;
-                skillIndex = mod(skillIndex, skills.Length);
-                Debug.Log($"Skill switched to {skills[skillIndex].name}");
-            }
+        // Upgrade selected skill
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            UnlockSkill(skills[skillIndex]);
+        }
 
-            // Upgrade selected skill
-            if (Input.GetKeyDown(KeyCode.B))
-            {
-                UnlockSkill(skills[skillIndex]);
-            }
-
-            if (Input.GetKeyDown(KeyCode.N))
-            {
-                // add 100 XP
-                currentXP += 100;
-                Debug.Log("Current XP: " + currentXP);
-            }
-            if (Input.GetKeyDown(KeyCode.M))
-            {
-                // add 1,000 XP
-                currentXP += 1000;
-                Debug.Log("Current XP: " + currentXP);
-            }
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            // add 100 XP
+            currentXP += 100;
+            Debug.Log("Current XP: " + currentXP);
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            // add 1,000 XP
+            currentXP += 1000;
+            Debug.Log("Current XP: " + currentXP);
         }
     }
 
@@ -115,6 +103,8 @@ public class SkillManager : MonoBehaviourPun
 
         // this call is for making sure each skill's effect takes place
         skill.Unlock(thisLevel, this);
+        thisLevel.UnlockIcon();
+
 
         // spend the XP
         SpendXP(thisLevel.XPNeeded);
