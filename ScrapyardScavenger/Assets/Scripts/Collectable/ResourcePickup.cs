@@ -26,7 +26,7 @@ public class ResourcePickup : MonoBehaviour
         {
             Debug.Log(this.type);
             other.transform.parent.GetComponent<InventoryManager>().resourceCounts[(int)this.type]++;
-            this.gameObject.SetActive(false);
+            Destroy(this.gameObject);
         }
     }
 }
