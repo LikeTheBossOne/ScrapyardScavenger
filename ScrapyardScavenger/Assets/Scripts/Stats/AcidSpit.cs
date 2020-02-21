@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Photon.Pun;
 
 public class AcidSpit : MonoBehaviour
@@ -10,6 +11,7 @@ public class AcidSpit : MonoBehaviour
     public int maxExistTime = 10;
     public int Velocity = 10;
     public Vector3 direction;
+
     private void Update()
     {
         gameObject.transform.position += direction * Velocity * Time.deltaTime;
@@ -25,7 +27,7 @@ public class AcidSpit : MonoBehaviour
         shooter = creator;
         direction = dir.normalized;
     }
-    private void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
         Debug.Log("Collision detected");
         if (!collision.collider.bounds.Intersects(shooter.GetComponent<Collider>().bounds))
