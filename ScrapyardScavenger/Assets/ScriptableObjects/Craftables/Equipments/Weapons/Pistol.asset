@@ -22,6 +22,7 @@ MonoBehaviour:
   baseDamage: 30
   headShotMultiplier: 2
   baseRateOfFire: 300
-  baseClipSize: 25
+  baseClipSize: 15
+  reloadTime: 2
   modifiers: []
   isAutomatic: 0

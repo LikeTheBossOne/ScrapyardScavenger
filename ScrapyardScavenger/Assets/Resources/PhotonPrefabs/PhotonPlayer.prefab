@@ -181,6 +181,8 @@ MonoBehaviour:
   equipment:
   - {fileID: 11400000, guid: 11200d79ddcef964bb0b20339ec304f1, type: 2}
   - {fileID: 11400000, guid: a0081ac72ad7d334aab85f82dcf1552c, type: 2}
+  isReloading: 0
+  currentIndex: 0
 --- !u!114 &-983653605404609805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,6 +261,8 @@ MonoBehaviour:
     m_Bits: 3072
   bulletHolePrefab: {fileID: 2382075669171864034, guid: 0d13e92df2a663542b9b60f72dd02408,
     type: 3}
+  pHud: {fileID: 0}
+  gunParent: {fileID: 2210166939918232469}
 --- !u!114 &-286012869555450220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,6 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealthSlider: {fileID: 0}
+  playerAmmoCount: {fileID: 0}
 --- !u!1 &647147794768695746
 GameObject:
   m_ObjectHideFlags: 0
