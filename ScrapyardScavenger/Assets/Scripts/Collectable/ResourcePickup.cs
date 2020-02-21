@@ -25,8 +25,9 @@ public class ResourcePickup : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log(this.type);
+            int count = 1;
             // before adding to the count, check the player's Scavenger skill
-            SkillManager skillManager = other.transform.parent.GetComponent<SkillManager>();
+            /*SkillManager skillManager = other.transform.parent.GetComponent<SkillManager>();
             Skill scavengerSkill = null;
             for (int i = 0; i < skillManager.skills.Length; i++)
             {
@@ -40,7 +41,7 @@ public class ResourcePickup : MonoBehaviour
 
             // if they have the Scavenger skill, do a random chance thing and see if they should get 2 resources
             float chance = 0;
-            int count = 1;
+            
 
             if (scavengerSkill != null)
             {
@@ -67,11 +68,11 @@ public class ResourcePickup : MonoBehaviour
                         count = 2;
                     }
                 }
-            }
+            }*/
 
             Debug.Log("Add count: " + count);
             other.transform.parent.GetComponent<InventoryManager>().resourceCounts[(int)this.type] += count;
-            this.gameObject.SetActive(false);
+            Destroy(this.gameObject);
         }
     }
 }
