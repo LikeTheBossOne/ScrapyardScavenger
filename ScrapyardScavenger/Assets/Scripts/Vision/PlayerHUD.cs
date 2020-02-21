@@ -14,17 +14,27 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 	[SerializeField]
 	private Slider playerHealthSlider;
 
+    [Tooltip("UI Text to display Player's Ammo Count")]
+    [SerializeField]
+	private Text playerAmmoCount;
 
 
 	#endregion
 
 	void Start() {
 		playerHealthSlider = GameObject.FindWithTag("Health").GetComponent<Slider>();
+        playerAmmoCount = GameObject.FindWithTag("AmmoCount").GetComponent<Text>();
 
 		// The photon view is mine check is necessary here, otherwise everyone's health bar will be reset
 		if (!photonView.IsMine) return;
 		playerHealthSlider.value = 100;
-	}
+
+        Gun startGun = GetComponent<EquipmentManager>().getCurrentEquipment() as Gun;
+        if (startGun != null)
+        {
+            AmmoChanged(startGun.baseClipSize, startGun.baseClipSize);
+		}
+    }
 
 	void Update()
 	{
@@ -51,6 +61,13 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 		}
 	}
 
+    public void AmmoChanged(int ammoCount, int maxAmmo)
+    {
+        if (photonView.IsMine)
+        {
+            playerAmmoCount.text = $"Ammo: {ammoCount}/{maxAmmo}";
+		}
+    }
 
 
 	#endregion

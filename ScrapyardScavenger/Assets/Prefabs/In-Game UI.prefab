@@ -1799,9 +1799,10 @@ GameObject:
   - component: {fileID: 7468059100654328886}
   - component: {fileID: 7468059100654328884}
   - component: {fileID: 7468059100654328887}
+  - component: {fileID: 7090026626128377854}
   m_Layer: 5
   m_Name: Ammo Count
-  m_TagString: Untagged
+  m_TagString: AmmoCount
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1864,7 +1865,19 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Ammo: 25/25'
+  m_Text: Ammo
+--- !u!114 &7090026626128377854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7468059100654328881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa7907e2e40d3c94aa8ccc626207fc60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7468059100670807943
 GameObject:
   m_ObjectHideFlags: 0
