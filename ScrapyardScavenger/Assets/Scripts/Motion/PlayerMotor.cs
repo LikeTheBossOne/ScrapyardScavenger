@@ -28,6 +28,8 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
 
     private bool isPaused;
 
+    private Coroutine sprintCoroutine;
+
     void Start()
     {
         if (photonView.IsMine)
@@ -93,23 +95,23 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         bool isJumping = jumpPressed && isGrounded;
         if (!isSprinting && sprintPressed && (verticalInput > 0) && !isJumping && isGrounded && !isCoolingDown)
         {
+            sprintCoroutine = StartCoroutine(SprintRoutine(sprintLimit));
             // only start if this is a new sprint?
-            if (!pastSprintPressed && sprintPressed && !isCoolingDown)
+            /*if (!pastSprintPressed)
             {
                 StartSprinting(sprintLimit);
-            }
+            }*/
             
         }
         else
         {
-            //Debug.Log("not sprinting");
-            //isSprinting = false;
             if (pastSprintPressed && !sprintPressed && !isCoolingDown)
             {
                 // start cool down?
                 isSprinting = false;
                 Debug.Log("Begin cool down in Move method");
-                CoolDown(sprintCooldown);
+                StopCoroutine(sprintCoroutine);
+                StartCoroutine(CoolDownRoutine(sprintCooldown));
             }
         }
 
@@ -164,11 +166,6 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         isEnergized = false;
     }
 
-    public void StartSprinting(int seconds)
-    {
-        StartCoroutine(SprintRoutine(seconds));
-    }
-
     public IEnumerator SprintRoutine(int seconds)
     {
         Debug.Log("Sprinting for " + seconds + " seconds");
@@ -179,7 +176,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
             // still sprinting, so stop
             Debug.Log("Stop sprinting in routine");
             isSprinting = false;
-            CoolDown(sprintCooldown);
+            StartCoroutine(CoolDownRoutine(sprintCooldown));
         }
         Debug.Log("Finished sprinting routine");
     }
@@ -189,10 +186,10 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         sprintLimit = limit;
     }
 
-    public void CoolDown(int seconds)
+    /*public void CoolDown(int seconds)
     {
         StartCoroutine(CoolDownRoutine(seconds));
-    }
+    }*/
 
     public IEnumerator CoolDownRoutine(int seconds)
     {
