@@ -45,7 +45,7 @@ public class ShamblerAttacks : MonoBehaviour
             {
                 spitCoolDown = spitRecharge;
                 AcidSpit shot = Instantiate(projectile, gameObject.transform.position, gameObject.transform.rotation);
-                shot.Shoot(gameObject, toTarg);
+                shot.Shoot(gameObject, -toTarg);
                 //insert play animation
                 //target.GetPhotonView().RPC("TakeDamage", RpcTarget.All, spitDamage, gameObject, 1);
             }
