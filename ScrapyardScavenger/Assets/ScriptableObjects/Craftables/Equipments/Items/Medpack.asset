@@ -16,5 +16,6 @@ MonoBehaviour:
   name: Medpack
   description: Medpack description here
   showInInventory: 0
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 06d02d07843f570469ba6d32b0806d13, type: 3}
   recipe: {fileID: 11400000, guid: d098e8ba18e03634498bb1579242e838, type: 2}
+  prefab: {fileID: 0}
