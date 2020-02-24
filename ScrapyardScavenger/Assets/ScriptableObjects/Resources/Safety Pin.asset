@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae4944175ca2ea041af1fd12d8162b93, type: 3}
   m_Name: Safety Pin
   m_EditorClassIdentifier: 
+  prefab: {fileID: 0}
   id: 12
-  name: 
   description: 
   showInInventory: 0
   icon: {fileID: 0}
+  type: 12

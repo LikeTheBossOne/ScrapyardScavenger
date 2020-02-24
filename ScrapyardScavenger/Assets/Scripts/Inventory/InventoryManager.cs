@@ -169,6 +169,11 @@ public class InventoryManager : MonoBehaviourPun
             itemCounts[(int)ItemType.EnergyDrink]++;
             Debug.Log("Made an energy drink");
         }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            // print resources?
+            PrintResources();
+        }
     }
 
     public int ResourceCount(Resource resource)
@@ -201,9 +206,12 @@ public class InventoryManager : MonoBehaviourPun
     public void PrintResources()
     {
         Debug.Log("Printing all resources");
-        foreach (Resource res in resources)
+        for (int i = 0; i < resourceCounts.Length; i++)
         {
-            Debug.Log(res.name);
+            if (resourceCounts[i] > 0)
+            {
+                Debug.Log(resources[i].name + ": " + resourceCounts[i]);
+            }
         }
     }
 

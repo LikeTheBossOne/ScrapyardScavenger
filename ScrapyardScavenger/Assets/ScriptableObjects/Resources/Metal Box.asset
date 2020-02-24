@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d617964b2850c9419af004f107be8e0, type: 3}
   m_Name: Metal Box
   m_EditorClassIdentifier: 
+  prefab: {fileID: 0}
   id: 9
-  name: 
   description: 
   showInInventory: 0
   icon: {fileID: 0}
+  type: 9

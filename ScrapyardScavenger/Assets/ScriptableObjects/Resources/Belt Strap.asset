@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e2ffbbcb390bf42b0b0656dc33753d, type: 3}
   m_Name: Belt Strap
   m_EditorClassIdentifier: 
+  prefab: {fileID: 0}
   id: 1
-  name: Belt Strap
   description: Belt Strap Description
   showInInventory: 1
   icon: {fileID: 0}
+  type: 1
