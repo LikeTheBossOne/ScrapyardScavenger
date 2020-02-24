@@ -10,6 +10,7 @@ public class Resource : Collectable
     public string description;
     public bool showInInventory = true;
     public Sprite icon = null;
+	public string imageSlotName = null;
 
     public ResourceType type;
 }
