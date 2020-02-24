@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Photon.Pun;
-
+[RequireComponent(typeof(Collider))]
 public class AcidSpit : MonoBehaviour
 {
     public GameObject shooter { get; set; }
@@ -26,6 +26,7 @@ public class AcidSpit : MonoBehaviour
     {
         shooter = creator;
         direction = dir.normalized;
+        
     }
     void OnCollisionEnter(Collision collision)
     {
