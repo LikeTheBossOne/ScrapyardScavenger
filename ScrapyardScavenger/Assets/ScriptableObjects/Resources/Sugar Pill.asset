@@ -16,5 +16,6 @@ MonoBehaviour:
   id: 14
   description: 
   showInInventory: 0
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 4203607ed771af04d8deed1367a85de3, type: 3}
+  imageSlotName: 
   type: 14
