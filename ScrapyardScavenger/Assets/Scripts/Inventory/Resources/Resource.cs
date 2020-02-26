@@ -7,11 +7,12 @@ using UnityEngine;
 public class Resource : Collectable
 {
     public int id;
-    public new string name;
     public string description;
     public bool showInInventory = true;
     public Sprite icon = null;
+	public string imageSlotName = null;
 
+    public ResourceType type;
 }
 
 public enum ResourceType

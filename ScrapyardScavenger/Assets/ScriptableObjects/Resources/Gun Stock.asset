@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9ca061f58f771547bc5c9e225fcff61, type: 3}
   m_Name: Gun Stock
   m_EditorClassIdentifier: 
+  prefab: {fileID: 0}
   id: 5
-  name: 
   description: 
   showInInventory: 0
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 1bcfbc6b95a2af94aa21aeb5a22ad9f7, type: 3}
+  imageSlotName: 
+  type: 5

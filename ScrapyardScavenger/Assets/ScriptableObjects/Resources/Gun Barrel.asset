@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf2cca58aa37bc942a0bc2295a4906c7, type: 3}
   m_Name: Gun Barrel
   m_EditorClassIdentifier: 
+  prefab: {fileID: 0}
   id: 4
-  name: 
   description: 
   showInInventory: 0
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 1bcfbc6b95a2af94aa21aeb5a22ad9f7, type: 3}
+  imageSlotName: 
+  type: 4

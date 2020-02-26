@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 8723326484718690294}
   m_Layer: 11
   m_Name: PhotonPlayer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -181,6 +181,8 @@ MonoBehaviour:
   equipment:
   - {fileID: 11400000, guid: 11200d79ddcef964bb0b20339ec304f1, type: 2}
   - {fileID: 11400000, guid: a0081ac72ad7d334aab85f82dcf1552c, type: 2}
+  isReloading: 0
+  currentIndex: 0
 --- !u!114 &-983653605404609805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,6 +261,8 @@ MonoBehaviour:
     m_Bits: 3072
   bulletHolePrefab: {fileID: 2382075669171864034, guid: 0d13e92df2a663542b9b60f72dd02408,
     type: 3}
+  pHud: {fileID: 0}
+  gunParent: {fileID: 2210166939918232469}
 --- !u!114 &-286012869555450220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,6 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealthSlider: {fileID: 0}
+  playerAmmoCount: {fileID: 0}
 --- !u!1 &647147794768695746
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,9 +399,10 @@ GameObject:
   - component: {fileID: 7169021776900864766}
   - component: {fileID: 5124101003332894228}
   - component: {fileID: 5210219131092621708}
+  - component: {fileID: 7410368812886264665}
   m_Layer: 11
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -475,6 +481,19 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7410368812886264665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3459722856732728216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6751ea712b28a144683eaa082f06f060, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
 --- !u!1 &3730819601487891196
 GameObject:
   m_ObjectHideFlags: 0
