@@ -79,10 +79,12 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 
         // ANIMATION
         var animator = gunParent.GetChild(equipmentManager.currentIndex).GetComponent<Animator>();
+        GunState gunState = gunParent.GetChild(equipmentManager.currentIndex).GetComponent<GunState>();
         if (animator != null)
         {
             animator.speed = 1.0f / wait;
             animator.Play("gun_reload", 0, 0);
+            gunState.reloadSound();
         }
 
         yield return new WaitForSeconds(wait);
@@ -92,11 +94,14 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
         pHud.AmmoChanged(gun.baseClipSize, gun.baseClipSize);
 
         equipmentManager.isReloading = false;
+        gunState.reloadStop();
     }
 
     [PunRPC]
     void Shoot()
     {
+        GunState gunState = gunParent.GetChild(equipmentManager.currentIndex).GetComponent<GunState>();
+        gunState.bulletSound();
         Transform eyeCam = transform.Find("Cameras/Main Player Cam");
         RaycastHit hit = new RaycastHit();
         if (Physics.Raycast(eyeCam.position, eyeCam.forward, out hit, 1000f, enemyLayer))
@@ -120,7 +125,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
             // Ammo
             if (photonView.IsMine)
             {
-                GunState gunState = gunParent.GetChild(equipmentManager.currentIndex).GetComponent<GunState>();
+                gunState = gunParent.GetChild(equipmentManager.currentIndex).GetComponent<GunState>();
                 gunState.ammoCount--;
                 pHud.AmmoChanged(gunState.ammoCount, gunState.baseAmmo);
             }
