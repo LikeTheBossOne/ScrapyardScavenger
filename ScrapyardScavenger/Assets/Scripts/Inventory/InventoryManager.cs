@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviourPun
 {
+    public PlayerSceneManager sceneManager;
+
     // Resources and counts are indexed based on Resource's ID
     [SerializeField]
     public Resource[] resources = null;
@@ -44,6 +46,8 @@ public class InventoryManager : MonoBehaviourPun
 
     void Start()
     {
+        sceneManager = GetComponent<PlayerSceneManager>();
+
         isOpen = false;
 
         resourceIndex = 0;
@@ -61,7 +65,7 @@ public class InventoryManager : MonoBehaviourPun
     void Update()
     {
         if (!photonView.IsMine) return;
-            
+        if (sceneManager.isInHomeBase) return;
 
         // Check if player is opening/closing inventory
         if (Input.GetKeyDown(KeyCode.I))
@@ -270,12 +274,12 @@ public class InventoryManager : MonoBehaviourPun
         return (x % m + m) % m;
     }
 
-	private void addResourceToInventory(ResourceType type) {
+	public void addResourceToInventory(ResourceType type) {
 		resourceCounts[(int)type]++;
 		Resource r = resources[(int)type];
 		if (r.imageSlotName == "") {
 			foreach (string slot in slots) {
-				if (GameObject.FindWithTag(slot).GetComponent<Image>().sprite == null){
+				if (GameObject.FindWithTag(slot).GetComponent<Image>().sprite == null || GameObject.FindWithTag(slot).GetComponent<Image>().sprite == r.icon){
 					r.imageSlotName = slot;
 					GameObject.FindWithTag(slot).GetComponent<Image>().sprite = r.icon;
 					Color slotColor = GameObject.FindWithTag(slot).GetComponent<Image>().color;

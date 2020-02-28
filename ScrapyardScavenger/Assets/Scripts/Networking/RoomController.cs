@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class RoomController : MonoBehaviourPunCallbacks
 {
+    [SerializeField] private int homeBaseSceneIndex;
     [SerializeField] private int multiplayerSceneIndex;
 
     public override void OnEnable()
@@ -28,7 +29,7 @@ public class RoomController : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             Debug.Log("Starting Game");
-            PhotonNetwork.LoadLevel(multiplayerSceneIndex);
+            PhotonNetwork.LoadLevel(homeBaseSceneIndex);
         }
     }
 }

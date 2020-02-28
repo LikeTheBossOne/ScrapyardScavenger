@@ -18,10 +18,11 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 
     private float nextFireTime = 0;
     private Coroutine reloadCoroutine;
+    private Transform reloadingModel;
 
     void Start()
     {
-        equipmentManager = GetComponent<EquipmentManager>();
+        equipmentManager = GetComponent<PlayerControllerLoader>().equipmentManager;
         pHud = GetComponent<PlayerHUD>();
 
         equipmentManager.OnEquipmentSwitched += EquipmentSwitched;
@@ -76,6 +77,8 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
     IEnumerator Reload(float wait)
     {
         equipmentManager.isReloading = true;
+
+        reloadingModel = gunParent.GetChild(equipmentManager.currentIndex).GetChild(0);
 
         // ANIMATION
         var animator = gunParent.GetChild(equipmentManager.currentIndex).GetComponent<Animator>();
@@ -142,6 +145,8 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
     void EquipmentSwitched()
     {
         if (reloadCoroutine != null) StopCoroutine(reloadCoroutine);
+        reloadingModel.localRotation = Quaternion.identity;
+        
         equipmentManager.isReloading = false;
 
         GunState gunState = gunParent.GetChild(equipmentManager.currentIndex).GetComponent<GunState>();
