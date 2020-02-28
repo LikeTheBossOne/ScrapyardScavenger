@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1260225194326574506}
   - component: {fileID: 3178983088448160307}
   - component: {fileID: 7417704755849436528}
+  - component: {fileID: 6275758895639908026}
   - component: {fileID: 8629931284778483427}
   - component: {fileID: 2724544771462636879}
   - component: {fileID: 8603247497564246353}
@@ -91,6 +92,24 @@ MonoBehaviour:
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &6275758895639908026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564345459977318626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd47a68d27b30ea47bf5bdb28f36054a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 0}
+  equipmentManager: {fileID: 0}
+  gunParent: {fileID: 2210166939918232469}
+  meleeParent: {fileID: 0}
+  grenadeParent: {fileID: 0}
+  medParent: {fileID: 0}
 --- !u!114 &8629931284778483427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,11 +188,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 564345459977318626}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee04340aa57fa664098bab9d289fa8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneManager: {fileID: 0}
   gunParent: {fileID: 2210166939918232469}
   meleeParent: {fileID: 0}
   grenadeParent: {fileID: 0}
@@ -190,11 +210,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 564345459977318626}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7cd68c783eb7d0f4b81ac73f49dd0a3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneManager: {fileID: 0}
   resources:
   - {fileID: 11400000, guid: 09f55d508832a1b4d80fa34ca6dd06ef, type: 2}
   - {fileID: 11400000, guid: ff301430757f8d1428bcb07d9928a4c3, type: 2}

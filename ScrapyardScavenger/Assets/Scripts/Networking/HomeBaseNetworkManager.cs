@@ -7,6 +7,10 @@ using UnityEngine.UI;
 
 public class HomeBaseNetworkManager : MonoBehaviourPunCallbacks
 {
+    public GameObject playerController;
+
+    public int multiplayerIndex;
+
     public GameObject readyButton;
     public GameObject notReadyButton;
 
@@ -43,6 +47,22 @@ public class HomeBaseNetworkManager : MonoBehaviourPunCallbacks
     {
         readyCount++;
         SetReadyText();
+
+        if (readyCount == PhotonNetwork.CurrentRoom.PlayerCount)
+        {
+            GameObject[] buttons = GameObject.FindGameObjectsWithTag("HomeScreenButton");
+            foreach (GameObject button in buttons)
+            {
+                button.GetComponent<Button>().interactable = false;
+            }
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.CurrentRoom.IsOpen = false;
+                PhotonNetwork.CurrentRoom.IsVisible = false;
+                StartCoroutine(StartGame());
+            }
+        }
     }
 
     [PunRPC]
@@ -83,6 +103,21 @@ public class HomeBaseNetworkManager : MonoBehaviourPunCallbacks
     public void SetReadyText()
     {
         readyAmountText.text = $"{readyCount}/{PhotonNetwork.CurrentRoom.PlayerCount} Players Ready";
+    }
+
+    private IEnumerator StartGame()
+    {
+        Debug.Log("Starting Game");
+        float time = 0;
+        float totalWaitTime = 3;
+        while (time < totalWaitTime)
+        {
+            Debug.Log($"{totalWaitTime - time}");
+            time++;
+            yield return new WaitForSeconds(1);
+        }
+
+        PhotonNetwork.LoadLevel(multiplayerIndex);
     }
 
     #endregion

@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
 {
+    public PlayerSceneManager sceneManager;
+
     public Transform gunParent;
     public Transform meleeParent;
     public Transform grenadeParent;
@@ -27,12 +29,36 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
     void Start()
     {
         currentIndex = -1;
+        sceneManager = GetComponent<PlayerSceneManager>();
+    }
+
+    void Update()
+    {
+        if (!photonView.IsMine)
+            return;
+        if (sceneManager.isInHomeBase)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.Alpha1) && currentIndex != 0)
+            photonView.RPC("Equip", RpcTarget.All, 0);
+        if (Input.GetKeyDown(KeyCode.Alpha2) && currentIndex != 1)
+            photonView.RPC("Equip", RpcTarget.All, 1);
+        if (Input.GetKeyDown(KeyCode.Alpha3) && currentIndex != 2)
+            photonView.RPC("Equip", RpcTarget.All, 2);
+        if (Input.GetKeyDown(KeyCode.Alpha4) && currentIndex != 3)
+            photonView.RPC("Equip", RpcTarget.All, 3);
+        if (Input.GetKeyDown(KeyCode.Alpha5) && currentIndex != 4)
+            photonView.RPC("Equip", RpcTarget.All, 4);
+    }
+
+    public void SetupInScene()
+    {
         if (!photonView.IsMine)
         {
             object[] content = new object[] { };
             RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
             SendOptions sendOptions = new SendOptions { Reliability = true };
-            PhotonNetwork.RaiseEvent((byte) NetworkCodes.PlayerJoined, content, raiseEventOptions, sendOptions);
+            PhotonNetwork.RaiseEvent((byte)NetworkCodes.PlayerJoined, content, raiseEventOptions, sendOptions);
         }
 
         for (int i = 0; i < equipment.Length; i++)
@@ -56,23 +82,6 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         if (photonView.IsMine)
             photonView.RPC("Equip", RpcTarget.All, 0);
-    }
-
-    void Update()
-    {
-        if (!photonView.IsMine)
-            return;
-
-        if (Input.GetKeyDown(KeyCode.Alpha1) && currentIndex != 0)
-            photonView.RPC("Equip", RpcTarget.All, 0);
-        if (Input.GetKeyDown(KeyCode.Alpha2) && currentIndex != 1)
-            photonView.RPC("Equip", RpcTarget.All, 1);
-        if (Input.GetKeyDown(KeyCode.Alpha3) && currentIndex != 2)
-            photonView.RPC("Equip", RpcTarget.All, 2);
-        if (Input.GetKeyDown(KeyCode.Alpha4) && currentIndex != 3)
-            photonView.RPC("Equip", RpcTarget.All, 3);
-        if (Input.GetKeyDown(KeyCode.Alpha5) && currentIndex != 4)
-            photonView.RPC("Equip", RpcTarget.All, 4);
     }
 
     [PunRPC]
