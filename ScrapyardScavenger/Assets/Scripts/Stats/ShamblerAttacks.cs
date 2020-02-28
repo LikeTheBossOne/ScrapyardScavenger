@@ -63,7 +63,7 @@ public class ShamblerAttacks : MonoBehaviour
             {
                 meleeCoolDown = meleeRecharge;
                 //insert play animation
-                target.GetPhotonView().RPC("TakeDamage", RpcTarget.All,  meleeDamage, gameObject, 0);
+                //target.GetPhotonView().RPC("TakeDamage", RpcTarget.All,  meleeDamage, gameObject, 0);
             }
         }
     }
