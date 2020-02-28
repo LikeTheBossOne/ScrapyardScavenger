@@ -113,6 +113,8 @@ MonoBehaviour:
   ground:
     serializedVersion: 2
     m_Bits: 512
+  evacuateCanvas: {fileID: 1177368347580168605, guid: 4eb7ae4e8665f834eb91c2adce60ffb7,
+    type: 3}
 --- !u!114 &2724544771462636879
 MonoBehaviour:
   m_ObjectHideFlags: 0

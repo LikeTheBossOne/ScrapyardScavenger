@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMotor : MonoBehaviourPunCallbacks
@@ -18,6 +19,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     public GameObject cameraParent;
     public Transform groundDetector;
     public LayerMask ground;
+    public GameObject evacuateCanvas;
 
     private Rigidbody myRigidbody;
     private float baseFOV;
@@ -69,6 +71,41 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         if (!isPaused)
         {
             Move();
+
+            // check if the player is looking at the truck
+            if (CheckTruck())
+            {
+                // show button pop up
+                Debug.Log("Showing button pop up");
+                evacuateCanvas.GetComponentInChildren<Text>().enabled = true; //.SetActive(true); //enabled = true;
+
+                // wait for user to press the button?
+            }
+            else
+            {
+                // remove the button pop up
+                Debug.Log("Removing button pop up");
+                evacuateCanvas.GetComponentInChildren<Text>().enabled = false; //.SetActive(false); //
+            }
+        }
+    }
+
+    bool CheckTruck()
+    {
+        LayerMask layerMask = LayerMask.GetMask("Truck");
+
+        // This would cast rays only against colliders in layer 12.
+        Transform eyeCam = transform.Find("Cameras/Main Player Cam");
+        RaycastHit hit = new RaycastHit();
+        if (Physics.Raycast(eyeCam.position, eyeCam.forward, out hit, Mathf.Infinity, layerMask))
+        {
+            // Debug.Log("Did Hit");
+            return true;
+        }
+        else
+        {
+            //Debug.Log("Did not Hit");
+            return false;
         }
     }
 
