@@ -29,6 +29,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     private bool isPaused;
 
     private Coroutine sprintCoroutine;
+    private AudioSource source;
 
     void Start()
     {
@@ -40,6 +41,8 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         Camera.main.enabled = false;
 
         myRigidbody = GetComponent<Rigidbody>();
+        source = GetComponent<AudioSource>();
+        Debug.Log(source);
 
         baseFOV = normalCam.fieldOfView;
         sprintFOVModifier = 1.2f;
@@ -88,7 +91,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         bool sprintPressed = Input.GetKey(KeyCode.LeftShift);
         bool jumpPressed = Input.GetKey(KeyCode.Space);
-
+        
 
         // States
         bool isGrounded = Physics.Raycast(groundDetector.position, Vector3.down, 0.1f, ground);
@@ -140,7 +143,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         Vector3 targetVelocity = transform.TransformDirection(direction) * adjustedSpeed * Time.fixedDeltaTime;
         targetVelocity.y = myRigidbody.velocity.y;
         myRigidbody.velocity = targetVelocity;
-
+        
 
         // Sprinting FOV
         normalCam.fieldOfView = isSprinting
