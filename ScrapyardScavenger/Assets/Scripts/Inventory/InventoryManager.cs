@@ -270,12 +270,12 @@ public class InventoryManager : MonoBehaviourPun
         return (x % m + m) % m;
     }
 
-	private void addResourceToInventory(ResourceType type) {
+	public void addResourceToInventory(ResourceType type) {
 		resourceCounts[(int)type]++;
 		Resource r = resources[(int)type];
 		if (r.imageSlotName == "") {
 			foreach (string slot in slots) {
-				if (GameObject.FindWithTag(slot).GetComponent<Image>().sprite == null){
+				if (GameObject.FindWithTag(slot).GetComponent<Image>().sprite == null || GameObject.FindWithTag(slot).GetComponent<Image>().sprite == r.icon){
 					r.imageSlotName = slot;
 					GameObject.FindWithTag(slot).GetComponent<Image>().sprite = r.icon;
 					Color slotColor = GameObject.FindWithTag(slot).GetComponent<Image>().color;

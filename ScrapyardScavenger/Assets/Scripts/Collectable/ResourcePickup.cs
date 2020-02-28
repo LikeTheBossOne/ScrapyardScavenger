@@ -71,7 +71,8 @@ public class ResourcePickup : MonoBehaviour
             }*/
 
             Debug.Log("Add count: " + count);
-            other.transform.parent.GetComponent<InventoryManager>().resourceCounts[(int)this.type] += count;
+            //other.transform.parent.GetComponent<InventoryManager>().resourceCounts[(int)this.type] += count;
+			other.transform.parent.GetComponent<InventoryManager>().addResourceToInventory(this.type);
             Destroy(this.gameObject);
         }
     }
