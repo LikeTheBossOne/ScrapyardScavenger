@@ -7,18 +7,32 @@ public class Health : MonoBehaviourPunCallbacks
 {
     public int maxHealth;
     public int currentHealth { get; private set; }
+    private float armorModifier = 1.0f;
+    private float skillModifier = 1.0f;
 
 	public PlayerHUD pHud;
+    public Death death;
 
     void Start()
     {
-        currentHealth = maxHealth;
+        currentHealth = (int) (maxHealth * skillModifier * armorModifier);
 		pHud = GetComponent<PlayerHUD>();
+        death = GetComponent<Death>();
     }
 
     void Update()
     {
         
+    }
+
+    public void ChangeHealthSkill(float modifier)
+    {
+        skillModifier = modifier;
+    }
+
+    public void ChangeHealthArmor(float modifier)
+    {
+        armorModifier = modifier;
     }
 
     public void TakeDamage(int damage)
@@ -27,6 +41,10 @@ public class Health : MonoBehaviourPunCallbacks
         {
 			pHud.takeDamage((float) damage);
             currentHealth -= damage;
+        }
+        if (currentHealth <= 0)
+        {
+            death.hasDied();
         }
     }
 

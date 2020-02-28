@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Health
+  - AmmoCount
+  - Pick Up
+  - ScavengerSkill
+  - HomeScreenButton
   layers:
   - Default
   - TransparentFX

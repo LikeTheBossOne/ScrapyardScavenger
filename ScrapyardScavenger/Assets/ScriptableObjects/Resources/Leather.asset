@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 130aa230027b32f4bbf7aa62daf4df6b, type: 3}
   m_Name: Leather
   m_EditorClassIdentifier: 
+  prefab: {fileID: 0}
   id: 8
-  name: 
   description: 
   showInInventory: 0
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 88f0b9bb88f3eb8489dec8c0cac3d11c, type: 3}
+  imageSlotName: 
+  type: 8

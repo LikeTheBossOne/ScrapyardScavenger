@@ -1244,6 +1244,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: RoomController
       objectReference: {fileID: 0}
+    - target: {fileID: 6352857435891664818, guid: c6d97bfac3af3804f8ab684dd5dd7e7e,
+        type: 3}
+      propertyPath: homeBaseSceneIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6352857435891664818, guid: c6d97bfac3af3804f8ab684dd5dd7e7e,
+        type: 3}
+      propertyPath: multiplayerSceneIndex
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6352857435891664819, guid: c6d97bfac3af3804f8ab684dd5dd7e7e,
         type: 3}
       propertyPath: m_LocalPosition.x
