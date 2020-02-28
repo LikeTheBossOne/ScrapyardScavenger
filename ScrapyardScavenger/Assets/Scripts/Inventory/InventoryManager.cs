@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviourPun
 {
+    public PlayerSceneManager sceneManager;
+
     // Resources and counts are indexed based on Resource's ID
     [SerializeField]
     public Resource[] resources = null;
@@ -44,6 +46,8 @@ public class InventoryManager : MonoBehaviourPun
 
     void Start()
     {
+        sceneManager = GetComponent<PlayerSceneManager>();
+
         isOpen = false;
 
         resourceIndex = 0;
@@ -61,7 +65,7 @@ public class InventoryManager : MonoBehaviourPun
     void Update()
     {
         if (!photonView.IsMine) return;
-            
+        if (sceneManager.isInHomeBase) return;
 
         // Check if player is opening/closing inventory
         if (Input.GetKeyDown(KeyCode.I))
