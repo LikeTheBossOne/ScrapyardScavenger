@@ -13,13 +13,14 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     private int sprintLimit; // how long the player can sprint for!
     private int sprintCooldown; // how long the cooldown is between sprints
     private bool pastSprintPressed;
+    public int homebaseIndex;
 
     public float jumpForce;
     public Camera normalCam;
     public GameObject cameraParent;
     public Transform groundDetector;
     public LayerMask ground;
-    public GameObject evacuateCanvas;
+    private GameObject evacuateCanvas;
 
     private Rigidbody myRigidbody;
     private float baseFOV;
@@ -27,6 +28,8 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     private bool isEnergized;
     private bool isSprinting;
     private bool isCoolingDown;
+    private bool isLookingAtTruck;
+    private bool isLeaving;
 
     private bool isPaused;
 
@@ -53,6 +56,11 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         isSprinting = false;
         isCoolingDown = false;
         pastSprintPressed = false;
+        isLookingAtTruck = false;
+        isLeaving = false;
+
+        evacuateCanvas = GameObject.Find("Exit Canvas");
+        
     }
 
     void Update()
@@ -76,17 +84,73 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
             if (CheckTruck())
             {
                 // show button pop up
-                Debug.Log("Showing button pop up");
-                evacuateCanvas.GetComponentInChildren<Text>().enabled = true; //.SetActive(true); //enabled = true;
+                evacuateCanvas.GetComponentInChildren<Text>().text = "Press B to escape!";
+                isLookingAtTruck = true;
 
                 // wait for user to press the button?
             }
             else
             {
                 // remove the button pop up
-                Debug.Log("Removing button pop up");
-                evacuateCanvas.GetComponentInChildren<Text>().enabled = false; //.SetActive(false); //
+                evacuateCanvas.GetComponentInChildren<Text>().text = ""; // SetActive(false);
+                isLookingAtTruck = false;
             }
+
+            // now check to see if the player is trying to escape
+            if (Input.GetKeyDown(KeyCode.B) && isLookingAtTruck)
+            {
+                // draw the circle
+                isLeaving = true;
+                RenderCircle();
+
+                // start the countdown
+                StartCoroutine(LeaveGame());
+            }
+        }
+    }
+
+    private IEnumerator LeaveGame()
+    {
+        Debug.Log("Leaving Game");
+        float time = 0;
+        float totalWaitTime = 3;
+        while (time < totalWaitTime)
+        {
+            Debug.Log($"{totalWaitTime - time}");
+            time++;
+            yield return new WaitForSeconds(1);
+        }
+
+        PhotonNetwork.LoadLevel(homebaseIndex);
+    }
+
+    public void RenderCircle()
+    {
+
+
+        float radius = 5.5f;
+        int numSegments = 128;
+
+        LineRenderer lineRenderer = GameObject.Find("ExtractionTruck").GetComponent<LineRenderer>();
+        Color c1 = new Color(1.0f, 0f, 0f, 1);
+        //lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
+        lineRenderer.startColor = c1;
+        lineRenderer.endColor = c1;
+        lineRenderer.startWidth = 0.5f;
+        lineRenderer.endWidth = 0.5f;
+        lineRenderer.positionCount = numSegments + 1;
+        lineRenderer.useWorldSpace = false;
+
+        float deltaTheta = (float)(2.0 * Mathf.PI) / numSegments;
+        float theta = 0f;
+
+        for (int i = 0; i < numSegments + 1; i++)
+        {
+            float x = radius * Mathf.Cos(theta);
+            float z = radius * Mathf.Sin(theta);
+            Vector3 pos = new Vector3(x, 0, z);
+            lineRenderer.SetPosition(i, pos);
+            theta += deltaTheta;
         }
     }
 
@@ -133,11 +197,6 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         if (!isSprinting && sprintPressed && (verticalInput > 0) && !isJumping && isGrounded && !isCoolingDown)
         {
             sprintCoroutine = StartCoroutine(SprintRoutine(sprintLimit));
-            // only start if this is a new sprint?
-            /*if (!pastSprintPressed)
-            {
-                StartSprinting(sprintLimit);
-            }*/
             
         }
         else
@@ -236,4 +295,5 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         isCoolingDown = false;
         Debug.Log("Done cooling down");
     }
+
 }
