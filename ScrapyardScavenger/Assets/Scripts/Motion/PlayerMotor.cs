@@ -21,6 +21,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     public Transform groundDetector;
     public LayerMask ground;
     private GameObject evacuateCanvas;
+    private GameObject truck;
 
     private Rigidbody myRigidbody;
     private float baseFOV;
@@ -30,10 +31,12 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     private bool isCoolingDown;
     private bool isLookingAtTruck;
     private bool isLeaving;
-
     private bool isPaused;
 
+    private float leaveRadius;
+
     private Coroutine sprintCoroutine;
+    private Coroutine leaveCoroutine;
     private AudioSource source;
 
     void Start()
@@ -61,9 +64,10 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         pastSprintPressed = false;
         isLookingAtTruck = false;
         isLeaving = false;
+        leaveRadius = 7.0f;
 
         evacuateCanvas = GameObject.Find("Exit Canvas");
-        
+        truck = GameObject.Find("ExtractionTruck");
     }
 
     void Update()
@@ -100,15 +104,36 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
             }
 
             // now check to see if the player is trying to escape
-            if (Input.GetKeyDown(KeyCode.B) && isLookingAtTruck)
+            if (Input.GetKeyDown(KeyCode.B) && isLookingAtTruck && !isLeaving)
             {
                 // draw the circle
                 isLeaving = true;
                 RenderCircle();
 
                 // start the countdown
-                StartCoroutine(LeaveGame());
+                leaveCoroutine = StartCoroutine(LeaveGame());
             }
+
+            //Debug.Log("Distance to truck: " + Vector3.Distance(truck.transform.position, transform.position));
+            if (isLeaving)
+            {
+                // check if the player has left the escape circle
+                // by calculating the distance between the player and the truck
+                float dist = Vector3.Distance(truck.transform.position, transform.position);
+                if (dist > (leaveRadius + 0.5f))
+                {
+                    // outside of the circle?
+                    // cancel the leaving
+                    Debug.Log("Cancel leave");
+                    isLeaving = false;
+                    StopCoroutine(leaveCoroutine);
+
+                    // turn the linerenderer off
+                    truck.GetComponent<LineRenderer>().enabled = false;
+                }
+            }
+
+
         }
     }
 
@@ -116,25 +141,27 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     {
         Debug.Log("Leaving Game");
         float time = 0;
-        float totalWaitTime = 3;
+        float totalWaitTime = 7;
         while (time < totalWaitTime)
         {
             Debug.Log($"{totalWaitTime - time}");
             time++;
             yield return new WaitForSeconds(1);
         }
-
+        isLeaving = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        truck.GetComponent<LineRenderer>().enabled = false;
         PhotonNetwork.LoadLevel(homebaseIndex);
     }
 
     public void RenderCircle()
     {
-
-
-        float radius = 7.5f;
+        float radius = leaveRadius; //7.5f;
         int numSegments = 128;
 
-        LineRenderer lineRenderer = GameObject.Find("ExtractionTruck").GetComponent<LineRenderer>();
+        LineRenderer lineRenderer = truck.GetComponent<LineRenderer>();
+        if (!lineRenderer.enabled) lineRenderer.enabled = true;
         Color c1 = new Color(1.0f, 0f, 0f, 1);
         //lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
         lineRenderer.startColor = c1;
@@ -164,14 +191,12 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         // This would cast rays only against colliders in layer 12.
         Transform eyeCam = transform.Find("Cameras/Main Player Cam");
         RaycastHit hit = new RaycastHit();
-        if (Physics.Raycast(eyeCam.position, eyeCam.forward, out hit, 7.0f, layerMask))
+        if (Physics.Raycast(eyeCam.position, eyeCam.forward, out hit, 2.5f, layerMask))
         {
-            Debug.Log("Did Hit");
             return true;
         }
         else
         {
-            Debug.Log("Did not Hit");
             return false;
         }
     }
@@ -284,11 +309,6 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     {
         sprintLimit = limit;
     }
-
-    /*public void CoolDown(int seconds)
-    {
-        StartCoroutine(CoolDownRoutine(seconds));
-    }*/
 
     public IEnumerator CoolDownRoutine(int seconds)
     {
