@@ -34,6 +34,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     private bool isPaused;
 
     private Coroutine sprintCoroutine;
+    private AudioSource source;
 
     void Start()
     {
@@ -45,6 +46,8 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         Camera.main.enabled = false;
 
         myRigidbody = GetComponent<Rigidbody>();
+        source = GetComponent<AudioSource>();
+        Debug.Log(source);
 
         baseFOV = normalCam.fieldOfView;
         sprintFOVModifier = 1.2f;
@@ -128,7 +131,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     {
 
 
-        float radius = 5.5f;
+        float radius = 7.5f;
         int numSegments = 128;
 
         LineRenderer lineRenderer = GameObject.Find("ExtractionTruck").GetComponent<LineRenderer>();
@@ -161,14 +164,14 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         // This would cast rays only against colliders in layer 12.
         Transform eyeCam = transform.Find("Cameras/Main Player Cam");
         RaycastHit hit = new RaycastHit();
-        if (Physics.Raycast(eyeCam.position, eyeCam.forward, out hit, Mathf.Infinity, layerMask))
+        if (Physics.Raycast(eyeCam.position, eyeCam.forward, out hit, 7.0f, layerMask))
         {
-            // Debug.Log("Did Hit");
+            Debug.Log("Did Hit");
             return true;
         }
         else
         {
-            //Debug.Log("Did not Hit");
+            Debug.Log("Did not Hit");
             return false;
         }
     }
@@ -189,7 +192,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         bool sprintPressed = Input.GetKey(KeyCode.LeftShift);
         bool jumpPressed = Input.GetKey(KeyCode.Space);
-
+        
 
         // States
         bool isGrounded = Physics.Raycast(groundDetector.position, Vector3.down, 0.1f, ground);
@@ -236,7 +239,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         Vector3 targetVelocity = transform.TransformDirection(direction) * adjustedSpeed * Time.fixedDeltaTime;
         targetVelocity.y = myRigidbody.velocity.y;
         myRigidbody.velocity = targetVelocity;
-
+        
 
         // Sprinting FOV
         normalCam.fieldOfView = isSprinting

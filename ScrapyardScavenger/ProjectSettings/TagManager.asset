@@ -8,6 +8,7 @@ TagManager:
   - AmmoCount
   - Pick Up
   - ScavengerSkill
+  - HomeScreenButton
   layers:
   - Default
   - TransparentFX
