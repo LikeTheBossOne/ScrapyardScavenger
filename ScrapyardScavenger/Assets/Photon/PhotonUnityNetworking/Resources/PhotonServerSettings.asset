@@ -43,5 +43,7 @@ MonoBehaviour:
   - PlayerUnReadied
   - PlayerReadied
   - PlayerNotReadied
+  - onChargerKill
+  - onShamblerKill
   DisableAutoOpenWizard: 1
   ShowSettings: 1
