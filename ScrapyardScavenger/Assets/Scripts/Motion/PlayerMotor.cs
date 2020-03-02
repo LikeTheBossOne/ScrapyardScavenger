@@ -62,6 +62,14 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         {
             isPaused = !isPaused;
         }
+        if ((myRigidbody.velocity.magnitude > .1) && (myRigidbody.velocity.y < .1 && myRigidbody.velocity.y > -.1) && !source.isPlaying)
+        {
+            source.Play();
+        }
+        if (((myRigidbody.velocity.magnitude < .1) || (myRigidbody.velocity.y > .1 || myRigidbody.velocity.y < -.1)) && source.isPlaying)
+        {
+            source.Stop();
+        }
     }
 
     void FixedUpdate()
