@@ -21,7 +21,7 @@ public class AcidSpit : MonoBehaviour
         pManage = FindObjectOfType<AIPlayerManager>();
         Destroy(gameObject, maxExistTime);
     }
-
+    [PunRPC]
     public void Shoot(GameObject creator, Vector3 dir)
     {
         shooter = creator;
@@ -31,19 +31,23 @@ public class AcidSpit : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         Debug.Log("Collision detected");
+        //may need to change this over to rigidbody at some point
+        Debug.Log("Collision with: " + collision.collider);
+        Debug.Log("Owner hitbox: " + shooter);
         if (!collision.collider.bounds.Intersects(shooter.GetComponent<Collider>().bounds))
         {
-            foreach (Transform player in pManage.players)
+            foreach (RectTransform player in pManage.players)
             {
                 if (collision.collider.bounds.Contains(player.position))
                 {
+                    Debug.Log("player hit");
                     player.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, shooter.GetComponent<ShamblerAttacks>().spitDamage);
                 }
             }
             
 
             
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
     }
 }

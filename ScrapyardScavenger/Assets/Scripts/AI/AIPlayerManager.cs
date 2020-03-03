@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class AIPlayerManager : MonoBehaviour
 {
-    public List<Transform> players { get; private set; }
+    public List<RectTransform> players;
+    
     private void Awake()
     {
-        players = new List<Transform>();
+        players = new List<RectTransform>();
     }
     
-    public void register(Transform adding)
+    public void register(RectTransform adding)
     {
         players.Add(adding);
     }

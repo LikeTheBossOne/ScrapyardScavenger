@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 //note: enemeyController may be useful to look at
 public class ShamblerAI : MonoBehaviour
 {
@@ -29,7 +30,7 @@ public class ShamblerAI : MonoBehaviour
     public ShamblerDetection senses;
     public ShamblerAttacks weapons;
     // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
         //timer = 0;
         aggroTimeLimit = 10;
@@ -51,19 +52,22 @@ public class ShamblerAI : MonoBehaviour
     }
     public void changeState()
     {
+        
         if (senses.visionCheck())
         {
             //Debug.Log("Range check");
-            if (distanceToOther(senses.detected) <= weapons.meleeRange && !weapons.meleeOnCoolDown())
+            if (distanceToOther(senses.detected) <= weapons.meleeRange )
             {
-                Debug.Log("In bite range");
+                //Debug.Log("In bite range");
+                //&& !weapons.meleeOnCoolDown()
                 currentState = State.bite;
             }else
-            if (distanceToOther(senses.detected) <= weapons.spitRange && !weapons.spitOnCoolDown())
+            if (distanceToOther(senses.detected) <= weapons.spitRange )
             {
-                Debug.Log("In spit range");
+                //Debug.Log("In spit range");
                 // target in attack range/
                 //currentState = State.attack;
+                //&& !weapons.spitOnCoolDown()
                 currentState = State.spit;
             }
             else
@@ -76,6 +80,7 @@ public class ShamblerAI : MonoBehaviour
         {
             currentState = State.wander;
         }
+        //Debug.Log("State: " + currentState);
     } 
     // Update is called once per frame
     public void handleState()
@@ -108,7 +113,7 @@ public class ShamblerAI : MonoBehaviour
             //project target spot on circle
             Vector3 moveTarg = center + wandRad * dir;
             //correct towards closest player
-            Transform close = findClosestPlayer();
+            RectTransform close = findClosestPlayer();
 
             Vector3 toPlayer = close.position - moveTarg;
             toPlayer = toPlayer.normalized;
@@ -159,17 +164,17 @@ public class ShamblerAI : MonoBehaviour
     }
 
     //Finds the closest player
-    Transform findClosestPlayer()
+    RectTransform findClosestPlayer()
     {
-        Transform closest = null;
+        RectTransform closest = null;
         double cDist = Mathf.Infinity;
         //Find closest player or vehicle
-        foreach (Transform ally in players.players)
+        foreach (RectTransform ally in players.players)
         {
-            double dist = distanceToOther(ally.transform);
+            double dist = distanceToOther(ally);
             if ( dist < cDist)
             {
-                closest = ally.transform;
+                closest = ally;
                 cDist = dist;
             }
         }
@@ -180,7 +185,7 @@ public class ShamblerAI : MonoBehaviour
         nav.SetDestination(destination);
     }
 
-    double distanceToOther(Transform other)
+    double distanceToOther(RectTransform other)
     {        
         return Mathf.Sqrt(Mathf.Pow(other.position.x - transform.position.x,2) + Mathf.Pow(other.position.y- transform.position.y,2) + Mathf.Pow(other.position.z-transform.position.z,2));
     }
