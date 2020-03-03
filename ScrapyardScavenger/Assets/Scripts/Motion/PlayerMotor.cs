@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +14,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     private int sprintLimit; // how long the player can sprint for!
     private int sprintCooldown; // how long the cooldown is between sprints
     private bool pastSprintPressed;
-    public int homebaseIndex;
+    private ExtractHelp extractionHelp;
 
     public float jumpForce;
     public Camera normalCam;
@@ -22,6 +23,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     public LayerMask ground;
     private GameObject evacuateCanvas;
     private GameObject truck;
+    
 
     private Rigidbody myRigidbody;
     private float baseFOV;
@@ -30,13 +32,11 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     private bool isSprinting;
     private bool isCoolingDown;
     private bool isLookingAtTruck;
-    private bool isLeaving;
+    
     private bool isPaused;
 
-    private float leaveRadius;
-
     private Coroutine sprintCoroutine;
-    private Coroutine leaveCoroutine;
+    
     private AudioSource source;
 
     void Start()
@@ -46,11 +46,14 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
             cameraParent.SetActive(true);
         }
 
+        extractionHelp = GetComponent<ExtractHelp>();
+
         Camera.main.enabled = false;
 
         myRigidbody = GetComponent<Rigidbody>();
         source = GetComponent<AudioSource>();
         Debug.Log(source);
+        
 
         baseFOV = normalCam.fieldOfView;
         sprintFOVModifier = 1.2f;
@@ -63,8 +66,6 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         isCoolingDown = false;
         pastSprintPressed = false;
         isLookingAtTruck = false;
-        isLeaving = false;
-        leaveRadius = 7.0f;
 
         evacuateCanvas = GameObject.Find("Exit Canvas");
         truck = GameObject.Find("ExtractionTruck");
@@ -88,103 +89,120 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
             Move();
 
             // check if the player is looking at the truck
-            if (CheckTruck())
-            {
-                // show button pop up
-                evacuateCanvas.GetComponentInChildren<Text>().text = "Press B to escape!";
-                isLookingAtTruck = true;
+            ExtractionCheck();
+            
+        }
+    }
 
-                // wait for user to press the button?
+    private void ExtractionCheck()
+    {
+        if (LookingAtTruck() && !extractionHelp.IsOtherPlayerLeaving() && !extractionHelp.IsLeaving())
+        {
+            // show button pop up
+            evacuateCanvas.GetComponentInChildren<Text>().text = "Press B to escape!";
+            isLookingAtTruck = true;
+        }
+        // if both players are not leaving
+        else if (!extractionHelp.IsLeaving() && !extractionHelp.IsOtherPlayerLeaving())
+        {
+            // remove the button pop up
+            evacuateCanvas.GetComponentInChildren<Text>().text = ""; // SetActive(false);
+            isLookingAtTruck = false;
+        }
+
+        if (extractionHelp.IsOtherPlayerLeaving() && !extractionHelp.IsLeaving())
+        {
+            // the other player wants to leave and you are not ready yet, so
+            // check to see if you are within the circle or not
+            // by calculating the distance between the player and the truck
+            float dist = Vector3.Distance(truck.transform.position, transform.position);
+            if (dist <= (extractionHelp.leaveRadius + 0.5f))
+            {
+                // inside the circle so notify the other player they can leave
+                GetComponent<PlayerManager>().getOtherPlayer().GetPhotonView().RPC("SecondPlayerReadyToLeave", RpcTarget.All);
+                photonView.RPC("SecondPlayerReadyToLeave", RpcTarget.All);
             }
-            else
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.B) && isLookingAtTruck && !extractionHelp.IsLeaving())
             {
-                // remove the button pop up
-                evacuateCanvas.GetComponentInChildren<Text>().text = ""; // SetActive(false);
-                isLookingAtTruck = false;
-            }
-
-            // now check to see if the player is trying to escape
-            if (Input.GetKeyDown(KeyCode.B) && isLookingAtTruck && !isLeaving)
-            {
-                // draw the circle
-                isLeaving = true;
-                RenderCircle();
-
-                // start the countdown
-                leaveCoroutine = StartCoroutine(LeaveGame());
-            }
-
-            //Debug.Log("Distance to truck: " + Vector3.Distance(truck.transform.position, transform.position));
-            if (isLeaving)
-            {
-                // check if the player has left the escape circle
-                // by calculating the distance between the player and the truck
-                float dist = Vector3.Distance(truck.transform.position, transform.position);
-                if (dist > (leaveRadius + 0.5f))
+                // if there are 2 players, signal the other player that you are leaving
+                if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
                 {
-                    // outside of the circle?
-                    // cancel the leaving
-                    Debug.Log("Cancel leave");
-                    isLeaving = false;
-                    StopCoroutine(leaveCoroutine);
+                    GetComponent<PlayerManager>().getOtherPlayer().GetPhotonView().RPC("FirstPlayerReadyToLeave", RpcTarget.All);
+                    extractionHelp.IAmReadyToLeave();
 
-                    // turn the linerenderer off
-                    truck.GetComponent<LineRenderer>().enabled = false;
+                    // reset the text
+                    evacuateCanvas.GetComponentInChildren<Text>().text = "Waiting for other player";
+
+                }
+
+                // if only 1 player, just start the countdown
+                else
+                {
+                    extractionHelp.SoloLeave();
                 }
             }
-
-
         }
-    }
 
-    private IEnumerator LeaveGame()
-    {
-        Debug.Log("Leaving Game");
-        float time = 0;
-        float totalWaitTime = 7;
-        while (time < totalWaitTime)
+
+
+
+        // now check to see if the player is trying to escape from the circle
+        if (extractionHelp.IsLeaving())
         {
-            Debug.Log($"{totalWaitTime - time}");
-            time++;
-            yield return new WaitForSeconds(1);
+            // check if the player has left the escape circle
+            // by calculating the distance between the player and the truck
+            float dist = Vector3.Distance(truck.transform.position, transform.position);
+            if (dist > (extractionHelp.leaveRadius + 0.5f))
+            {
+                // outside of the circle?
+                // cancel the leaving
+                photonView.RPC("CancelLeave", RpcTarget.All);
+                // if there are 2 players, signal the other
+                if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+                {
+                    GetComponent<PlayerManager>().getOtherPlayer().GetPhotonView().RPC("CancelLeave", RpcTarget.All);
+                }
+
+            }
         }
-        isLeaving = false;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        truck.GetComponent<LineRenderer>().enabled = false;
-        PhotonNetwork.LoadLevel(homebaseIndex);
     }
 
-    public void RenderCircle()
+    [PunRPC]
+    public void FirstPlayerReadyToLeave()
     {
-        float radius = leaveRadius; //7.5f;
-        int numSegments = 128;
-
-        LineRenderer lineRenderer = truck.GetComponent<LineRenderer>();
-        if (!lineRenderer.enabled) lineRenderer.enabled = true;
-        Color c1 = new Color(1.0f, 0f, 0f, 1);
-        //lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
-        lineRenderer.startColor = c1;
-        lineRenderer.endColor = c1;
-        lineRenderer.startWidth = 0.5f;
-        lineRenderer.endWidth = 0.5f;
-        lineRenderer.positionCount = numSegments + 1;
-        lineRenderer.useWorldSpace = false;
-
-        float deltaTheta = (float)(2.0 * Mathf.PI) / numSegments;
-        float theta = 0f;
-
-        for (int i = 0; i < numSegments + 1; i++)
+        if (photonView.IsMine)
         {
-            float x = radius * Mathf.Cos(theta);
-            float z = radius * Mathf.Sin(theta);
-            Vector3 pos = new Vector3(x, 0, z);
-            lineRenderer.SetPosition(i, pos);
-            theta += deltaTheta;
+            // the other player is ready to leave?
+            extractionHelp.FirstPlayerReadyToLeave();
         }
     }
 
-    bool CheckTruck()
+    [PunRPC]
+    public void SecondPlayerReadyToLeave()
+    {
+        if (photonView.IsMine)
+        {
+            // the second player is ready to leave now
+            extractionHelp.SecondPlayerReadyToLeave();
+        }
+    }
+
+    [PunRPC]
+    public void CancelLeave()
+    {
+        if (photonView.IsMine)
+        {
+            extractionHelp.CancelLeave();
+        }
+        
+    }
+
+    
+
+    bool LookingAtTruck()
     {
         LayerMask layerMask = LayerMask.GetMask("Truck");
 
