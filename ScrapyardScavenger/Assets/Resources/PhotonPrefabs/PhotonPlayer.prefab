@@ -474,6 +474,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b634893e245065c439eae2b1560bee04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  evacCirclePrefab: {fileID: 5052340071813803792, guid: f5b0567042912db4caf8b44c8dc9e078,
+    type: 3}
   homebaseIndex: 1
   leaveRadius: 7
 --- !u!114 &-1630396162063884706

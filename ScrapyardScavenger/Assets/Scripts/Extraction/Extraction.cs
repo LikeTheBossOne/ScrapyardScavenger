@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class Extraction : MonoBehaviourPunCallbacks
 {
+    public GameObject evacCirclePrefab;
     private GameObject playerController;
 
     public int homebaseIndex;
@@ -162,7 +163,7 @@ public class Extraction : MonoBehaviourPunCallbacks
         if (photonView.IsMine)
         {
             otherPlayerWantsToLeave = true;
-            // SpawnCircle();
+            SpawnCircle();
         }
     }
 
@@ -181,9 +182,9 @@ public class Extraction : MonoBehaviourPunCallbacks
     [PunRPC]
     public void CancelLeave()
     {
+        PhotonNetwork.Destroy(evacCircle);
         if (photonView.IsMine)
         {
-            PhotonNetwork.Destroy(evacCircle);
             if (leaveCoroutine != null)
                 StopCoroutine(leaveCoroutine);
             isLeaving = false;
@@ -241,9 +242,10 @@ public class Extraction : MonoBehaviourPunCallbacks
     public void SpawnCircle()
     {
         GameObject truck = GameObject.Find("ExtractionTruck");
-        
-        if (GameObject.FindGameObjectsWithTag("ExtractionCircle").Length == 0)
-            evacCircle = PhotonNetwork.Instantiate(Path.Combine("Extraction", "ExtractionCircle"), truck.transform.position, Quaternion.identity);
+
+        // if (GameObject.FindGameObjectsWithTag("ExtractionCircle").Length == 0)
+        evacCircle = PhotonNetwork.Instantiate(Path.Combine("Extraction", "ExtractionCircle"), truck.transform.position, Quaternion.identity);
+
 
         float radius = leaveRadius; //7.5f;
         int numSegments = 128;
