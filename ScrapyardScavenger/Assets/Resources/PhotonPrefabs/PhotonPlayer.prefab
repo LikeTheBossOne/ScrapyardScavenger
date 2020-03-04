@@ -24,7 +24,9 @@ GameObject:
   - component: {fileID: 8723326484718690294}
   - component: {fileID: 1889014333739709194}
   - component: {fileID: 2697323939956501158}
-  - component: {fileID: 4823363589546055665}
+  - component: {fileID: 6505326394283060669}
+  - component: {fileID: -1630396162063884706}
+  - component: {fileID: 3987675717260935530}
   m_Layer: 11
   m_Name: PhotonPlayer
   m_TagString: Player
@@ -109,6 +111,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerController: {fileID: 0}
   equipmentManager: {fileID: 0}
+  inventoryManager: {fileID: 0}
+  sceneManager: {fileID: 0}
   gunParent: {fileID: 2210166939918232469}
   meleeParent: {fileID: 0}
   grenadeParent: {fileID: 0}
@@ -201,9 +205,6 @@ MonoBehaviour:
   meleeParent: {fileID: 0}
   grenadeParent: {fileID: 0}
   medShotParent: {fileID: 0}
-  equipment:
-  - {fileID: 11400000, guid: 11200d79ddcef964bb0b20339ec304f1, type: 2}
-  - {fileID: 11400000, guid: a0081ac72ad7d334aab85f82dcf1552c, type: 2}
   isReloading: 0
   currentIndex: 0
 --- !u!114 &-983653605404609805
@@ -365,6 +366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathCam: {fileID: 9188377380149365388}
+  homeBaseSceneIndex: 1
 --- !u!82 &2697323939956501158
 AudioSource:
   m_ObjectHideFlags: 0
@@ -461,7 +463,33 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4823363589546055665
+--- !u!114 &6505326394283060669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564345459977318626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b634893e245065c439eae2b1560bee04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  homebaseIndex: 1
+  leaveRadius: 7
+--- !u!114 &-1630396162063884706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564345459977318626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0789a3adbaf8dd844bbf4cf971668519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3987675717260935530
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

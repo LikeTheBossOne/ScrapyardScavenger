@@ -43,6 +43,10 @@ MonoBehaviour:
   - PlayerUnReadied
   - PlayerReadied
   - PlayerNotReadied
+  - PlayerDied
+  - CancelLeave
+  - FirstPlayerReadyToLeave
+  - SecondPlayerReadyToLeave
   - onChargerKill
   - onShamblerKill
   DisableAutoOpenWizard: 1
