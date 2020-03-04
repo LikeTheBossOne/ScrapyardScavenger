@@ -20,9 +20,13 @@ public class DisplayWeaponInfo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		weaponText.text = weapon.name;
-		weaponImage.sprite = weapon.icon;
-		if (weaponImage.sprite != null) {
+        if (weapon != null)
+        {
+            weaponText.text = weapon.name;
+            weaponImage.sprite = weapon.icon;
+		}
+
+        if (weaponImage.sprite != null) {
 			Color slotColor = weaponImage.color;
 			slotColor.a = 1.0f;
 			weaponImage.color = slotColor;
