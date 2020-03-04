@@ -159,4 +159,8 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
         equipment[0] = inventoryManager.weapons[(int)WeaponType.AR];
         equipment[1] = inventoryManager.weapons[(int)WeaponType.Pistol];
     }
+	public Equipment[] getEquipment()
+	{
+		return equipment;
+	}
 }
