@@ -49,7 +49,11 @@ public class ShamblerAttacks : MonoBehaviour
                 Debug.Log("Shooting");
                 spitCoolDown = spitRecharge;
                 GameObject shot = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", projectileName), gameObject.transform.position, gameObject.transform.rotation);
-                shot.GetPhotonView().RPC("Shoot", RpcTarget.All, gameObject, -toTarg);
+                //shot.transform.LookAt(-toTarg);
+                shot.GetComponent<AcidSpit>().shooter = gameObject.GetComponent<Collider>();
+                Object[] args = { gameObject };
+                Debug.Log("RPC Call");
+                shot.GetPhotonView().RPC("Shoot", RpcTarget.All, -toTarg);
                 //shot.GetComponent<AcidSpit>().Shoot(gameObject, -toTarg);
                 //insert play animation
                 //target.GetPhotonView().RPC("TakeDamage", RpcTarget.All, spitDamage, gameObject, 1);
