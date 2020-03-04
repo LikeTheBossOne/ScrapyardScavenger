@@ -24,6 +24,8 @@ GameObject:
   - component: {fileID: 8723326484718690294}
   - component: {fileID: 1889014333739709194}
   - component: {fileID: 2697323939956501158}
+  - component: {fileID: 6505326394283060669}
+  - component: {fileID: -1630396162063884706}
   m_Layer: 11
   m_Name: PhotonPlayer
   m_TagString: Player
@@ -460,6 +462,32 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6505326394283060669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564345459977318626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b634893e245065c439eae2b1560bee04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  homebaseIndex: 1
+  leaveRadius: 7
+--- !u!114 &-1630396162063884706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564345459977318626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0789a3adbaf8dd844bbf4cf971668519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &647147794768695746
 GameObject:
   m_ObjectHideFlags: 0
