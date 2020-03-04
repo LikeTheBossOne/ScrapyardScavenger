@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public class GameControllerSingleton : MonoBehaviourPun
+public class GameControllerSingleton : MonoBehaviourPunCallbacks
 {
 
     #region singleton

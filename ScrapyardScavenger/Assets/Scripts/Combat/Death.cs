@@ -11,6 +11,9 @@ public class Death : MonoBehaviourPun
     
     private GameObject UI;
 
+    public delegate void PlayerDeath();
+    public event PlayerDeath OnPlayerDeath;
+
     void Start()
     {
         UI = GameObject.Find("In-Game UI");
@@ -29,6 +32,10 @@ public class Death : MonoBehaviourPun
     [PunRPC]
     public void PlayerDied()
     {
+        // Hit all death events
+        OnPlayerDeath?.Invoke();
+
+
         if (photonView.IsMine)
         {
             GetComponent<PlayerMotor>().normalCam = deathCam;

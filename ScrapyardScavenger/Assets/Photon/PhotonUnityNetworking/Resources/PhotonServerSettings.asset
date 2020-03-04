@@ -47,5 +47,6 @@ MonoBehaviour:
   - CancelLeave
   - FirstPlayerReadyToLeave
   - SecondPlayerReadyToLeave
+  - MasterClientGoToHomeBase
   DisableAutoOpenWizard: 1
   ShowSettings: 1
