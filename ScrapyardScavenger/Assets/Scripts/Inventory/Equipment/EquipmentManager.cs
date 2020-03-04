@@ -9,13 +9,13 @@ using UnityEngine;
 public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
 {
     public PlayerSceneManager sceneManager;
+    private InventoryManager inventoryManager;
 
     public Transform gunParent;
     public Transform meleeParent;
     public Transform grenadeParent;
     public Transform medShotParent;
 
-    [SerializeField]
     private Equipment[] equipment = null;
     public bool isReloading = false;
 
@@ -30,6 +30,11 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         currentIndex = -1;
         sceneManager = GetComponent<PlayerSceneManager>();
+        inventoryManager = GetComponent<InventoryManager>();
+
+        equipment = new Equipment[5];
+        equipment[0] = inventoryManager.weapons[(int)WeaponType.AR];
+        equipment[1] = inventoryManager.weapons[(int)WeaponType.Pistol];
     }
 
     void Update()
@@ -51,7 +56,15 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
             photonView.RPC("Equip", RpcTarget.All, 4);
     }
 
+    #region Setup
+
     public void SetupInScene()
+    {
+        PlayerJoin();
+        SetupEquipment();
+    }
+
+    private void PlayerJoin()
     {
         if (!photonView.IsMine)
         {
@@ -60,7 +73,10 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
             SendOptions sendOptions = new SendOptions { Reliability = true };
             PhotonNetwork.RaiseEvent((byte)NetworkCodes.PlayerJoined, content, raiseEventOptions, sendOptions);
         }
+    }
 
+    private void SetupEquipment()
+    {
         for (int i = 0; i < equipment.Length; i++)
         {
             var equip = equipment[i];
@@ -84,6 +100,8 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
             photonView.RPC("Equip", RpcTarget.All, 0);
     }
 
+    #endregion Setup
+
     [PunRPC]
     void Equip(int index)
     {
@@ -99,9 +117,7 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
         else if (index == 4) parent = medShotParent;
         else return;
 
-        currentObject = parent.Equals(gunParent) ?
-            parent.GetChild(index).gameObject :
-            parent.GetChild(0).gameObject;
+        currentObject = parent.Equals(gunParent) ? parent.GetChild(index).gameObject : parent.GetChild(0).gameObject;
 
         currentObject.SetActive(true);
         currentIndex = index;
@@ -135,5 +151,12 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         if (currentIndex == -1) return null;
         return equipment[currentIndex];
+    }
+
+    public void Clear()
+    {
+        equipment = new Equipment[5];
+        equipment[0] = inventoryManager.weapons[(int)WeaponType.AR];
+        equipment[1] = inventoryManager.weapons[(int)WeaponType.Pistol];
     }
 }

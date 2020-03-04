@@ -18,8 +18,7 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
     [SerializeField]
 	private Text playerAmmoCount;
 
-
-	#endregion
+    #endregion
 
 	void Start() {
 		playerHealthSlider = GameObject.FindWithTag("Health").GetComponent<Slider>();
@@ -29,7 +28,7 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 		if (!photonView.IsMine) return;
 		playerHealthSlider.value = 100;
 
-        Gun startGun = GetComponent<EquipmentManager>().getCurrentEquipment() as Gun;
+        Gun startGun = GetComponent<PlayerControllerLoader>().equipmentManager.getCurrentEquipment() as Gun;
         if (startGun != null)
         {
             AmmoChanged(startGun.baseClipSize, startGun.baseClipSize);
@@ -40,8 +39,7 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 	{
 		// If not me, don't update!
 		if (!photonView.IsMine) return;
-
-	}
+    }
 
 	#region Public Methods
 

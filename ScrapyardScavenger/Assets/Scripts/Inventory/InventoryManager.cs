@@ -292,4 +292,21 @@ public class InventoryManager : MonoBehaviourPun
 		GameObject.FindWithTag(r.imageSlotName + "Text").GetComponent<Text>().text = resourceCounts[(int)type].ToString();
 		Debug.Log("Adding a " + type.ToString());
 	}
+
+    public void Clear()
+    {
+        resourceCounts = new int[(int)ResourceType.SIZE];
+        itemCounts = new int[(int)ItemType.SIZE];
+        weaponCounts = new int[(int)WeaponType.SIZE];
+        armorCounts = new int[(int)ArmorType.SIZE];
+
+        resourceIndex = 0;
+        itemIndex = 0;
+        weaponIndex = 0;
+        armorIndex = 0;
+
+        invSet = 0;
+
+        isOpen = false;
+    }
 }
