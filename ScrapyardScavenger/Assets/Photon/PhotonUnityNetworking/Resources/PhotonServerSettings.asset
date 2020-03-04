@@ -43,5 +43,9 @@ MonoBehaviour:
   - PlayerUnReadied
   - PlayerReadied
   - PlayerNotReadied
+  - PlayerDied
+  - CancelLeave
+  - FirstPlayerReadyToLeave
+  - SecondPlayerReadyToLeave
   DisableAutoOpenWizard: 1
   ShowSettings: 1

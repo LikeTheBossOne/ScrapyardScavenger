@@ -7,6 +7,8 @@ public class PlayerControllerLoader : MonoBehaviourPun
 {
     public GameObject playerController;
     public EquipmentManager equipmentManager;
+    public InventoryManager inventoryManager;
+    public PlayerSceneManager sceneManager;
 
     public Transform gunParent;
     public Transform meleeParent;
@@ -22,10 +24,13 @@ public class PlayerControllerLoader : MonoBehaviourPun
             {
                 playerController = obj;
                 equipmentManager = obj.GetComponent<EquipmentManager>();
+                inventoryManager = obj.GetComponent<InventoryManager>();
+                sceneManager = obj.GetComponent<PlayerSceneManager>();
             }
         }
 
-        playerController.GetComponent<PlayerSceneManager>().isInHomeBase = false;
+        sceneManager.isInHomeBase = false;
+        GameControllerSingleton.instance.aliveCount = PhotonNetwork.CurrentRoom.PlayerCount;
     }
 
     void Start()
