@@ -25,13 +25,16 @@ public class ShamblerStats : Stats
         }
     }
     [PunRPC]
-    new void TakeDamage(int damage, GameObject damager, int atkStatus)
+    new void TakeDamage(int damage)
     {
+        //, GameObject damager, int atkStatus
+        //note GameObjects can be passed by RPC
         health = health - damage;
-        if (atkStatus > 0)
+        Debug.Log("Enemy Damaged");
+        /*if (atkStatus > 0)
         {
             status = atkStatus;
-        }
-        GetComponentInParent<ShamblerDetection>().gotShot(damager);
+        }*/
+        //GetComponentInParent<ShamblerDetection>().gotShot(damager);
     }
 }
