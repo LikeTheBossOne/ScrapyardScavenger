@@ -136,4 +136,9 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
         if (currentIndex == -1) return null;
         return equipment[currentIndex];
     }
+
+	public Equipment[] getEquipment()
+	{
+		return equipment;
+	}
 }
