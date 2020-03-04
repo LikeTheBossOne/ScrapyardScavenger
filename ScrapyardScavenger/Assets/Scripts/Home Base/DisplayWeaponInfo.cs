@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +15,7 @@ public class DisplayWeaponInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		weapon = (Weapon) pController.GetComponent<EquipmentManager>().getEquipment()[weaponIndex];
+
     }
 
     // Update is called once per frame
@@ -35,5 +36,22 @@ public class DisplayWeaponInfo : MonoBehaviour
 			slotColor.a = 0.0f;
 			weaponImage.color = slotColor;
 		}
+    }
+
+    void OnEnable()
+    {
+        if (pController == null)
+        {
+            foreach (GameObject obj in GameObject.FindGameObjectsWithTag("GameController"))
+            {
+                if (obj.GetPhotonView().IsMine)
+                {
+                    pController = obj;
+                    break;
+                }
+            }
+        }
+        
+        weapon = (Weapon)pController.GetComponent<EquipmentManager>().getEquipment()[weaponIndex];
     }
 }

@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6704274942547728804}
+  - component: {fileID: 3172843748507637455}
+  - component: {fileID: 706514819694750668}
   - component: {fileID: 6704274942547728807}
   - component: {fileID: 6704274942547728825}
   - component: {fileID: 6704274942547728802}
@@ -35,6 +37,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3172843748507637455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6704274942547728824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbfe38c6c9c14294da39b806588129c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &706514819694750668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6704274942547728824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0d449471ecf9ca46bd7628b9d6605be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aliveCount: 0
 --- !u!114 &6704274942547728807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,7 +148,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 11200d79ddcef964bb0b20339ec304f1, type: 2}
   - {fileID: 11400000, guid: 0dff40c41d8fa7c4b8cc236050976d13, type: 2}
   - {fileID: 11400000, guid: a0081ac72ad7d334aab85f82dcf1552c, type: 2}
-  - {fileID: 0}
   - {fileID: 11400000, guid: 18fe4acb1ad3b3d48ab1ebbd8068f61d, type: 2}
   weaponCounts: 0000000000000000000000000000000000000000
   armors:
@@ -147,8 +173,5 @@ MonoBehaviour:
   meleeParent: {fileID: 0}
   grenadeParent: {fileID: 0}
   medShotParent: {fileID: 0}
-  equipment:
-  - {fileID: 11400000, guid: 11200d79ddcef964bb0b20339ec304f1, type: 2}
-  - {fileID: 11400000, guid: a0081ac72ad7d334aab85f82dcf1552c, type: 2}
   isReloading: 0
   currentIndex: 0

@@ -74,6 +74,11 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
         
     }
 
+    void OnDestroy()
+    {
+        equipmentManager.OnEquipmentSwitched -= EquipmentSwitched;
+    }
+
     IEnumerator Reload(float wait)
     {
         equipmentManager.isReloading = true;
@@ -125,13 +130,13 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
                 enemy.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (int)gun.baseDamage);
             }
 
-            // Ammo
-            if (photonView.IsMine)
-            {
-                gunState = gunParent.GetChild(equipmentManager.currentIndex).GetComponent<GunState>();
-                gunState.ammoCount--;
-                pHud.AmmoChanged(gunState.ammoCount, gunState.baseAmmo);
-            }
+        }
+
+        if (photonView.IsMine)
+        {
+            gunState = gunParent.GetChild(equipmentManager.currentIndex).GetComponent<GunState>();
+            gunState.ammoCount--;
+            pHud.AmmoChanged(gunState.ammoCount, gunState.baseAmmo);
         }
     }
 
@@ -144,8 +149,11 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 
     void EquipmentSwitched()
     {
-        if (reloadCoroutine != null) StopCoroutine(reloadCoroutine);
-        reloadingModel.localRotation = Quaternion.identity;
+        if (reloadCoroutine != null)
+            StopCoroutine(reloadCoroutine);
+
+        if (reloadingModel != null)
+            reloadingModel.localRotation = Quaternion.identity;
         
         equipmentManager.isReloading = false;
 
