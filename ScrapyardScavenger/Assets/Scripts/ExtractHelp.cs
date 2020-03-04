@@ -96,7 +96,8 @@ public class ExtractHelp : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.LoadLevel(homebaseIndex);
         }
-        
+        if (photonView.IsMine)
+            PhotonNetwork.Destroy(this.gameObject);
     }
 
     public void SpawnCircle()

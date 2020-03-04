@@ -476,7 +476,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   homebaseIndex: 1
   leaveRadius: 7
-  testVar: 0
 --- !u!114 &-1630396162063884706
 MonoBehaviour:
   m_ObjectHideFlags: 0
