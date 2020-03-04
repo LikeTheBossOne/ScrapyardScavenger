@@ -23,6 +23,9 @@ GameObject:
   - component: {fileID: -286012869555450220}
   - component: {fileID: 8723326484718690294}
   - component: {fileID: 1889014333739709194}
+  - component: {fileID: 2697323939956501158}
+  - component: {fileID: 6505326394283060669}
+  - component: {fileID: -1630396162063884706}
   m_Layer: 11
   m_Name: PhotonPlayer
   m_TagString: Player
@@ -107,6 +110,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerController: {fileID: 0}
   equipmentManager: {fileID: 0}
+  inventoryManager: {fileID: 0}
+  sceneManager: {fileID: 0}
   gunParent: {fileID: 2210166939918232469}
   meleeParent: {fileID: 0}
   grenadeParent: {fileID: 0}
@@ -199,9 +204,6 @@ MonoBehaviour:
   meleeParent: {fileID: 0}
   grenadeParent: {fileID: 0}
   medShotParent: {fileID: 0}
-  equipment:
-  - {fileID: 11400000, guid: 11200d79ddcef964bb0b20339ec304f1, type: 2}
-  - {fileID: 11400000, guid: a0081ac72ad7d334aab85f82dcf1552c, type: 2}
   isReloading: 0
   currentIndex: 0
 --- !u!114 &-983653605404609805
@@ -363,6 +365,129 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathCam: {fileID: 9188377380149365388}
+  homeBaseSceneIndex: 1
+--- !u!82 &2697323939956501158
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564345459977318626}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 214e95137c626dd41bfa431cd91c555e, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &6505326394283060669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564345459977318626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b634893e245065c439eae2b1560bee04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  homebaseIndex: 1
+  leaveRadius: 7
+--- !u!114 &-1630396162063884706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564345459977318626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0789a3adbaf8dd844bbf4cf971668519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &647147794768695746
 GameObject:
   m_ObjectHideFlags: 0

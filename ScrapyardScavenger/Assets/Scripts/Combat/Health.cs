@@ -44,7 +44,7 @@ public class Health : MonoBehaviourPunCallbacks
         }
         if (currentHealth <= 0)
         {
-            death.hasDied();
+            photonView.RPC("PlayerDied", RpcTarget.All);
         }
     }
 
