@@ -44,15 +44,25 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
         if (sceneManager.isInHomeBase)
             return;
 
-        if (Input.GetKeyDown(KeyCode.Alpha1) && currentIndex != 0)
+        if (Input.GetKeyDown(KeyCode.Alpha1)
+            && currentIndex != 0
+            && equipment[0] != null)
             photonView.RPC("Equip", RpcTarget.All, 0);
-        if (Input.GetKeyDown(KeyCode.Alpha2) && currentIndex != 1)
+        if (Input.GetKeyDown(KeyCode.Alpha2)
+            && currentIndex != 1
+            && equipment[1] != null)
             photonView.RPC("Equip", RpcTarget.All, 1);
-        if (Input.GetKeyDown(KeyCode.Alpha3) && currentIndex != 2)
+        if (Input.GetKeyDown(KeyCode.Alpha3)
+            && currentIndex != 2
+            && equipment[2] != null)
             photonView.RPC("Equip", RpcTarget.All, 2);
-        if (Input.GetKeyDown(KeyCode.Alpha4) && currentIndex != 3)
+        if (Input.GetKeyDown(KeyCode.Alpha4)
+            && currentIndex != 3
+            && equipment[3] != null)
             photonView.RPC("Equip", RpcTarget.All, 3);
-        if (Input.GetKeyDown(KeyCode.Alpha5) && currentIndex != 4)
+        if (Input.GetKeyDown(KeyCode.Alpha5)
+            && currentIndex != 4
+            && equipment[4] != null)
             photonView.RPC("Equip", RpcTarget.All, 4);
     }
 

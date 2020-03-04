@@ -1476,7 +1476,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pController: {fileID: 0}
-  weaponIndex: 0
+  weaponIndex: 2
   weaponText: {fileID: 983311393}
   weaponImage: {fileID: 558701504}
 --- !u!1 &686959262
@@ -1611,8 +1611,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07d12e10aa931af418986b5dcf73c508, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pController: {fileID: 6704274942547728824, guid: ae4de87b154c47e45b4c4d7b1c05bb00,
-    type: 3}
+  pController: {fileID: 0}
   weaponIndex: 1
   weaponText: {fileID: 1214431328}
   weaponImage: {fileID: 1250818884}
@@ -2569,7 +2568,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pController: {fileID: 0}
-  weaponIndex: 0
+  weaponIndex: 3
   weaponText: {fileID: 1698181495}
   weaponImage: {fileID: 1132933669}
 --- !u!1 &1031083138
@@ -3213,8 +3212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07d12e10aa931af418986b5dcf73c508, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pController: {fileID: 6704274942547728824, guid: ae4de87b154c47e45b4c4d7b1c05bb00,
-    type: 3}
+  pController: {fileID: 0}
   weaponIndex: 0
   weaponText: {fileID: 1775563284}
   weaponImage: {fileID: 1501469898}
