@@ -17,6 +17,8 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public Transform medShotParent;
 
     private Equipment[] equipment = null;
+	private List<ResourcePersistent> resources = null;
+	private HashSet<Resource> resourceSet = null;
     public bool isReloading = false;
 
     public int currentIndex;
@@ -35,6 +37,9 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
         equipment = new Equipment[5];
         equipment[0] = inventoryManager.weapons[(int)WeaponType.AR];
         equipment[1] = inventoryManager.weapons[(int)WeaponType.Pistol];
+
+		resources = new List<ResourcePersistent>();
+		resourceSet = new HashSet<Resource>();
     }
 
     void Update()
@@ -172,5 +177,30 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
 	public Equipment[] getEquipment()
 	{
 		return equipment;
+	}
+
+	public List<ResourcePersistent> getResources()
+	{
+		return resources;
+	}
+
+	public void AddResource(Resource r, int count)
+	{
+		if (photonView.IsMine && resources.Count < 44) {
+			if (!resourceSet.Contains(r)) {
+				resources.Add(new ResourcePersistent(r, count));
+				resourceSet.Add(r);
+			} else {
+				ResourcePersistent old = null;
+				foreach (ResourcePersistent re in resources) {
+					if (re.Resource == r) {
+						old = re;
+					}
+				}
+				int idx = resources.IndexOf(old);
+				resources.RemoveAt(idx);
+				resources.Insert(idx, new ResourcePersistent(r, count));
+			}
+		}
 	}
 }
