@@ -21,7 +21,11 @@ public class ShamblerStats : Stats
     {
         if (health <= 0)
         {
+            GameObject spawner = FindObjectOfType<EnemySpawner>().gameObject;
+            Debug.Log("Spawner: " + spawner);
+            spawner.GetPhotonView().RPC("onShamblerKill", RpcTarget.All);
             Destroy(gameObject);
+            
         }
     }
     [PunRPC]

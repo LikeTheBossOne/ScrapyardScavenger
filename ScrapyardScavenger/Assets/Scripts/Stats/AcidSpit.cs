@@ -39,7 +39,7 @@ public class AcidSpit : MonoBehaviour
         //may need to change this over to rigidbody at some point
         Debug.Log("Collision with: " + collision.collider);
         Debug.Log("Owner hitbox: " + shooter);
-        if (!collision.collider.bounds.Intersects(shooter.bounds))
+        if (!shooter || !collision.collider.bounds.Intersects(shooter.bounds))
         {
             foreach (RectTransform player in pManage.players)
             {
