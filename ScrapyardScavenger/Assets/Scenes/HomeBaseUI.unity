@@ -188,7 +188,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Sample Item
+  m_Text: 
 --- !u!222 &14148844
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -471,7 +471,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Sample Description
+  m_Text: 
 --- !u!222 &120396306
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1075,7 +1075,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1355,6 +1355,7 @@ GameObject:
   - component: {fileID: 658827614}
   - component: {fileID: 658827613}
   - component: {fileID: 658827612}
+  - component: {fileID: 658827615}
   m_Layer: 5
   m_Name: ThrowableSlot
   m_TagString: Untagged
@@ -1462,6 +1463,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 658827610}
   m_CullTransparentMesh: 0
+--- !u!114 &658827615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658827610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07d12e10aa931af418986b5dcf73c508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pController: {fileID: 0}
+  weaponIndex: 2
+  weaponText: {fileID: 983311393}
+  weaponImage: {fileID: 558701504}
 --- !u!1 &686959262
 GameObject:
   m_ObjectHideFlags: 0
@@ -1474,6 +1491,7 @@ GameObject:
   - component: {fileID: 686959266}
   - component: {fileID: 686959265}
   - component: {fileID: 686959264}
+  - component: {fileID: 686959267}
   m_Layer: 5
   m_Name: Weapon2Slot
   m_TagString: Untagged
@@ -1581,6 +1599,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 686959262}
   m_CullTransparentMesh: 0
+--- !u!114 &686959267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 686959262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07d12e10aa931af418986b5dcf73c508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pController: {fileID: 0}
+  weaponIndex: 1
+  weaponText: {fileID: 1214431328}
+  weaponImage: {fileID: 1250818884}
 --- !u!1 &752811300
 GameObject:
   m_ObjectHideFlags: 0
@@ -2413,6 +2447,7 @@ GameObject:
   - component: {fileID: 1023273271}
   - component: {fileID: 1023273270}
   - component: {fileID: 1023273269}
+  - component: {fileID: 1023273272}
   m_Layer: 5
   m_Name: MeleeSlot
   m_TagString: Untagged
@@ -2520,6 +2555,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1023273267}
   m_CullTransparentMesh: 0
+--- !u!114 &1023273272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1023273267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07d12e10aa931af418986b5dcf73c508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pController: {fileID: 0}
+  weaponIndex: 3
+  weaponText: {fileID: 1698181495}
+  weaponImage: {fileID: 1132933669}
 --- !u!1 &1031083138
 GameObject:
   m_ObjectHideFlags: 0
@@ -2800,7 +2851,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -3041,6 +3092,7 @@ GameObject:
   - component: {fileID: 1170352212}
   - component: {fileID: 1170352211}
   - component: {fileID: 1170352210}
+  - component: {fileID: 1170352213}
   m_Layer: 5
   m_Name: Weapon1Slot
   m_TagString: Untagged
@@ -3148,6 +3200,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1170352208}
   m_CullTransparentMesh: 0
+--- !u!114 &1170352213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170352208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07d12e10aa931af418986b5dcf73c508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pController: {fileID: 0}
+  weaponIndex: 0
+  weaponText: {fileID: 1775563284}
+  weaponImage: {fileID: 1501469898}
 --- !u!1 &1214372916
 GameObject:
   m_ObjectHideFlags: 0
@@ -3318,7 +3386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -4023,7 +4091,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

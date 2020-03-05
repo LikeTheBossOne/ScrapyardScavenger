@@ -10,3 +10,11 @@ using UnityEngine;
 public class Armor : CraftableObject
 {
 }
+
+public enum ArmorType
+{
+    ChainmailArmor = 0,
+    LeatherArmor = 0,
+    MetalArmor = 0,
+    SIZE
+}

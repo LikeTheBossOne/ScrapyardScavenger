@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMotor : MonoBehaviourPunCallbacks
@@ -18,6 +20,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     public GameObject cameraParent;
     public Transform groundDetector;
     public LayerMask ground;
+    
 
     private Rigidbody myRigidbody;
     private float baseFOV;
@@ -25,10 +28,12 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     private bool isEnergized;
     private bool isSprinting;
     private bool isCoolingDown;
-
+    
+    
     private bool isPaused;
 
     private Coroutine sprintCoroutine;
+    
     private AudioSource source;
 
     void Start()
@@ -43,6 +48,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         myRigidbody = GetComponent<Rigidbody>();
         source = GetComponent<AudioSource>();
         Debug.Log(source);
+        
 
         baseFOV = normalCam.fieldOfView;
         sprintFOVModifier = 1.2f;
@@ -85,8 +91,10 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         if (!isPaused)
         {
             Move();
+
         }
     }
+
 
     void OnApplicationFocus(bool hasFocus)
     {
@@ -112,11 +120,6 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         if (!isSprinting && sprintPressed && (verticalInput > 0) && !isJumping && isGrounded && !isCoolingDown)
         {
             sprintCoroutine = StartCoroutine(SprintRoutine(sprintLimit));
-            // only start if this is a new sprint?
-            /*if (!pastSprintPressed)
-            {
-                StartSprinting(sprintLimit);
-            }*/
             
         }
         else
@@ -202,11 +205,6 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         sprintLimit = limit;
     }
 
-    /*public void CoolDown(int seconds)
-    {
-        StartCoroutine(CoolDownRoutine(seconds));
-    }*/
-
     public IEnumerator CoolDownRoutine(int seconds)
     {
         Debug.Log("Starting cool down");
@@ -215,4 +213,5 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         isCoolingDown = false;
         Debug.Log("Done cooling down");
     }
+
 }

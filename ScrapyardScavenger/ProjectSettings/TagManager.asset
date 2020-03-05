@@ -9,6 +9,7 @@ TagManager:
   - Pick Up
   - ScavengerSkill
   - HomeScreenButton
+  - ExtractionCircle
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - Ground
   - ShootableTerrain
   - ShootableEnemy
-  - 
+  - Truck
   - 
   - 
   - 

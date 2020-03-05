@@ -35,3 +35,17 @@ public enum ResourceType
     WoodenPlank,
     SIZE
 }
+
+
+public class ResourcePersistent {
+	private Resource resource;
+	private int count;
+
+	public Resource Resource { get { return this.resource; } }
+	public int Count { get { return this.count; } }
+
+	public ResourcePersistent(Resource r, int c) {
+		this.resource = r;
+		this.count = c;
+	}
+}
