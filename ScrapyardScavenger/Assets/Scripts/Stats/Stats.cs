@@ -23,12 +23,13 @@ public class Stats : MonoBehaviour
         
     }
     [PunRPC]
-    protected void TakeDamage(int damage, GameObject damager, int atkStatus)
+    protected void TakeDamage(int damage)
     {
+        //, GameObject damager, int atkStatus
         health = health - damage;
-        if (atkStatus > 0)
+        /*if (atkStatus > 0)
         {
             status = atkStatus;
-        }
+        }*/
     }
 }

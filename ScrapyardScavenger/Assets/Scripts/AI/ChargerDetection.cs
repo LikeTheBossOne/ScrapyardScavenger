@@ -102,12 +102,12 @@ public class ChargerDetection : MonoBehaviour
             {
                 damageCounts[i] = 0;
             }
-            damageCounts[pManager.players.IndexOf(shooter.transform)] = damage;
+            damageCounts[pManager.players.IndexOf(shooter.GetComponent<RectTransform>())] = damage;
         }
         else
         {
             //aggro maintained, check damage counts, update damage tracker for shooter
-            damageCounts[pManager.players.IndexOf(shooter.transform)] += damage;
+            damageCounts[pManager.players.IndexOf(shooter.GetComponent<RectTransform>())] += damage;
         }
         //reset timer, update target to first player with highest damage count
         timeShotAt = Time.time;

@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 2697323939956501158}
   - component: {fileID: 6505326394283060669}
   - component: {fileID: -1630396162063884706}
+  - component: {fileID: 3987675717260935530}
   m_Layer: 11
   m_Name: PhotonPlayer
   m_TagString: Player
@@ -153,6 +154,7 @@ MonoBehaviour:
   player: {fileID: 1260225194326574506}
   cams: {fileID: 6148081038592269367}
   weapon: {fileID: 2210166939918232469}
+  playerDeath: {fileID: 0}
   xSensitivity: 100
   ySensitivity: 100
   maxAngle: 60
@@ -254,6 +256,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6f0f70f38ef5db04fab9de3b76d06e4a, type: 2}
   armorCounts: 000000000000000000000000
   isOpen: 0
+  refreshInv: 0
+  controller: {fileID: 0}
 --- !u!114 &3090191438698549941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,6 +492,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0789a3adbaf8dd844bbf4cf971668519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3987675717260935530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564345459977318626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e3746a0c788e646a944a24a0e81bc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &647147794768695746

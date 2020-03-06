@@ -156,6 +156,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6f0f70f38ef5db04fab9de3b76d06e4a, type: 2}
   armorCounts: 000000000000000000000000
   isOpen: 0
+  refreshInv: 0
+  controller: {fileID: 0}
 --- !u!114 &6704274942547728805
 MonoBehaviour:
   m_ObjectHideFlags: 0

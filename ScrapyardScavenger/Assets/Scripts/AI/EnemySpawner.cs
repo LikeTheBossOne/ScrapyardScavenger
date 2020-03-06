@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using System.IO;
 
 public class EnemySpawner : MonoBehaviour
 {
     public ChargerStats chargerPrefab;
     public ShamblerStats shamblerPrefab;
+    public string shambName = "AITester";
     public SpawnPoint[] spawnPoints;
     private int chargerCount;
     private int shamblerCount;
@@ -17,16 +20,18 @@ public class EnemySpawner : MonoBehaviour
     private float chargerCoolDown;
     public int shamblerMax;
     public int chargerMax;
+    private const int startGracePeriod = 60;
     // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
         spawnPoints = FindObjectsOfType<SpawnPoint>();
         chargerCount = 0;
         shamblerCount = 0;
-        shamblerCoolDown = 0;
-        chargerCoolDown = 0;
         shamblerInterval = 2;
         chargerInterval = 60;
+        //replace intervals with grace period to delay spawning cycle
+        shamblerCoolDown = shamblerInterval;
+        chargerCoolDown = chargerInterval;
         shamblerMax = 5;
         chargerMax = 2;
     }
@@ -40,7 +45,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 //spawn logic
                 int selected = Random.Range(0, spawnPoints.Length);
-                Instantiate(shamblerPrefab, spawnPoints[selected].location.position, spawnPoints[selected].location.rotation);
+                PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", shambName), spawnPoints[selected].location.position, spawnPoints[selected].location.rotation);
                 shamblerCount++;
             }
             shamblerCoolDown = shamblerInterval;
@@ -50,11 +55,12 @@ public class EnemySpawner : MonoBehaviour
             shamblerCoolDown -= Time.deltaTime;
         }
     }
-
+    [PunRPC]
     public void onShamblerKill()
     {
         shamblerCount--;
     }
+    [PunRPC]
     public void onChargerKill()
     {
         chargerCount--;
