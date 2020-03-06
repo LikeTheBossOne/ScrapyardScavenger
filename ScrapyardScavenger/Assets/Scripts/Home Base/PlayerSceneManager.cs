@@ -16,4 +16,14 @@ public class PlayerSceneManager : MonoBehaviourPun
     {
         
     }
+
+    [PunRPC]
+    public void MasterClientGoToHomeBase()
+    {
+        isInHomeBase = true;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel(1);
+        }
+    }
 }

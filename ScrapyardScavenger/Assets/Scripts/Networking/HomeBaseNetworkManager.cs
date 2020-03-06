@@ -117,6 +117,18 @@ public class HomeBaseNetworkManager : MonoBehaviourPunCallbacks
             yield return new WaitForSeconds(1);
         }
 
+		if (playerController == null) {
+			foreach (GameObject obj in GameObject.FindGameObjectsWithTag("GameController"))
+			{
+				if (obj.GetPhotonView().IsMine)
+				{
+					playerController = obj;
+					break;
+				}
+			}
+		}
+		playerController.GetComponent<InventoryManager>().refreshInv = false;
+
         PhotonNetwork.LoadLevel(multiplayerIndex);
     }
 

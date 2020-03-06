@@ -49,5 +49,6 @@ MonoBehaviour:
   - SecondPlayerReadyToLeave
   - onChargerKill
   - onShamblerKill
+  - MasterClientGoToHomeBase
   DisableAutoOpenWizard: 1
   ShowSettings: 1

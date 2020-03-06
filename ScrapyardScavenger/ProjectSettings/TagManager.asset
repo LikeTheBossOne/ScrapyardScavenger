@@ -9,6 +9,7 @@ TagManager:
   - Pick Up
   - ScavengerSkill
   - HomeScreenButton
+  - ExtractionCircle
   layers:
   - Default
   - TransparentFX
