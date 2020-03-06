@@ -40,6 +40,7 @@ public class InventoryManager : MonoBehaviourPun
     private int invSet;
 
     public bool isOpen;
+	public bool refreshInv = false;
 
 	private string[] slots = new string[] {"slot1", "slot2", "slot3", "slot4", "slot5", "slot6", "slot7", "slot8"}; 
 	private string[] slotCounts = new string[] {"slot1Text", "slot2Text", "slot3Text", "slot4Text", "slot5Text", "slot6Text", "slot7Text", "slot8Text"}; 
@@ -58,10 +59,6 @@ public class InventoryManager : MonoBehaviourPun
         armorIndex = 0;
 
         invSet = 0;
-
-		foreach (Resource r in resources) {
-			r.imageSlotName = "";
-		}
     }
 
 	public GameObject getController()
@@ -79,7 +76,11 @@ public class InventoryManager : MonoBehaviourPun
     void Update()
     {
         if (!photonView.IsMine) return;
-        if (sceneManager.isInHomeBase) return;
+		if (sceneManager.isInHomeBase) return;
+			
+		if (!refreshInv) {
+			refreshInventoryView();
+		}
 
         // Check if player is opening/closing inventory
         if (Input.GetKeyDown(KeyCode.I))
@@ -90,8 +91,6 @@ public class InventoryManager : MonoBehaviourPun
             else
                 Debug.Log("Closed Inventory");
         }
-            
-
 
         if (isOpen)
         {
@@ -293,24 +292,38 @@ public class InventoryManager : MonoBehaviourPun
 		resourceCounts[(int)type]++;
 		Resource r = resources[(int)type];
 		getController().GetComponent<EquipmentManager>().AddResource(r, resourceCounts[(int)type]);
-		if (r.imageSlotName == "") {
+
+		refreshInventoryView();
+
+		Debug.Log("Adding a " + type.ToString());
+	}
+
+	public void refreshInventoryView() {
+		List<ResourcePersistent> rList = getController().GetComponent<EquipmentManager>().getResources();
+		foreach(ResourcePersistent r in rList) {
+			resourceCounts[(int)r.Resource.type] = r.Count;
+			Debug.Log("Count for " + r.Resource.type.ToString() + " is now: " + resourceCounts[(int)r.Resource.type].ToString());
+		}
+		foreach(ResourcePersistent r in rList) {
+			r.Resource.imageSlotName = null;
 			foreach (string slot in slots) {
-				if (GameObject.FindWithTag(slot).GetComponent<Image>().sprite == null || GameObject.FindWithTag(slot).GetComponent<Image>().sprite == r.icon){
-					r.imageSlotName = slot;
-					GameObject.FindWithTag(slot).GetComponent<Image>().sprite = r.icon;
+				if (GameObject.FindWithTag(slot).GetComponent<Image>().sprite == null || GameObject.FindWithTag(slot).GetComponent<Image>().sprite == r.Resource.icon){
+					r.Resource.imageSlotName = slot;
+					GameObject.FindWithTag(slot).GetComponent<Image>().sprite = r.Resource.icon;
 					Color slotColor = GameObject.FindWithTag(slot).GetComponent<Image>().color;
 					slotColor.a = 1.0f;
 					GameObject.FindWithTag(slot).GetComponent<Image>().color = slotColor;
 					break;
 				}
 			}
+			GameObject.FindWithTag(r.Resource.imageSlotName + "Text").GetComponent<Text>().text = r.Count.ToString();
 		}
-		GameObject.FindWithTag(r.imageSlotName + "Text").GetComponent<Text>().text = resourceCounts[(int)type].ToString();
-		Debug.Log("Adding a " + type.ToString());
+		refreshInv = true;
 	}
 
     public void Clear()
     {
+		Debug.Log("Clearing resources");
         resourceCounts = new int[(int)ResourceType.SIZE];
         itemCounts = new int[(int)ItemType.SIZE];
         weaponCounts = new int[(int)WeaponType.SIZE];
