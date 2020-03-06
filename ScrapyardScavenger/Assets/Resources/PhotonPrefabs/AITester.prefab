@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 6038070701971941841}
   m_Layer: 11
   m_Name: AITester
-  m_TagString: Untagged
+  m_TagString: Shambler
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

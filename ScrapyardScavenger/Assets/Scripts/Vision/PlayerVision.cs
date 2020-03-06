@@ -8,6 +8,7 @@ public class PlayerVision : MonoBehaviourPunCallbacks
     public Transform player;
     public Transform cams;
     public Transform weapon;
+    public Death playerDeath;
 
     public float xSensitivity;
     public float ySensitivity;
@@ -21,6 +22,9 @@ public class PlayerVision : MonoBehaviourPunCallbacks
     {
         camCenter = cams.localRotation;
         isPaused = false;
+
+        playerDeath = GetComponent<Death>();
+        playerDeath.OnPlayerDeath += OnDeath;
     }
 
     
@@ -87,7 +91,10 @@ public class PlayerVision : MonoBehaviourPunCallbacks
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
+    }
 
-
+    public void OnDeath()
+    {
+        isPaused = true;
     }
 }

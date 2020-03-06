@@ -154,6 +154,7 @@ MonoBehaviour:
   player: {fileID: 1260225194326574506}
   cams: {fileID: 6148081038592269367}
   weapon: {fileID: 2210166939918232469}
+  playerDeath: {fileID: 0}
   xSensitivity: 100
   ySensitivity: 100
   maxAngle: 60
@@ -255,6 +256,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6f0f70f38ef5db04fab9de3b76d06e4a, type: 2}
   armorCounts: 000000000000000000000000
   isOpen: 0
+  refreshInv: 0
+  controller: {fileID: 0}
 --- !u!114 &3090191438698549941
 MonoBehaviour:
   m_ObjectHideFlags: 0

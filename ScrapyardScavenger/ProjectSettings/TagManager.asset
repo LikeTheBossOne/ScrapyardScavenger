@@ -10,6 +10,7 @@ TagManager:
   - ScavengerSkill
   - HomeScreenButton
   - ExtractionCircle
+  - Shambler
   layers:
   - Default
   - TransparentFX

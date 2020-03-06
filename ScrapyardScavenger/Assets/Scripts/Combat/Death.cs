@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
@@ -33,7 +34,15 @@ public class Death : MonoBehaviourPun
     public void PlayerDied()
     {
         // Hit all death events
-        OnPlayerDeath?.Invoke();
+        try
+        {
+            OnPlayerDeath?.Invoke();
+        }
+        catch (Exception)
+        {
+            Debug.Log("Exception");
+        }
+        
 
 
         if (photonView.IsMine)

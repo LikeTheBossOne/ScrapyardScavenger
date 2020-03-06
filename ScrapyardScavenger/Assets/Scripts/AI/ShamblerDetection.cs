@@ -44,6 +44,8 @@ public class ShamblerDetection : MonoBehaviour
         //Debug.Log("Total Players: " + pManager.players.Count);
         foreach (var p in pManager.players)
         {
+            // if (p == null) continue;
+
             //Debug.Log("In range.");
             if (distance(p) < visionLimit) {
                 RaycastHit[] seen = Physics.RaycastAll(transform.position, p.position-transform.position, visionLimit);

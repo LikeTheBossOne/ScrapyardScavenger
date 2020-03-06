@@ -142,8 +142,16 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
                     enemy = hit.collider.gameObject;
                     
                 }
+
+                if (enemy.tag == "Shambler")
+                {
+                    enemy.GetPhotonView().RPC("TakeDamageShambler", RpcTarget.All, (int)gun.baseDamage);
+                }
+                else
+                {
+                    enemy.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (int)gun.baseDamage);
+                }
                 
-                enemy.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (int)gun.baseDamage);
             }
 
         }

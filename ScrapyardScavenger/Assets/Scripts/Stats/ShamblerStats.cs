@@ -28,8 +28,9 @@ public class ShamblerStats : Stats
             
         }
     }
+
     [PunRPC]
-    new void TakeDamage(int damage)
+    new void TakeDamageShambler(int damage)
     {
         //, GameObject damager, int atkStatus
         //note GameObjects can be passed by RPC
