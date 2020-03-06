@@ -126,8 +126,32 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
                     Debug.Log("BAD");
                     return;
                 }
-                GameObject enemy = hit.collider.gameObject.transform.parent.gameObject;
-                enemy.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (int)gun.baseDamage);
+               // Debug.Log("Collider: " + hit.collider);
+               // Debug.Log("GameObject: " + hit.collider.gameObject);
+               // Debug.Log("Transform: " + hit.collider.gameObject.transform);
+                //Debug.Log("Parent: " + hit.collider.gameObject.transform.parent);
+                //Debug.Log("Parent's GameObject: " + hit.collider.gameObject.transform.parent.gameObject);
+                GameObject enemy;
+                if (hit.collider.gameObject.transform.parent)
+                {
+                    enemy = hit.collider.gameObject.transform.parent.gameObject;
+                    
+                }
+                else
+                {
+                    enemy = hit.collider.gameObject;
+                    
+                }
+
+                if (enemy.tag == "Shambler")
+                {
+                    enemy.GetPhotonView().RPC("TakeDamageShambler", RpcTarget.All, (int)gun.baseDamage);
+                }
+                else
+                {
+                    enemy.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (int)gun.baseDamage);
+                }
+                
             }
 
         }

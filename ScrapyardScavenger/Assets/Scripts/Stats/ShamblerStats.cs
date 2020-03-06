@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class ShamblerStats : Stats
 {
@@ -8,7 +9,7 @@ public class ShamblerStats : Stats
     public float damage { get; private set; }
     
     // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
         health = 10;
         damage = 10;
@@ -20,16 +21,25 @@ public class ShamblerStats : Stats
     {
         if (health <= 0)
         {
+            GameObject spawner = FindObjectOfType<EnemySpawner>().gameObject;
+            Debug.Log("Spawner: " + spawner);
+            spawner.GetPhotonView().RPC("onShamblerKill", RpcTarget.All);
             Destroy(gameObject);
+            
         }
     }
-    void onDamage(int damage, GameObject damager, int atkStatus)
+
+    [PunRPC]
+    new void TakeDamageShambler(int damage)
     {
+        //, GameObject damager, int atkStatus
+        //note GameObjects can be passed by RPC
         health = health - damage;
-        if (atkStatus > 0)
+        Debug.Log("Enemy Damaged");
+        /*if (atkStatus > 0)
         {
             status = atkStatus;
-        }
-        GetComponentInParent<ShamblerDetection>().gotShot(damager);
+        }*/
+        //GetComponentInParent<ShamblerDetection>().gotShot(damager);
     }
 }
