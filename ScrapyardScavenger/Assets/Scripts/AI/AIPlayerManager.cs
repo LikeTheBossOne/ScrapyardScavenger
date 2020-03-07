@@ -1,17 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.PlayerLoop;
 
 public class AIPlayerManager : MonoBehaviour
 {
-    public List<Transform> players { get; private set; }
+    public List<RectTransform> players;
+
     private void Awake()
     {
-        players = new List<Transform>();
+        players = new List<RectTransform>();
     }
-    
-    public void register(Transform adding)
+
+    public void register(RectTransform adding)
     {
         players.Add(adding);
+    }
+
+    void Update()
+    {
+        foreach (var p in players)
+        {
+            if (p == null) players.Remove(p);
+        }
     }
 }

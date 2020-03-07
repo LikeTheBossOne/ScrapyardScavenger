@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e66e843f4104f64a9bf76c42bcaf88d, type: 3}
   m_Name: Disinfectant
   m_EditorClassIdentifier: 
+  prefab: {fileID: 0}
   id: 2
-  name: 
   description: Disinfectant description
   showInInventory: 0
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 511a5dd4adef00a42b644f23da49e63f, type: 3}
+  imageSlotName: 
+  type: 2

@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Health
+  - AmmoCount
+  - Pick Up
+  - ScavengerSkill
+  - HomeScreenButton
+  - ExtractionCircle
+  - Shambler
   layers:
   - Default
   - TransparentFX
@@ -18,7 +24,7 @@ TagManager:
   - Ground
   - ShootableTerrain
   - ShootableEnemy
-  - 
+  - Truck
   - 
   - 
   - 

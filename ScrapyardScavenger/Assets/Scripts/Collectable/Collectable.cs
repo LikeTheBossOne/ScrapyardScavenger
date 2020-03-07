@@ -5,4 +5,6 @@ using UnityEngine;
 public class Collectable : ScriptableObject
 {
     public GameObject prefab;
+
+    //public Transform[] players;
 }

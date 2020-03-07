@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 079d0a272327c3a4795a4ead449646fa, type: 3}
   m_Name: Rusted Coil
   m_EditorClassIdentifier: 
+  prefab: {fileID: 0}
   id: 11
-  name: 
   description: 
   showInInventory: 0
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: ffee00b407527d74cbf43c311ab0b445, type: 3}
+  imageSlotName: 
+  type: 11

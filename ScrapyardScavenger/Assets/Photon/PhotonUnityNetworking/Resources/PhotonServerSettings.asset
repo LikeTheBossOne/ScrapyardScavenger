@@ -37,5 +37,19 @@ MonoBehaviour:
   - Equip
   - Shoot
   - TakeDamage
+  - playerJoined
+  - playerReadied
+  - playerUnReadied
+  - PlayerUnReadied
+  - PlayerReadied
+  - PlayerNotReadied
+  - PlayerDied
+  - CancelLeave
+  - FirstPlayerReadyToLeave
+  - SecondPlayerReadyToLeave
+  - onChargerKill
+  - onShamblerKill
+  - MasterClientGoToHomeBase
+  - TakeDamageShambler
   DisableAutoOpenWizard: 1
   ShowSettings: 1

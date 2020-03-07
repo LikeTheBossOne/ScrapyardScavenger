@@ -7,11 +7,12 @@ using UnityEngine;
 public class Resource : Collectable
 {
     public int id;
-    public new string name;
     public string description;
     public bool showInInventory = true;
     public Sprite icon = null;
+	public string imageSlotName = null;
 
+    public ResourceType type;
 }
 
 public enum ResourceType
@@ -33,4 +34,18 @@ public enum ResourceType
     SugarPill,
     WoodenPlank,
     SIZE
+}
+
+
+public class ResourcePersistent {
+	private Resource resource;
+	private int count;
+
+	public Resource Resource { get { return this.resource; } }
+	public int Count { get { return this.count; } }
+
+	public ResourcePersistent(Resource r, int c) {
+		this.resource = r;
+		this.count = c;
+	}
 }

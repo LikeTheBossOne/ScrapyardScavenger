@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviourPun
 {
+    public PlayerSceneManager sceneManager;
+
     // Resources and counts are indexed based on Resource's ID
     [SerializeField]
     public Resource[] resources = null;
@@ -37,9 +40,17 @@ public class InventoryManager : MonoBehaviourPun
     private int invSet;
 
     public bool isOpen;
+	public bool refreshInv = false;
+
+	private string[] slots = new string[] {"slot1", "slot2", "slot3", "slot4", "slot5", "slot6", "slot7", "slot8"}; 
+	private string[] slotCounts = new string[] {"slot1Text", "slot2Text", "slot3Text", "slot4Text", "slot5Text", "slot6Text", "slot7Text", "slot8Text"}; 
+
+	public GameObject controller;
 
     void Start()
     {
+        sceneManager = GetComponent<PlayerSceneManager>();
+
         isOpen = false;
 
         resourceIndex = 0;
@@ -50,10 +61,26 @@ public class InventoryManager : MonoBehaviourPun
         invSet = 0;
     }
 
+	public GameObject getController()
+	{
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("GameController"))
+		{
+			if (obj.GetPhotonView().IsMine)
+			{
+				return obj;
+			}
+		}
+		return null;
+	}
+
     void Update()
     {
         if (!photonView.IsMine) return;
-            
+		if (sceneManager.isInHomeBase) return;
+			
+		if (!refreshInv) {
+			refreshInventoryView();
+		}
 
         // Check if player is opening/closing inventory
         if (Input.GetKeyDown(KeyCode.I))
@@ -64,8 +91,6 @@ public class InventoryManager : MonoBehaviourPun
             else
                 Debug.Log("Closed Inventory");
         }
-            
-
 
         if (isOpen)
         {
@@ -142,13 +167,11 @@ public class InventoryManager : MonoBehaviourPun
 
         if (Input.GetKeyDown(KeyCode.G))
         {
-            resourceCounts[(int)ResourceType.Gauze]++;
-            Debug.Log("Adding a Gauze");
+			addResourceToInventory(ResourceType.Gauze);
         }
         if (Input.GetKeyDown(KeyCode.O))
         {
-            resourceCounts[(int)ResourceType.Disinfectant]++;
-            Debug.Log("Adding a Disinfectant");
+			addResourceToInventory(ResourceType.Disinfectant);
         }
 
         if (Input.GetKeyDown(KeyCode.L))
@@ -168,6 +191,11 @@ public class InventoryManager : MonoBehaviourPun
             // make an energy drink!
             itemCounts[(int)ItemType.EnergyDrink]++;
             Debug.Log("Made an energy drink");
+        }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            // print resources?
+            PrintResources();
         }
     }
 
@@ -201,9 +229,12 @@ public class InventoryManager : MonoBehaviourPun
     public void PrintResources()
     {
         Debug.Log("Printing all resources");
-        foreach (Resource res in resources)
+        for (int i = 0; i < resourceCounts.Length; i++)
         {
-            Debug.Log(res.name);
+            if (resourceCounts[i] > 0)
+            {
+                Debug.Log(resources[i].name + ": " + resourceCounts[i]);
+            }
         }
     }
 
@@ -254,5 +285,57 @@ public class InventoryManager : MonoBehaviourPun
     private int mod(int x, int m)
     {
         return (x % m + m) % m;
+    }
+
+	public void addResourceToInventory(ResourceType type) {
+		if (!photonView.IsMine) return;
+		resourceCounts[(int)type]++;
+		Resource r = resources[(int)type];
+		getController().GetComponent<EquipmentManager>().AddResource(r, resourceCounts[(int)type]);
+
+		refreshInventoryView();
+
+		Debug.Log("Adding a " + type.ToString());
+	}
+
+	public void refreshInventoryView() {
+		List<ResourcePersistent> rList = getController().GetComponent<EquipmentManager>().getResources();
+		foreach(ResourcePersistent r in rList) {
+			resourceCounts[(int)r.Resource.type] = r.Count;
+			Debug.Log("Count for " + r.Resource.type.ToString() + " is now: " + resourceCounts[(int)r.Resource.type].ToString());
+		}
+		foreach(ResourcePersistent r in rList) {
+			r.Resource.imageSlotName = null;
+			foreach (string slot in slots) {
+				if (GameObject.FindWithTag(slot).GetComponent<Image>().sprite == null || GameObject.FindWithTag(slot).GetComponent<Image>().sprite == r.Resource.icon){
+					r.Resource.imageSlotName = slot;
+					GameObject.FindWithTag(slot).GetComponent<Image>().sprite = r.Resource.icon;
+					Color slotColor = GameObject.FindWithTag(slot).GetComponent<Image>().color;
+					slotColor.a = 1.0f;
+					GameObject.FindWithTag(slot).GetComponent<Image>().color = slotColor;
+					break;
+				}
+			}
+			GameObject.FindWithTag(r.Resource.imageSlotName + "Text").GetComponent<Text>().text = r.Count.ToString();
+		}
+		refreshInv = true;
+	}
+
+    public void Clear()
+    {
+		Debug.Log("Clearing resources");
+        resourceCounts = new int[(int)ResourceType.SIZE];
+        itemCounts = new int[(int)ItemType.SIZE];
+        weaponCounts = new int[(int)WeaponType.SIZE];
+        armorCounts = new int[(int)ArmorType.SIZE];
+
+        resourceIndex = 0;
+        itemIndex = 0;
+        weaponIndex = 0;
+        armorIndex = 0;
+
+        invSet = 0;
+
+        isOpen = false;
     }
 }
