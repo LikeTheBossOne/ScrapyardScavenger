@@ -18,11 +18,17 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
     [SerializeField]
 	private Text playerAmmoCount;
 
+	[Tooltip("UI Text to display Crosshair")]
+	[SerializeField]
+	private Text playerCrosshair;
+	private Coroutine hitMarkerCoroutine;
+
     #endregion
 
 	void Start() {
 		playerHealthSlider = GameObject.FindWithTag("Health").GetComponent<Slider>();
         playerAmmoCount = GameObject.FindWithTag("AmmoCount").GetComponent<Text>();
+		playerCrosshair = GameObject.FindWithTag("crosshair").GetComponent<Text>();
 
 		// The photon view is mine check is necessary here, otherwise everyone's health bar will be reset
 		if (!photonView.IsMine) return;
@@ -40,6 +46,13 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 		// If not me, don't update!
 		if (!photonView.IsMine) return;
     }
+
+	IEnumerator HitMarker()
+	{
+		playerCrosshair.fontSize = 30;
+		yield return new WaitForSeconds(0.3f); 
+		playerCrosshair.fontSize = 24;
+	}
 
 	#region Public Methods
 
@@ -67,6 +80,23 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 		}
     }
 
+	public void crossHairReloading()
+	{
+		if (photonView.IsMine)
+			playerCrosshair.text = "";
+	}
+
+	public void crossHairReloaded()
+	{
+		if (photonView.IsMine)
+			playerCrosshair.text = "+";
+	}
+
+	public void hitCrossHair()
+	{
+		if (photonView.IsMine)
+			hitMarkerCoroutine = StartCoroutine(HitMarker());
+	}
 
 	#endregion
 }
