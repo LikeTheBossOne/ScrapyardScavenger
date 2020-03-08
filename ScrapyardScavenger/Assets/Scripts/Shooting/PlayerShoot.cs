@@ -82,7 +82,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
     IEnumerator Reload(float wait)
     {
         equipmentManager.isReloading = true;
-
+		this.GetComponent<PlayerHUD>().crossHairReloading();
         reloadingModel = gunParent.GetChild(equipmentManager.currentIndex).GetChild(0);
 
         // ANIMATION
@@ -102,6 +102,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
         pHud.AmmoChanged(gun.baseClipSize, gun.baseClipSize);
 
         equipmentManager.isReloading = false;
+		this.GetComponent<PlayerHUD>().crossHairReloaded();
         gunState.reloadStop();
     }
 
@@ -143,9 +144,10 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
                     
                 }
 
+				this.GetComponent<PlayerHUD>().hitCrossHair();
                 if (enemy.tag == "Shambler")
                 {
-                    enemy.GetPhotonView().RPC("TakeDamageShambler", RpcTarget.All, (int)gun.baseDamage);
+					enemy.GetPhotonView().RPC("TakeDamageShambler", RpcTarget.All, (int)gun.baseDamage);
                 }
                 else
                 {
@@ -180,7 +182,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
             reloadingModel.localRotation = Quaternion.identity;
         
         equipmentManager.isReloading = false;
-
+		this.GetComponent<PlayerHUD>().crossHairReloaded();
         GunState gunState = gunParent.GetChild(equipmentManager.currentIndex).GetComponent<GunState>();
         pHud.AmmoChanged(gunState.ammoCount, gunState.baseAmmo);
     }
