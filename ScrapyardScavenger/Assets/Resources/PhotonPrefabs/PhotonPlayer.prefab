@@ -356,6 +356,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHealthSlider: {fileID: 0}
   playerAmmoCount: {fileID: 0}
+  playerCrosshair: {fileID: 0}
 --- !u!114 &1889014333739709194
 MonoBehaviour:
   m_ObjectHideFlags: 0

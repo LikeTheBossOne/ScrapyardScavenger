@@ -72,7 +72,7 @@ public class Extraction : MonoBehaviourPunCallbacks
             if (dist <= (leaveRadius + 0.5f))
             {
                 // inside the circle so notify the other player they can leave
-                GetComponent<PlayerManager>().getOtherPlayer().GetPhotonView().RPC("SecondPlayerReadyToLeave", RpcTarget.All);
+                GetComponent<PlayerManager>().GetOtherPlayer().GetPhotonView().RPC("SecondPlayerReadyToLeave", RpcTarget.All);
                 photonView.RPC("SecondPlayerReadyToLeave", RpcTarget.All);
             }
         }
@@ -83,7 +83,7 @@ public class Extraction : MonoBehaviourPunCallbacks
                 // if there are 2 players alive, signal the other player that you are leaving
                 if (GameControllerSingleton.instance.aliveCount == 2)
                 {
-                    GetComponent<PlayerManager>().getOtherPlayer().GetPhotonView().RPC("FirstPlayerReadyToLeave", RpcTarget.All);
+                    GetComponent<PlayerManager>().GetOtherPlayer().GetPhotonView().RPC("FirstPlayerReadyToLeave", RpcTarget.All);
                     IAmReadyToLeave();
 
                     // reset the text
@@ -114,7 +114,7 @@ public class Extraction : MonoBehaviourPunCallbacks
                 // if there are 2 players, signal the other
                 if (GameControllerSingleton.instance.aliveCount == 2)
                 {
-                    GetComponent<PlayerManager>().getOtherPlayer().GetPhotonView().RPC("CancelLeave", RpcTarget.All);
+                    GetComponent<PlayerManager>().GetOtherPlayer().GetPhotonView().RPC("CancelLeave", RpcTarget.All);
                 }
 
             }
@@ -146,7 +146,7 @@ public class Extraction : MonoBehaviourPunCallbacks
     public void OnDeath()
     {
         photonView.RPC("CancelLeave", RpcTarget.All);
-        GetComponent<PlayerManager>().getOtherPlayer().GetPhotonView().RPC("CancelLeave", RpcTarget.All);
+        GetComponent<PlayerManager>().GetOtherPlayer().GetPhotonView().RPC("CancelLeave", RpcTarget.All);
     }
 
     #endregion

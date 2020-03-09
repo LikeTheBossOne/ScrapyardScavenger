@@ -12,7 +12,7 @@ public class AIPlayerManager : MonoBehaviour
         players = new List<RectTransform>();
     }
 
-    public void register(RectTransform adding)
+    public void Register(RectTransform adding)
     {
         players.Add(adding);
     }

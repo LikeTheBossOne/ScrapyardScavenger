@@ -12,23 +12,21 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     // this just tracks the other player
     private GameObject otherPlayer;
 
-    public void setOtherPlayer(GameObject o)
+    public void SetOtherPlayer(GameObject o)
     {
         otherPlayer = o;
     }
 
-    public GameObject getOtherPlayer()
+    public GameObject GetOtherPlayer()
     {
         return otherPlayer;
     }
     
-    // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         // if there are 2 players, then get the other player once

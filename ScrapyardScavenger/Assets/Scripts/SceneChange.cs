@@ -8,14 +8,5 @@ public class SceneChange : MonoBehaviourPun
     void Start()
     {
         DontDestroyOnLoad(this.gameObject);
-
-        if (photonView.IsMine)
-            GameObject.Find("UIObserver").GetComponent<HomeBaseNetworkManager>().playerController = gameObject;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

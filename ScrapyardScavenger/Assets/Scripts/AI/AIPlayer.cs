@@ -7,7 +7,7 @@ public class AIPlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        FindObjectOfType<AIPlayerManager>().register(GetComponentInParent<RectTransform>());
+        FindObjectOfType<AIPlayerManager>().Register(GetComponentInParent<RectTransform>());
     }
 
     
