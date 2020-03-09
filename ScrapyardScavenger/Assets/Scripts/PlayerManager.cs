@@ -21,11 +21,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     {
         return otherPlayer;
     }
-    
-    void Start()
-    {
-        
-    }
 
     void FixedUpdate()
     {
