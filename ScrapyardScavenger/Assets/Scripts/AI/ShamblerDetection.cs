@@ -45,21 +45,15 @@ public class ShamblerDetection : MonoBehaviour
         foreach (GameObject obj in pManager.players)
         {
             RectTransform p = obj.GetComponent<RectTransform>();
-            // if (p == null) continue;
 
-            //Debug.Log("In range.");
             if (distance(p) < visionLimit) {
                 RaycastHit[] seen = Physics.RaycastAll(transform.position, p.position-transform.position, visionLimit);
-                //Debug.Log(seen.Length);
                 foreach (var next in seen)
                 {
-                   // Debug.Log("Contains:" + self.Contains(next.collider));
-                    //Debug.Log("Distance:" + (next.distance < closest.distance));
                     
                     //will need to change this to rigid body later
                     if ((!self.Contains(next.collider) || next.rigidbody) && next.distance < closest.distance)
                     {
-                       //Debug.Log("Collision detected");
                         //player object uses rigid body and doesn't have a collider
                         closest = next;
                         if (closest.rigidbody)
@@ -75,23 +69,10 @@ public class ShamblerDetection : MonoBehaviour
             }
         }
 
-        //front most object is a player
-        //playermanager.contains(closest.collider.getComponentInParent<transform>());
-        //closest.collider.GetComponentInParent<CharacterController>()
-        /*if (closest.collider)
-        {
-            Debug.Log(pManager.players.Contains(closest.collider.GetComponent<RectTransform>()));
-        }
-        else
-        {
-            Debug.Log("closet.collider null");
-        }*/
-
         if (rigid)
         {
             if (closest.rigidbody && closest.rigidbody.detectCollisions && pManager.players.Contains(closest.rigidbody.gameObject))
             {
-                //Debug.Log("Rigidbody detected");
                 success = true;
                 detected = closest.rigidbody.GetComponentInParent<RectTransform>();
             }
@@ -100,15 +81,11 @@ public class ShamblerDetection : MonoBehaviour
         {
             if (closest.collider && pManager.players.Contains(closest.collider.gameObject))
             {
-                //Debug.Log("Player detected");
                 success = true;
                 //detected = the playerObject that hit belongs to
                 detected = closest.collider.GetComponentInParent<RectTransform>();
             }
         }
-
-        
-        //System.Console.WriteLine(success);
         return success;
     }
     //Handles being shot, probably an event handler in the future
