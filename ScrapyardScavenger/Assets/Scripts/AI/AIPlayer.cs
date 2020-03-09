@@ -5,10 +5,10 @@ using UnityEngine;
 public class AIPlayer : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Start()
-    {
-        FindObjectOfType<MasterPlayerManager>().Register(GetComponentInParent<RectTransform>());
-    }
+//    void Start()
+//    {
+//        FindObjectOfType<InGamePlayerManager>().Register(GetComponentInParent<RectTransform>());
+//    }
 
     
 }

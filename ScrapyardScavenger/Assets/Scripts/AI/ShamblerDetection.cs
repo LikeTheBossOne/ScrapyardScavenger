@@ -10,7 +10,7 @@ public class ShamblerDetection : MonoBehaviour
     //in unity distance units
     public float visionLimit = 20.0F;
     public RectTransform detected;
-    public MasterPlayerManager pManager;
+    public InGamePlayerManager pManager;
     public bool success;
     public bool run;
     public Collider colliderCheck;
@@ -22,7 +22,7 @@ public class ShamblerDetection : MonoBehaviour
     private void OnEnable()
     {
         timeShotAt = Mathf.NegativeInfinity;
-        pManager = FindObjectOfType<MasterPlayerManager>();
+        pManager = FindObjectOfType<InGamePlayerManager>();
         success = false;
         run = false;
         rigid = false;
@@ -42,8 +42,9 @@ public class ShamblerDetection : MonoBehaviour
         closest.distance = Mathf.Infinity;
         //Debug.Log("Outer loop.");
         //Debug.Log("Total Players: " + pManager.players.Count);
-        foreach (var p in pManager.players)
+        foreach (GameObject obj in pManager.players)
         {
+            RectTransform p = obj.GetComponent<RectTransform>();
             // if (p == null) continue;
 
             //Debug.Log("In range.");
@@ -88,7 +89,7 @@ public class ShamblerDetection : MonoBehaviour
 
         if (rigid)
         {
-            if (closest.rigidbody && closest.rigidbody.detectCollisions && pManager.players.Contains(closest.rigidbody.gameObject.GetComponent<RectTransform>()))
+            if (closest.rigidbody && closest.rigidbody.detectCollisions && pManager.players.Contains(closest.rigidbody.gameObject))
             {
                 //Debug.Log("Rigidbody detected");
                 success = true;
@@ -97,7 +98,7 @@ public class ShamblerDetection : MonoBehaviour
         }
         else
         {
-            if (closest.collider && pManager.players.Contains(closest.collider.GetComponent<RectTransform>()))
+            if (closest.collider && pManager.players.Contains(closest.collider.gameObject))
             {
                 //Debug.Log("Player detected");
                 success = true;

@@ -5,44 +5,36 @@ using Photon.Pun;
 
 public class PlayerManager : MonoBehaviourPunCallbacks
 {
+    public InGamePlayerManager inGamePlayerManager;
 
-    // should be a singleton
-    // add it later
-
-    // this just tracks the other player
-    private GameObject otherPlayer;
-
-    public void SetOtherPlayer(GameObject o)
+    void Start()
     {
-        otherPlayer = o;
+        inGamePlayerManager = FindObjectOfType<InGamePlayerManager>();
+
+        inGamePlayerManager.Register(gameObject);
     }
 
-    public GameObject GetOtherPlayer()
-    {
-        return otherPlayer;
-    }
-
-    void FixedUpdate()
-    {
-        // if there are 2 players, then get the other player once
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 2 && otherPlayer == null)
-        {
-            // try and get the other player
-            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-            if (players.Length != 0)
-            {
-                foreach(GameObject thisPlayer in players)
-                {
-                    if (thisPlayer.name == "Body") continue;
-                    Debug.Log("Player name: " + thisPlayer.name);
-                    if (!thisPlayer.GetPhotonView().IsMine)
-                    {
-                        Debug.Log("This is the other player");
-                        otherPlayer = thisPlayer;
-                        return;
-                    }
-                }
-            }
-        }
-    }
+//    void FixedUpdate()
+//    {
+//        // if there are 2 players, then get the other player once
+//        if (PhotonNetwork.CurrentRoom.PlayerCount == 2 && otherPlayer == null)
+//        {
+//            // try and get the other player
+//            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+//            if (players.Length != 0)
+//            {
+//                foreach(GameObject thisPlayer in players)
+//                {
+//                    if (thisPlayer.name == "Body") continue;
+//                    Debug.Log("Player name: " + thisPlayer.name);
+//                    if (!thisPlayer.GetPhotonView().IsMine)
+//                    {
+//                        Debug.Log("This is the other player");
+//                        otherPlayer = thisPlayer;
+//                        return;
+//                    }
+//                }
+//            }
+//        }
+//    }
 }
