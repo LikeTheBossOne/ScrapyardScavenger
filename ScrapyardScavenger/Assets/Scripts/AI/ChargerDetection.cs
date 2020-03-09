@@ -12,7 +12,7 @@ public class ChargerDetection : MonoBehaviour
     public Transform distToDetected;
     public Transform vendeta;
     public Transform distToVendeta;
-    public AIPlayerManager pManager;
+    public MasterPlayerManager pManager;
     public bool success;
     public bool run;
     public Collider colliderCheck;
@@ -25,7 +25,7 @@ public class ChargerDetection : MonoBehaviour
     void Start()
     {
         timeShotAt = Mathf.NegativeInfinity;
-        pManager = FindObjectOfType<AIPlayerManager>();
+        pManager = FindObjectOfType<MasterPlayerManager>();
         success = false;
         run = false;
         damageCounts = new List<float>();

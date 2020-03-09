@@ -17,7 +17,7 @@ public class ShamblerAI : MonoBehaviour
     public State currentState;
     public Vector3 moveTo;
     public NavMeshAgent nav;
-    public AIPlayerManager players;
+    public MasterPlayerManager players;
     //intent, second based countdown
     //public int resetDelay = 600;
     //private int timer;
@@ -36,7 +36,7 @@ public class ShamblerAI : MonoBehaviour
         aggroTimeLimit = 10;
         senses = GetComponent<ShamblerDetection>();
         nav = GetComponentInParent<NavMeshAgent>();
-        players = FindObjectOfType<AIPlayerManager>();
+        players = FindObjectOfType<MasterPlayerManager>();
         wandOffset = 10;
         toPlayerOffset = 20;
         wandAngle = 60;

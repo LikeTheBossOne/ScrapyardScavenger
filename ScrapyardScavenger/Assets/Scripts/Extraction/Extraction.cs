@@ -143,7 +143,7 @@ public class Extraction : MonoBehaviourPunCallbacks
 
     #region Events
 
-    public void OnDeath()
+    public void OnDeath(GameObject deadPlayer)
     {
         photonView.RPC("CancelLeave", RpcTarget.All);
         GetComponent<PlayerManager>().GetOtherPlayer().GetPhotonView().RPC("CancelLeave", RpcTarget.All);

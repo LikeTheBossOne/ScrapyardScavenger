@@ -7,7 +7,7 @@ using Photon.Pun;
 public class AcidSpit : MonoBehaviour
 {
     public Collider shooter { get; set; }
-    public AIPlayerManager pManage { get; set; }
+    public MasterPlayerManager pManage { get; set; }
     public int maxExistTime = 10;
     public int Velocity = 10;
     public Vector3 direction;
@@ -19,7 +19,7 @@ public class AcidSpit : MonoBehaviour
     }
     private void OnEnable()
     {
-        pManage = FindObjectOfType<AIPlayerManager>();
+        pManage = FindObjectOfType<MasterPlayerManager>();
         Destroy(gameObject, maxExistTime);
     }
     [PunRPC]

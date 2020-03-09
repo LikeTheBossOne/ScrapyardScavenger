@@ -16,7 +16,7 @@ public class ChargerAI : MonoBehaviour
     public State state {get; set;}
     public Vector3 moveTo;
     public NavMeshAgent nav;
-    public AIPlayerManager players;
+    public MasterPlayerManager players;
     //intent, second based countdown
     //public int resetDelay = 600;
     //private int timer;
@@ -35,7 +35,7 @@ public class ChargerAI : MonoBehaviour
         aggroTimeLimit = 10;
         senses = GetComponent<ChargerDetection>();
         nav = GetComponentInParent<NavMeshAgent>();
-        players = FindObjectOfType<AIPlayerManager>();
+        players = FindObjectOfType<MasterPlayerManager>();
         wandOffset = 10;
         toPlayerOffset = 20;
         wandAngle = 60;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 
-public class AIPlayerManager : MonoBehaviour
+public class MasterPlayerManager : MonoBehaviour
 {
     public List<RectTransform> players;
 
@@ -15,13 +15,11 @@ public class AIPlayerManager : MonoBehaviour
     public void Register(RectTransform adding)
     {
         players.Add(adding);
+        adding.GetComponent<Death>().OnPlayerDeath += PlayerDied;
     }
 
-    void Update()
+    public void PlayerDied(GameObject o)
     {
-        foreach (var p in players)
-        {
-            if (p == null) players.Remove(p);
-        }
+        players.Remove(o.GetComponent<RectTransform>());
     }
 }
