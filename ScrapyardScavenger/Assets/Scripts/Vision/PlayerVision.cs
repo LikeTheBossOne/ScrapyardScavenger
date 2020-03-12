@@ -93,7 +93,7 @@ public class PlayerVision : MonoBehaviourPunCallbacks
         }
     }
 
-    public void OnDeath()
+    public void OnDeath(GameObject deadPlayer)
     {
         isPaused = true;
     }

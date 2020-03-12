@@ -156,7 +156,7 @@ MonoBehaviour:
   currentState: 0
   moveTo: {x: 0, y: 0, z: 0}
   nav: {fileID: 0}
-  players: {fileID: 0}
+  pManager: {fileID: 0}
   aggroTimeLimit: 0
   wandOffset: 0
   toPlayerOffset: 0

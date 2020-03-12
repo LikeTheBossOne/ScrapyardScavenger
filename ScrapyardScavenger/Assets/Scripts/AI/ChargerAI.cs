@@ -16,7 +16,7 @@ public class ChargerAI : MonoBehaviour
     public State state {get; set;}
     public Vector3 moveTo;
     public NavMeshAgent nav;
-    public AIPlayerManager players;
+    public InGamePlayerManager pManager;
     //intent, second based countdown
     //public int resetDelay = 600;
     //private int timer;
@@ -35,7 +35,7 @@ public class ChargerAI : MonoBehaviour
         aggroTimeLimit = 10;
         senses = GetComponent<ChargerDetection>();
         nav = GetComponentInParent<NavMeshAgent>();
-        players = FindObjectOfType<AIPlayerManager>();
+        pManager = FindObjectOfType<InGamePlayerManager>();
         wandOffset = 10;
         toPlayerOffset = 20;
         wandAngle = 60;
@@ -207,15 +207,17 @@ public class ChargerAI : MonoBehaviour
     //Finds the closest player
     Transform findClosestPlayer()
     {
-        Transform closest = null;
+        RectTransform closest = null;
         double cDist = Mathf.Infinity;
         //Find closest player or vehicle
-        foreach (Transform ally in players.players)
+        foreach (GameObject obj in pManager.players)
         {
-            double dist = distanceToOther(ally.transform);
+            RectTransform player = obj.GetComponent<RectTransform>();
+
+            double dist = distanceToOther(player);
             if (dist < cDist)
             {
-                closest = ally.transform;
+                closest = player;
                 cDist = dist;
             }
         }

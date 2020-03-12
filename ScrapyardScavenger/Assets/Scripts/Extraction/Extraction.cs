@@ -72,7 +72,7 @@ public class Extraction : MonoBehaviourPunCallbacks
             if (dist <= (leaveRadius + 0.5f))
             {
                 // inside the circle so notify the other player they can leave
-                GetComponent<PlayerManager>().getOtherPlayer().GetPhotonView().RPC("SecondPlayerReadyToLeave", RpcTarget.All);
+                GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetPhotonView().RPC("SecondPlayerReadyToLeave", RpcTarget.All);
                 photonView.RPC("SecondPlayerReadyToLeave", RpcTarget.All);
             }
         }
@@ -83,7 +83,7 @@ public class Extraction : MonoBehaviourPunCallbacks
                 // if there are 2 players alive, signal the other player that you are leaving
                 if (GameControllerSingleton.instance.aliveCount == 2)
                 {
-                    GetComponent<PlayerManager>().getOtherPlayer().GetPhotonView().RPC("FirstPlayerReadyToLeave", RpcTarget.All);
+                    GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetPhotonView().RPC("FirstPlayerReadyToLeave", RpcTarget.All);
                     IAmReadyToLeave();
 
                     // reset the text
@@ -114,7 +114,7 @@ public class Extraction : MonoBehaviourPunCallbacks
                 // if there are 2 players, signal the other
                 if (GameControllerSingleton.instance.aliveCount == 2)
                 {
-                    GetComponent<PlayerManager>().getOtherPlayer().GetPhotonView().RPC("CancelLeave", RpcTarget.All);
+                    GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetPhotonView().RPC("CancelLeave", RpcTarget.All);
                 }
 
             }
@@ -143,10 +143,10 @@ public class Extraction : MonoBehaviourPunCallbacks
 
     #region Events
 
-    public void OnDeath()
+    public void OnDeath(GameObject deadPlayer)
     {
         photonView.RPC("CancelLeave", RpcTarget.All);
-        GetComponent<PlayerManager>().getOtherPlayer().GetPhotonView().RPC("CancelLeave", RpcTarget.All);
+        GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetPhotonView().RPC("CancelLeave", RpcTarget.All);
     }
 
     #endregion
@@ -217,14 +217,12 @@ public class Extraction : MonoBehaviourPunCallbacks
 
     private IEnumerator LeaveGame()
     {
-        Debug.Log("Leaving Game");
         float time = 0;
         float totalWaitTime = 4.0f;
         GameObject evacuateCanvas = GameObject.Find("Exit Canvas");
         while (time < totalWaitTime)
         {
             evacuateCanvas.GetComponentInChildren<Text>().text = "Leaving in... " + (totalWaitTime - time);
-            Debug.Log($"{totalWaitTime - time}");
             time++;
             yield return new WaitForSeconds(1);
         }

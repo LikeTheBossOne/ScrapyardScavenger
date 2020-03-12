@@ -18,8 +18,6 @@ public class Medpack : Item
         manager.GetComponent<PlayerHUD>().heal(difference);
 
         // remove this from the manager?
-        Debug.Log("Before removing, count: " + manager.itemCounts[this.id]);
         manager.itemCounts[this.id]--;
-        Debug.Log("After removing, count: " + manager.itemCounts[this.id]);
     }
 }

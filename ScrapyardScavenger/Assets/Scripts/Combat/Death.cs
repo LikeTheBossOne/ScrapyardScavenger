@@ -12,7 +12,7 @@ public class Death : MonoBehaviourPun
     
     private GameObject UI;
 
-    public delegate void PlayerDeath();
+    public delegate void PlayerDeath(GameObject player);
     public event PlayerDeath OnPlayerDeath;
 
     void Start()
@@ -36,7 +36,7 @@ public class Death : MonoBehaviourPun
         // Hit all death events
         try
         {
-            OnPlayerDeath?.Invoke();
+            OnPlayerDeath?.Invoke(gameObject);
         }
         catch (Exception)
         {

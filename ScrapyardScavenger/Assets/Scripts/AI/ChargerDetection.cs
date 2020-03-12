@@ -12,7 +12,7 @@ public class ChargerDetection : MonoBehaviour
     public Transform distToDetected;
     public Transform vendeta;
     public Transform distToVendeta;
-    public AIPlayerManager pManager;
+    public InGamePlayerManager pManager;
     public bool success;
     public bool run;
     public Collider colliderCheck;
@@ -25,7 +25,7 @@ public class ChargerDetection : MonoBehaviour
     void Start()
     {
         timeShotAt = Mathf.NegativeInfinity;
-        pManager = FindObjectOfType<AIPlayerManager>();
+        pManager = FindObjectOfType<InGamePlayerManager>();
         success = false;
         run = false;
         damageCounts = new List<float>();
@@ -53,18 +53,15 @@ public class ChargerDetection : MonoBehaviour
         hitBox = self;
         RaycastHit closest = new RaycastHit();
         closest.distance = Mathf.Infinity;
-        Debug.Log("Outer loop.");
-        foreach (var p in pManager.players)
+        foreach (GameObject obj in pManager.players)
         {
-            Debug.Log("In range.");
+            RectTransform p = obj.GetComponent<RectTransform>();
+
             if (distance(p) < visionLimit)
             {
                 RaycastHit[] seen = Physics.RaycastAll(transform.position, p.position - transform.position, visionLimit);
-                Debug.Log(seen.Length);
                 foreach (var next in seen)
                 {
-                    Debug.Log("Contains:" + self.Contains(next.collider));
-                    Debug.Log("Distance:" + (next.distance < closest.distance));
                     if (!self.Contains(next.collider) && next.distance < closest.distance)
                     {
                         run = true;
@@ -82,7 +79,7 @@ public class ChargerDetection : MonoBehaviour
         {
 
         }
-        if (closest.collider && pManager.players.Contains(closest.collider.GetComponent<Transform>()))
+        if (closest.collider && pManager.players.Contains(closest.collider.gameObject))
         {
             success = true;
             //detected = the playerObject that hit belongs to
@@ -102,12 +99,12 @@ public class ChargerDetection : MonoBehaviour
             {
                 damageCounts[i] = 0;
             }
-            damageCounts[pManager.players.IndexOf(shooter.GetComponent<RectTransform>())] = damage;
+            damageCounts[pManager.players.IndexOf(shooter)] = damage;
         }
         else
         {
             //aggro maintained, check damage counts, update damage tracker for shooter
-            damageCounts[pManager.players.IndexOf(shooter.GetComponent<RectTransform>())] += damage;
+            damageCounts[pManager.players.IndexOf(shooter)] += damage;
         }
         //reset timer, update target to first player with highest damage count
         timeShotAt = Time.time;
