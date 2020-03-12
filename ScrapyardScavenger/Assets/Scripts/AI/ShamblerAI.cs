@@ -55,16 +55,13 @@ public class ShamblerAI : MonoBehaviour
         
         if (senses.visionCheck())
         {
-            //Debug.Log("Range check");
             if (distanceToOther(senses.detected) <= weapons.meleeRange )
             {
-                //Debug.Log("In bite range");
                 //&& !weapons.meleeOnCoolDown()
                 currentState = State.bite;
             }else
             if (distanceToOther(senses.detected) <= weapons.spitRange )
             {
-                //Debug.Log("In spit range");
                 // target in attack range/
                 //currentState = State.attack;
                 //&& !weapons.spitOnCoolDown()
@@ -80,7 +77,6 @@ public class ShamblerAI : MonoBehaviour
         {
             currentState = State.wander;
         }
-        //Debug.Log("State: " + currentState);
     } 
     // Update is called once per frame
     public void handleState()

@@ -217,14 +217,12 @@ public class Extraction : MonoBehaviourPunCallbacks
 
     private IEnumerator LeaveGame()
     {
-        Debug.Log("Leaving Game");
         float time = 0;
         float totalWaitTime = 4.0f;
         GameObject evacuateCanvas = GameObject.Find("Exit Canvas");
         while (time < totalWaitTime)
         {
             evacuateCanvas.GetComponentInChildren<Text>().text = "Leaving in... " + (totalWaitTime - time);
-            Debug.Log($"{totalWaitTime - time}");
             time++;
             yield return new WaitForSeconds(1);
         }

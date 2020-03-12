@@ -53,20 +53,15 @@ public class ChargerDetection : MonoBehaviour
         hitBox = self;
         RaycastHit closest = new RaycastHit();
         closest.distance = Mathf.Infinity;
-        Debug.Log("Outer loop.");
         foreach (GameObject obj in pManager.players)
         {
             RectTransform p = obj.GetComponent<RectTransform>();
 
-            Debug.Log("In range.");
             if (distance(p) < visionLimit)
             {
                 RaycastHit[] seen = Physics.RaycastAll(transform.position, p.position - transform.position, visionLimit);
-                Debug.Log(seen.Length);
                 foreach (var next in seen)
                 {
-                    Debug.Log("Contains:" + self.Contains(next.collider));
-                    Debug.Log("Distance:" + (next.distance < closest.distance));
                     if (!self.Contains(next.collider) && next.distance < closest.distance)
                     {
                         run = true;

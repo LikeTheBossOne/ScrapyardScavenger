@@ -26,7 +26,6 @@ public class ShamblerDetection : MonoBehaviour
         success = false;
         run = false;
         rigid = false;
-        //Debug.Log("Does this even work?");
     }
     //Handles seeing, capped distance ray cast, currently a detection sphere
     //try looking for rectangle transform
@@ -40,8 +39,6 @@ public class ShamblerDetection : MonoBehaviour
         hitBox = self;
         RaycastHit closest = new RaycastHit();
         closest.distance = Mathf.Infinity;
-        //Debug.Log("Outer loop.");
-        //Debug.Log("Total Players: " + pManager.players.Count);
         foreach (GameObject obj in pManager.players)
         {
             RectTransform p = obj.GetComponent<RectTransform>();

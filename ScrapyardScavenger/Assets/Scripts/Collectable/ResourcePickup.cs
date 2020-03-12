@@ -24,7 +24,6 @@ public class ResourcePickup : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log(this.type);
             int count = 1;
             // before adding to the count, check the player's Scavenger skill
             /*SkillManager skillManager = other.transform.parent.GetComponent<SkillManager>();
@@ -62,7 +61,6 @@ public class ResourcePickup : MonoBehaviour
                     // calculate the count?
                     //Random random = new Random();
                     float randomNumber = (float)Random.value;
-                    Debug.Log("Random number: " + randomNumber + ", chance: " + chance);
                     if (randomNumber <= chance)
                     {
                         count = 2;
