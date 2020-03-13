@@ -186,6 +186,11 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
 		return resources;
 	}
 
+	public HashSet<Resource> getResourceSet()
+	{
+		return resourceSet;
+	}
+
 	public void AddResource(Resource r, int count)
 	{
 		if (photonView.IsMine && resources.Count < 44) {
