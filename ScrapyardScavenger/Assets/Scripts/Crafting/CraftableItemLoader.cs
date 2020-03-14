@@ -18,7 +18,7 @@ public class CraftableItemLoader : MonoBehaviour
 	private bool loaded;
 
 	// Start is called before the first frame update
-    void Start()	// Probably change to onEnabled if more than 1 object doesn't load
+	void Start()
     {
 		loaded = false;
     }
@@ -35,6 +35,25 @@ public class CraftableItemLoader : MonoBehaviour
 			craftItemText.text = craft.name;
 			craftItemImage.sprite = craft.icon;
 
+			switch(craft.recipe.resources.Count){
+				case 3:
+					craftReq3Image.sprite = craft.recipe.resources[2].item.icon;
+					craftReq3Count.text = craft.recipe.resources[2].amount.ToString();
+					goto case 2;	// Idk why C# can't allow for cascading cases like in any other language
+				case 2:
+					craftReq2Image.sprite = craft.recipe.resources[1].item.icon;
+					craftReq2Count.text = craft.recipe.resources[1].amount.ToString();
+					goto case 1;
+				case 1:
+					craftReq1Image.sprite = craft.recipe.resources[0].item.icon;
+					craftReq1Count.text = craft.recipe.resources[0].amount.ToString();
+					break;		// C# switch statements are dumb; apparently not having this line breaks the code
+			}
+
+			RenderImage(craftReq1Image);
+			RenderImage(craftReq2Image);
+			RenderImage(craftReq3Image);
+
 			loaded = true;
 		}
     }
@@ -44,5 +63,18 @@ public class CraftableItemLoader : MonoBehaviour
 		GameObject generator = GameObject.FindGameObjectsWithTag("crafter")[0];
 		generator.GetComponent<CraftingUIGenerator>().Craft(craft);
 		generator.GetComponent<CraftingUIGenerator>().GenerateListOfCraftables();
+	}
+
+	private void RenderImage(Image i)
+	{
+		if (i.sprite == null) {
+			Color slotColor = i.color;
+			slotColor.a = 0.0f;
+			i.color = slotColor;
+		} else {
+			Color slotColor = i.color;
+			slotColor.a = 1.0f;
+			i.color = slotColor;
+		}
 	}
 }
