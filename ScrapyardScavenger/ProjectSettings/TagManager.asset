@@ -28,6 +28,7 @@ TagManager:
   - slot5Text
   - slot4Text
   - crosshair
+  - crafter
   layers:
   - Default
   - TransparentFX

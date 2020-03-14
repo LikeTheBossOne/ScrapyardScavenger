@@ -42,7 +42,7 @@ public class ResourcePersistent {
 	private int count;
 
 	public Resource Resource { get { return this.resource; } }
-	public int Count { get { return this.count; } }
+	public int Count { get { return this.count; } set { this.count = value; } }
 
 	public ResourcePersistent(Resource r, int c) {
 		this.resource = r;

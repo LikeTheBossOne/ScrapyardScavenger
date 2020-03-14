@@ -93,7 +93,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!224 &5864512589611697445
 RectTransform:
@@ -466,6 +466,7 @@ GameObject:
   - component: {fileID: 8646383654475881223}
   - component: {fileID: 293116054599033342}
   - component: {fileID: 3363857088580664194}
+  - component: {fileID: 7353762750987231420}
   m_Layer: 5
   m_Name: CraftableItem
   m_TagString: Untagged
@@ -579,7 +580,38 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 293116054599033342}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7353762750987231420}
+        m_MethodName: Craft
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7353762750987231420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7103003026792392640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edfc007f13175824da9f7933c3d983ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  craftItemText: {fileID: 6984153899825749079}
+  craftItemImage: {fileID: 8450189760761559678}
+  craftReq1Image: {fileID: 5819213205707135153}
+  craftReq1Count: {fileID: 1889768030286551148}
+  craftReq2Image: {fileID: 4843256231530574008}
+  craftReq2Count: {fileID: 6550049626015162680}
+  craftReq3Image: {fileID: 8835470523121283527}
+  craftReq3Count: {fileID: 7092153827572790037}
 --- !u!1 &7255044879800373136
 GameObject:
   m_ObjectHideFlags: 0
