@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
@@ -22,9 +23,20 @@ public class DisplayResourceInfo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		if (controller != null) {
+			try {
+				rp = controller.GetComponent<EquipmentManager>().getResources()[slotIndex];
+			} catch (Exception e) {
+				// The slot has nothing in it yet
+				rp = null;
+			}
+		}
 		if (rp != null) {
 			image.sprite = rp.Resource.icon;
 			countText.text = rp.Count.ToString();
+		} else {
+			image.sprite = null;
+			countText.text = "";
 		}
 		if (image.sprite != null) {
 			Color slotColor = image.color;
@@ -49,6 +61,5 @@ public class DisplayResourceInfo : MonoBehaviour
 				}
 			}
 		}
-		rp = controller.GetComponent<EquipmentManager>().getResources()[slotIndex];
 	}
 }

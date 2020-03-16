@@ -40,6 +40,12 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
 		resources = new List<ResourcePersistent>();
 		resourceSet = new HashSet<Resource>();
+
+		// FOR DEBUGGING ONLY : REMOVE AFTER TESTING CRAFTING FUNCTIONALITY
+		AddResource(inventoryManager.resources[14], 4);
+		AddResource(inventoryManager.resources[10], 1);
+		AddResource(inventoryManager.resources[2], 1);
+		AddResource(inventoryManager.resources[3], 3);
     }
 
     void Update()
@@ -186,6 +192,11 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
 		return resources;
 	}
 
+	public HashSet<Resource> getResourceSet()
+	{
+		return resourceSet;
+	}
+
 	public void AddResource(Resource r, int count)
 	{
 		if (photonView.IsMine && resources.Count < 44) {
@@ -202,6 +213,26 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
 				int idx = resources.IndexOf(old);
 				resources.RemoveAt(idx);
 				resources.Insert(idx, new ResourcePersistent(r, count));
+			}
+		}
+	}
+
+	public void RemoveResource(Resource r, int count)
+	{
+		if (photonView.IsMine) {
+			ResourcePersistent rp = null;
+			foreach (ResourcePersistent re in resources) {
+				if (re.Resource == r) {
+					re.Count -= count;
+					if (re.Count <= 0) {
+						rp = re;
+					}
+					break;
+				}
+			}
+			if (rp != null) {
+				resources.Remove(rp);
+				resourceSet.Remove(rp.Resource);
 			}
 		}
 	}

@@ -61,18 +61,6 @@ public class InventoryManager : MonoBehaviourPun
         invSet = 0;
     }
 
-//	public GameObject getController()
-//	{
-//		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("GameController"))
-//		{
-//			if (obj.GetPhotonView().IsMine)
-//			{
-//				return obj;
-//			}
-//		}
-//		return null;
-//	}
-
     void Update()
     {
         if (!photonView.IsMine) return;
