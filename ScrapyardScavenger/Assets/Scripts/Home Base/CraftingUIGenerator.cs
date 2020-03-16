@@ -75,7 +75,6 @@ public class CraftingUIGenerator : MonoBehaviour
 	public void Craft(CraftableObject c) {
 		foreach (ResourceAmount r in c.recipe.resources) {
 			controller.GetComponent<EquipmentManager>().RemoveResource(r.item, r.amount);
-			controller.GetComponent<InventoryManager>().resourceCounts[r.item.id] -= r.amount;
 		}
 		if (c is Item)
 		{
