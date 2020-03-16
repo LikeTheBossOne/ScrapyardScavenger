@@ -126,7 +126,7 @@ public class Extraction : MonoBehaviourPunCallbacks
     {
         LayerMask layerMask = LayerMask.GetMask("Truck");
 
-        // This would cast rays only against colliders in layer 12.
+        // This would cast rays only against colliders in ground 12.
         Transform eyeCam = transform.Find("Cameras/Main Player Cam");
         RaycastHit hit = new RaycastHit();
         if (Physics.Raycast(eyeCam.position, eyeCam.forward, out hit, 2.5f, layerMask))

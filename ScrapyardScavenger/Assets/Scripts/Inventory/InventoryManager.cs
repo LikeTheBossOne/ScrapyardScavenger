@@ -304,8 +304,10 @@ public class InventoryManager : MonoBehaviourPun
 					break;
 				}
 			}
-			GameObject.FindWithTag(r.Resource.imageSlotName + "Text").GetComponent<Text>().text = r.Count.ToString();
-		}
+            if (r.Resource.imageSlotName != null
+                && int.Parse(r.Resource.imageSlotName.Substring(4)) <= 8) 
+                GameObject.FindWithTag(r.Resource.imageSlotName + "Text").GetComponent<Text>().text = r.Count.ToString();
+        }
 		refreshInv = true;
 	}
 
