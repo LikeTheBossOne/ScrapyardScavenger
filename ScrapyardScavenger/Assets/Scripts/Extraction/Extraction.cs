@@ -14,9 +14,9 @@ public class Extraction : MonoBehaviourPunCallbacks
     public float leaveRadius;
 
     private GameObject evacCircle;
-    private bool otherPlayerWantsToLeave;
     private Coroutine leaveCoroutine;
-    private bool isLeaving;
+    private bool leaving;
+    private bool isLeader;
 
     private GameObject evacuateCanvas;
     private GameObject truck;
@@ -28,9 +28,9 @@ public class Extraction : MonoBehaviourPunCallbacks
     {
         playerController = GetComponent<PlayerControllerLoader>().playerController;
 
-        otherPlayerWantsToLeave = false;
-        isLeaving = false;
+        leaving = false;
         isLookingAtTruck = false;
+        isLeader = false;
 
         evacuateCanvas = GameObject.Find("Exit Canvas");
         truck = GameObject.Find("ExtractionTruck");
@@ -49,56 +49,42 @@ public class Extraction : MonoBehaviourPunCallbacks
 
     private void ExtractionCheck()
     {
-        if (LookingAtTruck() && !IsOtherPlayerLeaving() && !IsLeaving())
-        {
-            // show button pop up
-            evacuateCanvas.GetComponentInChildren<Text>().text = "Press B to escape!";
-            isLookingAtTruck = true;
-        }
-        // if both players are not leaving
-        else if (!IsLeaving() && !IsOtherPlayerLeaving())
-        {
-            // remove the button pop up
-            evacuateCanvas.GetComponentInChildren<Text>().text = ""; // SetActive(false);
-            isLookingAtTruck = false;
-        }
+        // check to see if player is looking at truck
+        isLookingAtTruck = LookingAtTruck();
 
-        if (IsOtherPlayerLeaving() && !IsLeaving())
+
+        // if neither player is leaving
+        if (!IsLeaving() && !IsOtherPlayerLeaving())
         {
-            // the other player wants to leave and you are not ready yet, so
+            if (isLookingAtTruck)
+            {
+                // show button pop up
+                evacuateCanvas.GetComponentInChildren<Text>().text = "Press B to escape!";
+            }
+            else
+            {
+                // remove the button pop up
+                evacuateCanvas.GetComponentInChildren<Text>().text = "";
+            }
+        }
+        // if the other player wants to leave and you are not ready yet
+        else if (!IsLeaving() && IsOtherPlayerLeaving())
+        {
             // check to see if you are within the circle or not
             // by calculating the distance between the player and the truck
             float dist = Vector3.Distance(truck.transform.position, transform.position);
             if (dist <= (leaveRadius + 0.5f))
             {
-                // inside the circle so notify the other player they can leave
-                GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetPhotonView().RPC("SecondPlayerReadyToLeave", RpcTarget.All);
-                photonView.RPC("SecondPlayerReadyToLeave", RpcTarget.All);
+                // inside the circle so notify the other player you are ready to leave
+                photonView.RPC("ReadyToLeave", RpcTarget.All);
             }
         }
-        else
+
+        // if the player pressed the button to leave
+        if (Input.GetKeyDown(KeyCode.B) && isLookingAtTruck && !IsLeaving())
         {
-            if (Input.GetKeyDown(KeyCode.B) && isLookingAtTruck && !IsLeaving())
-            {
-                // if there are 2 players alive, signal the other player that you are leaving
-                if (GameControllerSingleton.instance.aliveCount == 2)
-                {
-                    GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetPhotonView().RPC("FirstPlayerReadyToLeave", RpcTarget.All);
-                    IAmReadyToLeave();
-
-                    // reset the text
-                    evacuateCanvas.GetComponentInChildren<Text>().text = "Waiting for other player";
-
-                }
-
-                // if only 1 player, just start the countdown
-                else
-                {
-                    SoloLeave();
-                }
-            }
+            photonView.RPC("ReadyToLeave", RpcTarget.All);
         }
-
 
         // now check to see if the player is trying to escape from the circle
         if (IsLeaving())
@@ -108,12 +94,15 @@ public class Extraction : MonoBehaviourPunCallbacks
             float dist = Vector3.Distance(truck.transform.position, transform.position);
             if (dist > (leaveRadius + 0.5f))
             {
-                // outside of the circle?
-                // cancel the leaving
-                photonView.RPC("CancelLeave", RpcTarget.All);
-                // if there are 2 players, signal the other
-                if (GameControllerSingleton.instance.aliveCount == 2)
+                // outside of the circle
+                if (isLeader)
                 {
+                    photonView.RPC("CancelLeave", RpcTarget.All);
+                }
+                else
+                {
+                    // call cancel leave on the other player's photon view
+                    leaving = false;
                     GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetPhotonView().RPC("CancelLeave", RpcTarget.All);
                 }
 
@@ -129,14 +118,7 @@ public class Extraction : MonoBehaviourPunCallbacks
         // This would cast rays only against colliders in ground 12.
         Transform eyeCam = transform.Find("Cameras/Main Player Cam");
         RaycastHit hit = new RaycastHit();
-        if (Physics.Raycast(eyeCam.position, eyeCam.forward, out hit, 2.5f, layerMask))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return Physics.Raycast(eyeCam.position, eyeCam.forward, out hit, 2.5f, layerMask);
     }
 
     #endregion
@@ -145,78 +127,86 @@ public class Extraction : MonoBehaviourPunCallbacks
 
     public void OnDeath(GameObject deadPlayer)
     {
-        photonView.RPC("CancelLeave", RpcTarget.All);
-        GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetPhotonView().RPC("CancelLeave", RpcTarget.All);
+        if (isLeader) photonView.RPC("CancelLeave", RpcTarget.All);
+        else deadPlayer.GetPhotonView().RPC("CancelLeave", RpcTarget.All);
     }
 
     #endregion
 
-    public void IAmReadyToLeave()
-    {
-        isLeaving = true;
-        SpawnCircle();
-    }
-
     [PunRPC]
-    public void FirstPlayerReadyToLeave()
+    public void ReadyToLeave()
     {
         if (photonView.IsMine)
         {
-            otherPlayerWantsToLeave = true;
-            SpawnCircle();
+            leaving = true;
+            if (evacCircle == null) SpawnCircle();
+
+            if (GameControllerSingleton.instance.aliveCount == 1)
+            {
+                isLeader = true;
+                leaveCoroutine = StartCoroutine(LeaveGame());
+            }
+            // see if the other player is ready to leave
+            else if (IsOtherPlayerLeaving())
+            {
+                // then (as you are the 2nd person), start the countdown
+                // on the other player's photonView
+                GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetPhotonView().RPC("BeginLeave", RpcTarget.All);
+            }
+            else // other player is not ready to leave, but you are
+            {
+                isLeader = true;
+                evacuateCanvas.GetComponentInChildren<Text>().text = "Waiting for other player";
+            }
+        }
+        else
+        {
+            // the other player is ready to leave
+            GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetComponent<Extraction>().SetLeaving(true);
+            if (evacCircle == null) SpawnCircle();
         }
     }
 
     [PunRPC]
-    public void SecondPlayerReadyToLeave()
+    public void BeginLeave()
     {
-        if (photonView.IsMine)
-        {
-            isLeaving = true;
+        // start the countdown
+        leaveCoroutine = StartCoroutine(LeaveGame());
 
-            // start the countdown
-            leaveCoroutine = StartCoroutine(LeaveGame());
-        }
     }
 
     [PunRPC]
     public void CancelLeave()
     {
-        PhotonNetwork.Destroy(evacCircle);
-        if (photonView.IsMine)
-        {
-            if (leaveCoroutine != null)
-                StopCoroutine(leaveCoroutine);
-            isLeaving = false;
-        }
-
-        otherPlayerWantsToLeave = false;
+        if (evacCircle != null)
+            PhotonNetwork.Destroy(evacCircle);
+        if (leaveCoroutine != null)
+            StopCoroutine(leaveCoroutine);
+        leaving = false;
+        isLeader = false;
+        if (GameControllerSingleton.instance.aliveCount == 2)
+            GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetComponent<Extraction>().SetLeaving(false);
     }
 
     public bool IsOtherPlayerLeaving()
     {
-        return otherPlayerWantsToLeave;
+        if (GameControllerSingleton.instance.aliveCount != 2) return false;
+        return GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetComponent<Extraction>().IsLeaving();
     }
 
     public bool IsLeaving()
     {
-        return isLeaving;
-    }
-
-    public void SoloLeave()
-    {
-        isLeaving = true;
-        SpawnCircle();
-        leaveCoroutine = StartCoroutine(LeaveGame());
+        return leaving;
     }
 
     public void SetLeaving(bool leave)
     {
-        isLeaving = leave;
+        leaving = leave;
     }
 
     private IEnumerator LeaveGame()
     {
+        Debug.Log("Leaving Game");
         float time = 0;
         float totalWaitTime = 4.0f;
         GameObject evacuateCanvas = GameObject.Find("Exit Canvas");
@@ -226,7 +216,7 @@ public class Extraction : MonoBehaviourPunCallbacks
             time++;
             yield return new WaitForSeconds(1);
         }
-        isLeaving = false;
+        leaving = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
        
@@ -241,7 +231,8 @@ public class Extraction : MonoBehaviourPunCallbacks
     {
         GameObject truck = GameObject.Find("ExtractionTruck");
 
-        // if (GameObject.FindGameObjectsWithTag("ExtractionCircle").Length == 0)
+        if (GameObject.FindGameObjectsWithTag("ExtractionCircle").Length > 0) return;
+        Debug.Log("Spawning a circle");
         evacCircle = PhotonNetwork.Instantiate(Path.Combine("Extraction", "ExtractionCircle"), truck.transform.position, Quaternion.identity);
 
 
