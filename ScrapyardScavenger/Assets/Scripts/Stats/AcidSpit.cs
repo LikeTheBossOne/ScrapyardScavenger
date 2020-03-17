@@ -14,8 +14,11 @@ public class AcidSpit : MonoBehaviour
 
     private void Update()
     {
-        gameObject.transform.position += direction * Velocity * Time.deltaTime;
-     
+        if (PhotonNetwork.IsMasterClient)
+        {
+            gameObject.transform.position += direction * Velocity * Time.deltaTime;
+        }
+
     }
     private void OnEnable()
     {
@@ -26,8 +29,6 @@ public class AcidSpit : MonoBehaviour
     public void Shoot( Vector3 dir)
     {
         //, Vector3 dir
-        Debug.Log("Spit shot");
-        //Debug.Log(creator);
         //shooter = creator;
         direction = transform.forward.normalized;
         //direction = dir.normalized;
@@ -35,24 +36,22 @@ public class AcidSpit : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Collision detected");
+       
         //may need to change this over to rigidbody at some point
-        Debug.Log("Collision with: " + collision.collider);
-        Debug.Log("Owner hitbox: " + shooter);
         if (!shooter || !collision.collider.bounds.Intersects(shooter.bounds))
         {
-            foreach (RectTransform player in pManage.players)
+            if (PhotonNetwork.IsMasterClient)
             {
-                if (collision.collider.bounds.Contains(player.position))
+                foreach (RectTransform player in pManage.players)
                 {
-                    Debug.Log("player hit");
-                    player.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, shooter.GetComponent<ShamblerAttacks>().spitDamage);
+                    if (collision.collider.bounds.Contains(player.position))
+                    {
+
+                        player.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, shooter.GetComponent<ShamblerAttacks>().spitDamage);
+                    }
                 }
             }
-            
-
-            
-            //Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
 }

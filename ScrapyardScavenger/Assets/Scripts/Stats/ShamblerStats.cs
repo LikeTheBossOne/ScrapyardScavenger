@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class ShamblerStats : Stats
+public class ShamblerStats : Stats, IPunObservable
 {
     
     public float damage { get; private set; }
@@ -19,27 +19,42 @@ public class ShamblerStats : Stats
     // Update is called once per frame
     void Update()
     {
+        
         if (health <= 0)
         {
-            GameObject spawner = FindObjectOfType<EnemySpawner>().gameObject;
-            Debug.Log("Spawner: " + spawner);
-            spawner.GetPhotonView().RPC("onShamblerKill", RpcTarget.All);
+            if (PhotonNetwork.IsMasterClient)
+            {
+                GameObject spawner = FindObjectOfType<EnemySpawner>().gameObject;
+                spawner.GetPhotonView().RPC("onShamblerKill", RpcTarget.All);
+            }
             Destroy(gameObject);
-            
+
         }
     }
 
     [PunRPC]
-    new void TakeDamageShambler(int damage)
+    void TakeDamageShambler(int damage)
     {
-        //, GameObject damager, int atkStatus
-        //note GameObjects can be passed by RPC
-        health = health - damage;
-        Debug.Log("Enemy Damaged");
-        /*if (atkStatus > 0)
+            //, GameObject damager, int atkStatus
+            //note GameObjects can be passed by RPC
+            health = health - damage;
+            /*if (atkStatus > 0)
+            {
+                status = atkStatus;
+            }*/
+            //GetComponentInParent<ShamblerDetection>().gotShot(damager);
+
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
         {
-            status = atkStatus;
-        }*/
-        //GetComponentInParent<ShamblerDetection>().gotShot(damager);
+            stream.SendNext(health);
+        }
+        else
+        {
+            this.health = (int)stream.ReceiveNext();
+        }
     }
 }
