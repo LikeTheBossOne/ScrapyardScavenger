@@ -229,8 +229,11 @@ public class Extraction : MonoBehaviourPunCallbacks
         isLeaving = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-       
-        // Return to Home Base
+       	
+		// First, add any resources the player collected into the home base storage
+		playerController.GetComponent<InventoryManager>().TransferToStorage();
+
+        // Then return to Home Base
         playerController.GetPhotonView().RPC("MasterClientGoToHomeBase", RpcTarget.All);
         
         if (photonView.IsMine)
