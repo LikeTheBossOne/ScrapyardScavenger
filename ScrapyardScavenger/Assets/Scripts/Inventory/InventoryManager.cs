@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
@@ -42,8 +43,7 @@ public class InventoryManager : MonoBehaviourPun
     public bool isOpen;
 	public bool refreshInv = false;
 
-	private string[] slots = new string[] {"slot1", "slot2", "slot3", "slot4", "slot5", "slot6", "slot7", "slot8"}; 
-	private string[] slotCounts = new string[] {"slot1Text", "slot2Text", "slot3Text", "slot4Text", "slot5Text", "slot6Text", "slot7Text", "slot8Text"}; 
+	private GameObject[] slots;
 
 	public GameObject controller;
 
@@ -279,7 +279,6 @@ public class InventoryManager : MonoBehaviourPun
 		if (!photonView.IsMine) return;
 		resourceCounts[(int)type]++;
 		Resource r = resources[(int)type];
-		//GetComponent<EquipmentManager>().AddResource(r, resourceCounts[(int)type]);
 
 		RefreshInventoryView();
 
@@ -287,35 +286,46 @@ public class InventoryManager : MonoBehaviourPun
 	}
 
 	public void RefreshInventoryView() {
+		slots = GameObject.FindGameObjectsWithTag("Slot");
+		Array.Sort(slots, compareObjNames);
+
 		foreach(Resource r in resources) {
 			if (resourceCounts[(int)r.type] <= 0) {
 				continue;
 			}
-			r.imageSlotName = null;
-			foreach (string slot in slots) {
-				if (GameObject.FindWithTag(slot).GetComponent<Image>().sprite == null || GameObject.FindWithTag(slot).GetComponent<Image>().sprite == r.icon){
-					r.imageSlotName = slot;
-					GameObject.FindWithTag(slot).GetComponent<Image>().sprite = r.icon;
-					Color slotColor = GameObject.FindWithTag(slot).GetComponent<Image>().color;
+			foreach (GameObject slot in slots) {
+				if (slot.GetComponent<Image>().sprite == null || slot.GetComponent<Image>().sprite == r.icon){
+					slot.GetComponent<Image>().sprite = r.icon;
+
+					Color slotColor = slot.GetComponent<Image>().color;
 					slotColor.a = 1.0f;
-					GameObject.FindWithTag(slot).GetComponent<Image>().color = slotColor;
+					slot.GetComponent<Image>().color = slotColor;
+
+					slot.transform.GetChild(0).GetComponent<Text>().text = resourceCounts[(int)r.id].ToString();
 					break;
 				}
 			}
-            if (r.imageSlotName != null
-                && int.Parse(r.imageSlotName.Substring(4)) <= 8) 
-				GameObject.FindWithTag(r.imageSlotName + "Text").GetComponent<Text>().text = resourceCounts[(int)r.id].ToString();
         }
 		refreshInv = true;
+	}
+
+	public void TransferToStorage()
+	{
+		foreach (Resource r in resources) {
+			if (resourceCounts[(int)r.type] > 0) {
+				GetComponent<EquipmentManager>().AddResourceToStorage(r, resourceCounts[(int)r.type]);
+			}
+		}
+		ClearOnLeave();
 	}
 
 	public void ClearOnLeave()
 	{
 		Debug.Log("Clearing resources");
 		resourceCounts = new int[(int)ResourceType.SIZE];
-		foreach (string slot in slots) {
-			GameObject.FindWithTag(slot).GetComponent<Image>().sprite = null;
-			GameObject.FindWithTag(slot + "Text").GetComponent<Text>().text = "";
+		foreach (GameObject slot in slots) {
+			slot.GetComponent<Image>().sprite = null;
+			slot.transform.GetChild(0).GetComponent<Text>().text = "";
 		}
 		resourceIndex = 0;
 		isOpen = false;
@@ -325,9 +335,9 @@ public class InventoryManager : MonoBehaviourPun
     {
 		Debug.Log("Clearing resources");
         resourceCounts = new int[(int)ResourceType.SIZE];
-		foreach (string slot in slots) {
-			GameObject.FindWithTag(slot).GetComponent<Image>().sprite = null;
-			GameObject.FindWithTag(slot + "Text").GetComponent<Text>().text = "";
+		foreach (GameObject slot in slots) {
+			slot.GetComponent<Image>().sprite = null;
+			slot.transform.GetChild(0).GetComponent<Text>().text = "";
 		}
         itemCounts = new int[(int)ItemType.SIZE];
         weaponCounts = new int[(int)WeaponType.SIZE];
@@ -342,4 +352,8 @@ public class InventoryManager : MonoBehaviourPun
 
         isOpen = false;
     }
+
+	int compareObjNames(GameObject first, GameObject second) {
+		return first.transform.name.CompareTo(second.transform.name);
+	}
 }

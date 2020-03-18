@@ -191,7 +191,7 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
 		return resourceSet;
 	}
 
-	public void AddResource(Resource r, int count)
+	public void AddResourceToStorage(Resource r, int count)
 	{
 		if (photonView.IsMine && resources.Count < 44) {
 			if (!resourceSet.Contains(r)) {
@@ -211,7 +211,7 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
 		}
 	}
 
-	public void RemoveResource(Resource r, int count)
+	public void RemoveResourceFromStorage(Resource r, int count)
 	{
 		if (photonView.IsMine) {
 			ResourcePersistent rp = null;

@@ -317,7 +317,7 @@ GameObject:
   - component: {fileID: 7576079307943219473}
   m_Layer: 5
   m_Name: Slot 7
-  m_TagString: slot7
+  m_TagString: Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -391,7 +391,7 @@ GameObject:
   - component: {fileID: 3504023576358847339}
   m_Layer: 5
   m_Name: Slot 2
-  m_TagString: slot2
+  m_TagString: Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -538,7 +538,7 @@ GameObject:
   - component: {fileID: 8142813795069486678}
   m_Layer: 5
   m_Name: Slot 8
-  m_TagString: slot8
+  m_TagString: Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -612,7 +612,7 @@ GameObject:
   - component: {fileID: 4547828479516904258}
   m_Layer: 5
   m_Name: Slot 6
-  m_TagString: slot6
+  m_TagString: Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1520,7 +1520,7 @@ GameObject:
   - component: {fileID: 7051037056404692659}
   m_Layer: 5
   m_Name: Slot 3
-  m_TagString: slot3
+  m_TagString: Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1594,7 +1594,7 @@ GameObject:
   - component: {fileID: 2344137717890837203}
   m_Layer: 5
   m_Name: Slot 4
-  m_TagString: slot4
+  m_TagString: Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2727,7 +2727,7 @@ GameObject:
   - component: {fileID: 8410182723931382045}
   m_Layer: 5
   m_Name: Slot 1
-  m_TagString: slot1
+  m_TagString: Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2874,7 +2874,7 @@ GameObject:
   - component: {fileID: 68936704938322517}
   m_Layer: 5
   m_Name: Slot 5
-  m_TagString: slot5
+  m_TagString: Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
