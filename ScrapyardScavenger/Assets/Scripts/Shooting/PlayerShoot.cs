@@ -17,8 +17,10 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
     public Transform gunParent;
 
     private float nextFireTime = 0;
+    private bool wantsToShoot = false;
     private Coroutine reloadCoroutine;
     private Transform reloadingModel;
+    private bool wantsToReload = false;
 
     void Start()
     {
@@ -26,6 +28,12 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
         pHud = GetComponent<PlayerHUD>();
 
         equipmentManager.OnEquipmentSwitched += EquipmentSwitched;
+    }
+
+    void Update()
+    {
+        wantsToShoot = Input.GetMouseButton((int) MouseButton.LeftMouse);
+        wantsToReload = Input.GetKeyDown(KeyCode.R);
     }
 
     void FixedUpdate()
@@ -44,11 +52,12 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
         }
 
 
-        // Semi-Auto
+        
         if (!equipmentManager.isReloading
             && gunState.ammoCount > 0)
         {
-            if (Input.GetMouseButtonDown((int)MouseButton.LeftMouse)
+            // Semi-Auto
+            if (wantsToShoot
                 && !gun.isAutomatic
                 && Time.time >= nextFireTime)
             {
@@ -57,7 +66,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
             }
 
             // Auto
-            if (Input.GetMouseButton((int)MouseButton.LeftMouse)
+            if (wantsToShoot
                 && gun.isAutomatic
                 && Time.time >= nextFireTime)
             {
@@ -65,7 +74,8 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
                 photonView.RPC("Shoot", RpcTarget.All);
             }
 
-            if (Input.GetKeyDown(KeyCode.R)
+            // Reload
+            if (wantsToReload
                 && gunState.ammoCount < gunState.baseAmmo)
             {
                 reloadCoroutine = StartCoroutine(Reload(gun.reloadTime));
