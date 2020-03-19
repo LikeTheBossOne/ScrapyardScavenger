@@ -64,6 +64,9 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
 
     void Update()
     {
+        // If not me, don't update!
+        if (!photonView.IsMine) return;
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             isPaused = !isPaused;

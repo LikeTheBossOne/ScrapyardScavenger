@@ -12,10 +12,6 @@ public class PlayerSceneManager : MonoBehaviourPun
         isInHomeBase = true;
     }
 
-    void Update()
-    {
-        
-    }
 
     [PunRPC]
     public void MasterClientGoToHomeBase()

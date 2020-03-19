@@ -59,11 +59,18 @@ public class AcidSpit : MonoBehaviour
                         }
                     }
                 }
-                
+                gameObject.GetPhotonView().RPC("CleanUpProjectiles", RpcTarget.All);
             }
             //idea, call rpc destroy on this object to destroy all
-            Destroy(gameObject);
+
+            //Destroy(gameObject);
 
         }
+    }
+    
+    [PunRPC]
+    public void CleanUpProjectiles()
+    {
+        Destroy(gameObject);
     }
 }

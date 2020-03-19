@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 public class GameControllerSingleton : MonoBehaviourPunCallbacks
@@ -25,10 +26,5 @@ public class GameControllerSingleton : MonoBehaviourPunCallbacks
     void Start()
     {
         aliveCount = 0;
-    }
-
-    void Update()
-    {
-        
     }
 }

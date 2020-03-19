@@ -156,7 +156,7 @@ MonoBehaviour:
   currentState: 0
   moveTo: {x: 0, y: 0, z: 0}
   nav: {fileID: 0}
-  players: {fileID: 0}
+  pManager: {fileID: 0}
   aggroTimeLimit: 0
   wandOffset: 0
   toPlayerOffset: 0
@@ -218,6 +218,7 @@ MonoBehaviour:
   spitRange: 10
   spitRecharge: 10
   spitDamage: 10
+  spitSize: 0
   projectile: {fileID: 7758600212226562078, guid: 0ac2452e7ddb1cf42a28cc2c934bf81f,
     type: 3}
   projectileName: AcidBall

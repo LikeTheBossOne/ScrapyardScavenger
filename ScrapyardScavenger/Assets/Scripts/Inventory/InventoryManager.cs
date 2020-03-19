@@ -61,25 +61,13 @@ public class InventoryManager : MonoBehaviourPun
         invSet = 0;
     }
 
-	public GameObject getController()
-	{
-		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("GameController"))
-		{
-			if (obj.GetPhotonView().IsMine)
-			{
-				return obj;
-			}
-		}
-		return null;
-	}
-
     void Update()
     {
         if (!photonView.IsMine) return;
 		if (sceneManager.isInHomeBase) return;
 			
 		if (!refreshInv) {
-			refreshInventoryView();
+			RefreshInventoryView();
 		}
 
         // Check if player is opening/closing inventory
@@ -167,11 +155,11 @@ public class InventoryManager : MonoBehaviourPun
 
         if (Input.GetKeyDown(KeyCode.G))
         {
-			addResourceToInventory(ResourceType.Gauze);
+			AddResourceToInventory(ResourceType.Gauze);
         }
         if (Input.GetKeyDown(KeyCode.O))
         {
-			addResourceToInventory(ResourceType.Disinfectant);
+			AddResourceToInventory(ResourceType.Disinfectant);
         }
 
         if (Input.GetKeyDown(KeyCode.L))
@@ -287,19 +275,19 @@ public class InventoryManager : MonoBehaviourPun
         return (x % m + m) % m;
     }
 
-	public void addResourceToInventory(ResourceType type) {
+	public void AddResourceToInventory(ResourceType type) {
 		if (!photonView.IsMine) return;
 		resourceCounts[(int)type]++;
 		Resource r = resources[(int)type];
-		getController().GetComponent<EquipmentManager>().AddResource(r, resourceCounts[(int)type]);
+		GetComponent<EquipmentManager>().AddResource(r, resourceCounts[(int)type]);
 
-		refreshInventoryView();
+		RefreshInventoryView();
 
 		Debug.Log("Adding a " + type.ToString());
 	}
 
-	public void refreshInventoryView() {
-		List<ResourcePersistent> rList = getController().GetComponent<EquipmentManager>().getResources();
+	public void RefreshInventoryView() {
+		List<ResourcePersistent> rList = GetComponent<EquipmentManager>().getResources();
 		foreach(ResourcePersistent r in rList) {
 			resourceCounts[(int)r.Resource.type] = r.Count;
 			Debug.Log("Count for " + r.Resource.type.ToString() + " is now: " + resourceCounts[(int)r.Resource.type].ToString());
@@ -316,8 +304,10 @@ public class InventoryManager : MonoBehaviourPun
 					break;
 				}
 			}
-			GameObject.FindWithTag(r.Resource.imageSlotName + "Text").GetComponent<Text>().text = r.Count.ToString();
-		}
+            if (r.Resource.imageSlotName != null
+                && int.Parse(r.Resource.imageSlotName.Substring(4)) <= 8) 
+                GameObject.FindWithTag(r.Resource.imageSlotName + "Text").GetComponent<Text>().text = r.Count.ToString();
+        }
 		refreshInv = true;
 	}
 

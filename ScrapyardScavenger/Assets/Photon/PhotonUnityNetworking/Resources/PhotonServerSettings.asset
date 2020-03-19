@@ -51,5 +51,6 @@ MonoBehaviour:
   - onShamblerKill
   - MasterClientGoToHomeBase
   - TakeDamageShambler
+  - CleanUpProjectiles
   DisableAutoOpenWizard: 1
   ShowSettings: 1
