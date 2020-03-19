@@ -6,8 +6,8 @@ using UnityEngine;
 public class PlayerControllerLoader : MonoBehaviourPun
 {
     public GameObject playerController;
-    public EquipmentManager equipmentManager;
-    public InventoryManager inventoryManager;
+    public BaseDataManager equipmentManager;
+    public InGameDataManager inventoryManager;
     public PlayerSceneManager sceneManager;
     public SkillManager skillManager;
 
@@ -24,8 +24,8 @@ public class PlayerControllerLoader : MonoBehaviourPun
             if (obj.GetPhotonView().Owner.UserId == photonView.Owner.UserId)
             {
                 playerController = obj;
-                equipmentManager = obj.GetComponent<EquipmentManager>();
-                inventoryManager = obj.GetComponent<InventoryManager>();
+                equipmentManager = obj.GetComponent<BaseDataManager>();
+                inventoryManager = obj.GetComponent<InGameDataManager>();
                 sceneManager = obj.GetComponent<PlayerSceneManager>();
                 skillManager = obj.GetComponent<SkillManager>();
             }

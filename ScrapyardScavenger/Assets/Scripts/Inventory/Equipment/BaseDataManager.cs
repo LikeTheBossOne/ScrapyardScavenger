@@ -6,15 +6,36 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 
-public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
+public class BaseDataManager : MonoBehaviourPunCallbacks, IOnEventCallback
 {
     public PlayerSceneManager sceneManager;
-    private InventoryManager inventoryManager;
+    private InGameDataManager inventoryManager;
 
     public Transform gunParent;
     public Transform meleeParent;
     public Transform grenadeParent;
     public Transform medShotParent;
+
+	// Crafts and counts are indexed based on the CraftableObject's ID
+	[SerializeField]
+	public Item[] items = null;
+	[SerializeField]
+	public int[] itemCounts = null;
+	private int itemIndex;
+
+	// Crafts and counts are indexed based on the CraftableObject's ID
+	[SerializeField]
+	public Weapon[] weapons = null;
+	[SerializeField]
+	public int[] weaponCounts = null;
+	private int weaponIndex;
+
+	// Crafts and counts are indexed based on the CraftableObject's ID
+	[SerializeField]
+	public Armor[] armors = null;
+	[SerializeField]
+	public int[] armorCounts = null;
+	private int armorIndex;
 
     private Equipment[] equipment = null;
 	private List<ResourcePersistent> resources = null;
@@ -32,14 +53,18 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         currentIndex = -1;
         sceneManager = GetComponent<PlayerSceneManager>();
-        inventoryManager = GetComponent<InventoryManager>();
+        inventoryManager = GetComponent<InGameDataManager>();
 
         equipment = new Equipment[5];
-        equipment[0] = inventoryManager.weapons[(int)WeaponType.AR];
-        equipment[1] = inventoryManager.weapons[(int)WeaponType.Pistol];
+        equipment[0] = weapons[(int)WeaponType.AR];
+        equipment[1] = weapons[(int)WeaponType.Pistol];
 
 		resources = new List<ResourcePersistent>();
 		resourceSet = new HashSet<Resource>();
+
+		itemIndex = 0;
+		weaponIndex = 0;
+		armorIndex = 0;
     }
 
     void Update()
@@ -171,8 +196,8 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public void Clear()
     {
         equipment = new Equipment[5];
-        equipment[0] = inventoryManager.weapons[(int)WeaponType.AR];
-        equipment[1] = inventoryManager.weapons[(int)WeaponType.Pistol];
+        equipment[0] = weapons[(int)WeaponType.AR];
+        equipment[1] = weapons[(int)WeaponType.Pistol];
 		resources = new List<ResourcePersistent>();
 		resourceSet = new HashSet<Resource>();
     }

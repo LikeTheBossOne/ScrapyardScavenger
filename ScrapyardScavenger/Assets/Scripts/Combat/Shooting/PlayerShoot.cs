@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class PlayerShoot : MonoBehaviourPunCallbacks
 {
-    private EquipmentManager equipmentManager;
+    private BaseDataManager equipmentManager;
 
     public LayerMask enemyLayer;
 

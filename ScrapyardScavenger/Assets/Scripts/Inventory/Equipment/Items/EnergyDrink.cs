@@ -10,12 +10,12 @@ public class EnergyDrink : Item
 {
     public int seconds;
 
-    public override void Use(InventoryManager manager)
+    public override void Use(InGameDataManager manager)
     {
         // use energy drink
         manager.GetComponent<PlayerMotor>().Energize(seconds);
 
         // remove this from the manager?
-        manager.itemCounts[this.id]--;
+		manager.currentItem = null;
     }
 }

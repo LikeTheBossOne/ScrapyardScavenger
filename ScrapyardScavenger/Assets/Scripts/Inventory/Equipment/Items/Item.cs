@@ -8,7 +8,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item", menuName = "Items/Item")]
 public abstract class Item : Equipment
 {
-    public abstract void Use(InventoryManager manager);
+    public abstract void Use(InGameDataManager manager);
 }
 
 public enum ItemType

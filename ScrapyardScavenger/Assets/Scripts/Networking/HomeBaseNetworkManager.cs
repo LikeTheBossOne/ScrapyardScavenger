@@ -127,7 +127,7 @@ public class HomeBaseNetworkManager : MonoBehaviourPunCallbacks
 				}
 			}
 		}
-		playerController.GetComponent<InventoryManager>().refreshInv = false;
+		playerController.GetComponent<InGameDataManager>().refreshInv = false;
 
         PhotonNetwork.LoadLevel(multiplayerIndex);
     }
