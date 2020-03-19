@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 
@@ -68,6 +69,11 @@ public class ResourcePickup : MonoBehaviour
                 }
             }*/
 
+
+            if (other.transform.parent.gameObject.GetPhotonView().IsMine)
+            {
+                NotificationSystem.Instance.Notify(new Notification($"Picked up {this.type.ToString()}", NotificationType.Neutral));
+            }
 
             // Getting PlayerController's Inventory Manager
             other.transform.parent.GetComponent<PlayerControllerLoader>().inventoryManager.AddResourceToInventory(this.type);
