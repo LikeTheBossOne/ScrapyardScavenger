@@ -32,13 +32,9 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        wantsToShoot = Input.GetMouseButton((int) MouseButton.LeftMouse);
-        wantsToReload = Input.GetKeyDown(KeyCode.R);
-    }
-
-    void FixedUpdate()
-    {
         if (!photonView.IsMine) return;
+
+
         Gun gun = equipmentManager.getCurrentEquipment() as Gun;
         if (gun == null) return;
         GunState gunState = gunParent.GetChild(equipmentManager.currentIndex).GetComponent<GunState>();
@@ -52,12 +48,12 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
         }
 
 
-        
+
         if (!equipmentManager.isReloading
             && gunState.ammoCount > 0)
         {
             // Semi-Auto
-            if (wantsToShoot
+            if (Input.GetMouseButtonDown((int)MouseButton.LeftMouse)
                 && !gun.isAutomatic
                 && Time.time >= nextFireTime)
             {
@@ -66,7 +62,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
             }
 
             // Auto
-            if (wantsToShoot
+            if (Input.GetMouseButton((int)MouseButton.LeftMouse)
                 && gun.isAutomatic
                 && Time.time >= nextFireTime)
             {
@@ -75,13 +71,16 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
             }
 
             // Reload
-            if (wantsToReload
+            if (Input.GetKeyDown(KeyCode.R)
                 && gunState.ammoCount < gunState.baseAmmo)
             {
                 reloadCoroutine = StartCoroutine(Reload(gun.reloadTime));
             }
         }
-        
+    }
+
+    void FixedUpdate()
+    {
     }
 
     void OnDestroy()
