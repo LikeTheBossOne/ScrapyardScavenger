@@ -51,5 +51,7 @@ MonoBehaviour:
   - onShamblerKill
   - MasterClientGoToHomeBase
   - TakeDamageShambler
+  - BeginLeave
+  - ReadyToLeave
   DisableAutoOpenWizard: 1
   ShowSettings: 1

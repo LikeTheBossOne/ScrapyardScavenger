@@ -52,13 +52,13 @@ public class Death : MonoBehaviourPun
             GetComponent<PlayerMotor>().speedModifier = 0;
             GetComponent<PlayerMotor>().sprintModifier = 0;
             GetComponent<PlayerMotor>().jumpForce = 0;
-            UI.SetActive(false);
 
             PlayerControllerLoader pControllerLoader = GetComponent<PlayerControllerLoader>();
             pControllerLoader.equipmentManager.Clear();
-            pControllerLoader.inventoryManager.Clear();
-            // clear the player's temporary xp
+            pControllerLoader.inventoryManager.ClearOnDeath();
             GetComponent<PlayerControllerLoader>().skillManager.ClearTempXP();
+
+			UI.SetActive(false);
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
