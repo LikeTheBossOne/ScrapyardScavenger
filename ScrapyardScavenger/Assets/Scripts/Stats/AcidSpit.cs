@@ -7,7 +7,7 @@ using Photon.Pun;
 public class AcidSpit : MonoBehaviour
 {
     public Collider shooter { get; set; }
-    public AIPlayerManager pManage { get; set; }
+    public InGamePlayerManager pManage { get; set; }
     public int maxExistTime = 10;
     public int Velocity = 10;
     public Vector3 direction;
@@ -22,7 +22,7 @@ public class AcidSpit : MonoBehaviour
     }
     private void OnEnable()
     {
-        pManage = FindObjectOfType<AIPlayerManager>();
+        pManage = FindObjectOfType<InGamePlayerManager>();
         Destroy(gameObject, maxExistTime);
     }
     [PunRPC]
@@ -38,20 +38,32 @@ public class AcidSpit : MonoBehaviour
     {
        
         //may need to change this over to rigidbody at some point
+        //the trick for restoring projectiles is dealing with the collision issue
+        //the same character on the other client technically has a different object
         if (!shooter || !collision.collider.bounds.Intersects(shooter.bounds))
         {
+
             if (PhotonNetwork.IsMasterClient)
             {
-                foreach (RectTransform player in pManage.players)
+                foreach (GameObject obj in pManage.players)
                 {
+
+                    RectTransform player = obj.GetComponent<RectTransform>();
+
                     if (collision.collider.bounds.Contains(player.position))
                     {
+                        if (collision.collider.bounds.Contains(player.position))
+                        {
 
-                        player.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, shooter.GetComponent<ShamblerAttacks>().spitDamage);
+                            player.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, shooter.GetComponent<ShamblerAttacks>().spitDamage);
+                        }
                     }
                 }
+                
             }
+            //idea, call rpc destroy on this object to destroy all
             Destroy(gameObject);
+
         }
     }
 }
