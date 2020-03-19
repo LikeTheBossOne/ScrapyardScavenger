@@ -17,7 +17,7 @@ public class DisplayResourceInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+		this.GetComponent<Button>().onClick.AddListener(DisplayInfoOnStorage);
     }
 
     // Update is called once per frame
@@ -60,6 +60,18 @@ public class DisplayResourceInfo : MonoBehaviour
 					break;
 				}
 			}
+		}
+	}
+
+	void DisplayInfoOnStorage() {
+		GameObject img = GameObject.FindGameObjectWithTag("StorageItemImg");
+		GameObject name = GameObject.FindGameObjectWithTag("StorageItemName");
+		GameObject desc = GameObject.FindGameObjectWithTag("StorageItemDesc");
+
+		if (img != null && image.sprite != null) {
+			img.GetComponent<Image>().sprite = image.sprite;
+			name.GetComponent<Text>().text = rp.Resource.name;
+			desc.GetComponent<Text>().text = rp.Resource.description;
 		}
 	}
 }
