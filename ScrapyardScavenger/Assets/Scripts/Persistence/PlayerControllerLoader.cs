@@ -9,6 +9,7 @@ public class PlayerControllerLoader : MonoBehaviourPun
     public EquipmentManager equipmentManager;
     public InventoryManager inventoryManager;
     public PlayerSceneManager sceneManager;
+    public SkillManager skillManager;
 
     public Transform gunParent;
     public Transform meleeParent;
@@ -26,6 +27,7 @@ public class PlayerControllerLoader : MonoBehaviourPun
                 equipmentManager = obj.GetComponent<EquipmentManager>();
                 inventoryManager = obj.GetComponent<InventoryManager>();
                 sceneManager = obj.GetComponent<PlayerSceneManager>();
+                skillManager = obj.GetComponent<SkillManager>();
             }
         }
 

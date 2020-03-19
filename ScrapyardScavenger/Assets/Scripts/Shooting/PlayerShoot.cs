@@ -147,7 +147,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 				this.GetComponent<PlayerHUD>().hitCrossHair();
                 if (enemy.tag == "Shambler")
                 {
-					enemy.GetPhotonView().RPC("TakeDamageShambler", RpcTarget.All, (int)gun.baseDamage);
+					enemy.GetPhotonView().RPC("TakeDamageShambler", RpcTarget.All, (int)gun.baseDamage, photonView.ViewID);
                 }
                 else
                 {
@@ -171,6 +171,18 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
     {
         GetComponent<Health>().TakeDamage(damage);
         Debug.Log("DAMAGE");
+    }
+
+    [PunRPC]
+    public void KilledEnemy(int enemy)
+    {
+        if (photonView.IsMine)
+        {
+            if (enemy == (int)EnemyType.Shambler) 
+                GetComponent<PlayerControllerLoader>().skillManager.GainXP((int)XPRewards.KillShambler);
+            if (enemy == (int)EnemyType.Charger)
+                GetComponent<PlayerControllerLoader>().skillManager.GainXP((int)XPRewards.KillCharger);
+        }
     }
 
     void EquipmentSwitched()

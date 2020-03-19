@@ -71,6 +71,9 @@ public class ResourcePickup : MonoBehaviour
 
             // Getting PlayerController's Inventory Manager
             other.transform.parent.GetComponent<PlayerControllerLoader>().inventoryManager.AddResourceToInventory(this.type);
+
+            // Gain XP for collecting a resource
+            other.transform.parent.GetComponent<PlayerControllerLoader>().skillManager.GainXP((int) XPRewards.CollectResource);
             Destroy(this.gameObject);
         }
     }

@@ -57,6 +57,8 @@ public class Death : MonoBehaviourPun
             PlayerControllerLoader pControllerLoader = GetComponent<PlayerControllerLoader>();
             pControllerLoader.equipmentManager.Clear();
             pControllerLoader.inventoryManager.Clear();
+            // clear the player's temporary xp
+            GetComponent<PlayerControllerLoader>().skillManager.ClearTempXP();
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -65,7 +67,7 @@ public class Death : MonoBehaviourPun
 
         GameControllerSingleton.instance.aliveCount--;
         if (GameControllerSingleton.instance.aliveCount <= 0)
-        {
+        {            
             PhotonNetwork.LoadLevel(homeBaseSceneIndex);
         }
 
