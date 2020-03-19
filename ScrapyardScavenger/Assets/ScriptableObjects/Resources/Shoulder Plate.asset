@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 0}
   id: 13
-  description: 
+  description: A plate of composite material believed to have been a part of a knight's
+    armor. It's in poor condition.
   showInInventory: 0
   icon: {fileID: 21300000, guid: f126324fd2486a641842ea5a8244c2d1, type: 3}
   imageSlotName: 
