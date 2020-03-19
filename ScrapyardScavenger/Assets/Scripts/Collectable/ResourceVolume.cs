@@ -46,11 +46,13 @@ public class ResourceVolume : MonoBehaviourPun
                 && (int) Mathf.Pow(2, hit.collider.gameObject.layer) == ground)
             {
                 // Randomize
-                GameObject objToSpawn = spawnObj;
+                GameObject objToSpawn = PhotonNetwork.Instantiate(
+                        Path.Combine("PhotonPrefabs", "Collectable"), 
+                        hit.point + new Vector3(0, spawnObj.transform.localScale.y / 2, 0), 
+                        Quaternion.identity
+                    );
                 objToSpawn.GetComponent<ResourcePickup>().type = (ResourceType) Random.Range(0, (int)ResourceType.SIZE);
 
-
-                PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Collectable"), hit.point + new Vector3(0, spawnObj.transform.localScale.y/2, 0), Quaternion.identity);
                 spawnedCount++;
             }
         }

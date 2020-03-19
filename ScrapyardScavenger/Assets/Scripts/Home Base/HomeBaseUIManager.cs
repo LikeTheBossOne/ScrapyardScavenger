@@ -10,6 +10,7 @@ public class HomeBaseUIManager : MonoBehaviour
 	public GameObject storageCanvas;
 	public GameObject equipmentCanvas;
 	public GameObject craftingCanvas;
+	public GameObject skillCanvas;
 
 	public int playerCount;
 
@@ -18,6 +19,7 @@ public class HomeBaseUIManager : MonoBehaviour
 		storageCanvas.SetActive(false);
 		equipmentCanvas.SetActive(false);
 		craftingCanvas.SetActive(false);
+		skillCanvas.SetActive(false);
 	}
 
 	public void switchToStorage() {
@@ -25,6 +27,7 @@ public class HomeBaseUIManager : MonoBehaviour
 		storageCanvas.SetActive(true);
 		equipmentCanvas.SetActive(false);
 		craftingCanvas.SetActive(false);
+		skillCanvas.SetActive(false);
 	}
 
 	public void switchToCrafting() {
@@ -32,6 +35,7 @@ public class HomeBaseUIManager : MonoBehaviour
 		storageCanvas.SetActive(false);
 		equipmentCanvas.SetActive(false);
 		craftingCanvas.SetActive(true);
+		skillCanvas.SetActive(false);
 	}
 
 	public void switchToEquipment() {
@@ -39,10 +43,15 @@ public class HomeBaseUIManager : MonoBehaviour
 		storageCanvas.SetActive(false);
 		equipmentCanvas.SetActive(true);
 		craftingCanvas.SetActive(false);
+		skillCanvas.SetActive(false);
 	}
 
 	public void switchToSkills() {
-		SceneManager.LoadScene("SkillTree-UI-v1-Scene");
+		homeBaseCanvas.SetActive(false);
+		storageCanvas.SetActive(false);
+		equipmentCanvas.SetActive(false);
+		craftingCanvas.SetActive(false);
+		skillCanvas.SetActive(true);
 	}
 
 	public void quitGame() {
