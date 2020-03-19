@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6751ea712b28a144683eaa082f06f060, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 3
+  type: 9
 --- !u!33 &2624815139853889465
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -122,10 +122,10 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 0
+  Synchronization: 3
   OwnershipTransfer: 0
   ObservedComponents:
-  - {fileID: 0}
+  - {fileID: 838960866150255209}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
