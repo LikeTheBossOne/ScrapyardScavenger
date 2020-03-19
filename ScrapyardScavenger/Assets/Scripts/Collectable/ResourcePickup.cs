@@ -71,6 +71,11 @@ public class ResourcePickup : MonoBehaviour, IPunObservable
             }*/
 
 
+            if (other.transform.parent.gameObject.GetPhotonView().IsMine)
+            {
+                NotificationSystem.Instance.Notify(new Notification($"Picked up {this.type.ToString()}", NotificationType.Neutral));
+            }
+
             // Getting PlayerController's Inventory Manager
             other.transform.parent.GetComponent<PlayerControllerLoader>().inventoryManager.AddResourceToInventory(this.type);
             Destroy(this.gameObject);
