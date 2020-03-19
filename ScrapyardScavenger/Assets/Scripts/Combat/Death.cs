@@ -52,11 +52,11 @@ public class Death : MonoBehaviourPun
             GetComponent<PlayerMotor>().speedModifier = 0;
             GetComponent<PlayerMotor>().sprintModifier = 0;
             GetComponent<PlayerMotor>().jumpForce = 0;
-            UI.SetActive(false);
 
             PlayerControllerLoader pControllerLoader = GetComponent<PlayerControllerLoader>();
-            pControllerLoader.equipmentManager.Clear();
-            pControllerLoader.inventoryManager.Clear();
+            pControllerLoader.inventoryManager.ClearOnDeath();
+
+			UI.SetActive(false);
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
