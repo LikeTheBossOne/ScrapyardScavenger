@@ -45,6 +45,11 @@ public class InventoryManager : MonoBehaviourPun
 
 	private GameObject[] slots;
 
+	private Resource[] currentView;
+	private Resource[] backpackPart1 = new Resource[8];
+	private Resource[] backpackPart2 = new Resource[8];
+	private bool firstView;
+
 	public GameObject controller;
 
     void Start()
@@ -59,6 +64,9 @@ public class InventoryManager : MonoBehaviourPun
         armorIndex = 0;
 
         invSet = 0;
+
+		currentView = backpackPart1;
+		firstView = true;
     }
 
     void Update()
@@ -73,11 +81,15 @@ public class InventoryManager : MonoBehaviourPun
         // Check if player is opening/closing inventory
         if (Input.GetKeyDown(KeyCode.I))
         {
-            isOpen = !isOpen;
-            if (isOpen)
-                Debug.Log("Opened Inventory");
-            else
-                Debug.Log("Closed Inventory");
+			firstView = !firstView;
+			foreach (GameObject slot in slots) {
+				slot.GetComponent<Image>().sprite = null;
+				Color slotColor = slot.GetComponent<Image>().color;
+				slotColor.a = 0.0f;
+				slot.GetComponent<Image>().color = slotColor;
+				slot.transform.GetChild(0).GetComponent<Text>().text = "";
+			}
+			RefreshInventoryView();
         }
 
         if (isOpen)
@@ -278,7 +290,16 @@ public class InventoryManager : MonoBehaviourPun
 	public void AddResourceToInventory(ResourceType type) {
 		if (!photonView.IsMine) return;
 		resourceCounts[(int)type]++;
-		Resource r = resources[(int)type];
+
+		// Add to backpack variables
+		if (Array.IndexOf(backpackPart1, resources[(int)type]) < 0 && Array.IndexOf(backpackPart2, resources[(int)type]) < 0) {
+			if (resourceIndex <= 7) {
+				backpackPart1[resourceIndex] = resources[(int)type];
+			} else {
+				backpackPart2[resourceIndex - 8] = resources[(int)type];
+			}
+			resourceIndex++;
+		}
 
 		RefreshInventoryView();
 
@@ -289,8 +310,14 @@ public class InventoryManager : MonoBehaviourPun
 		slots = GameObject.FindGameObjectsWithTag("Slot");
 		Array.Sort(slots, compareObjNames);
 
-		foreach(Resource r in resources) {
-			if (resourceCounts[(int)r.type] <= 0) {
+		if (firstView) {
+			currentView = backpackPart1;
+		} else {
+			currentView = backpackPart2;
+		}
+
+		foreach(Resource r in currentView) {
+			if (r == null || resourceCounts[(int)r.type] <= 0) {
 				continue;
 			}
 			foreach (GameObject slot in slots) {
@@ -325,8 +352,15 @@ public class InventoryManager : MonoBehaviourPun
 		resourceCounts = new int[(int)ResourceType.SIZE];
 		foreach (GameObject slot in slots) {
 			slot.GetComponent<Image>().sprite = null;
+			Color slotColor = slot.GetComponent<Image>().color;
+			slotColor.a = 0.0f;
+			slot.GetComponent<Image>().color = slotColor;
 			slot.transform.GetChild(0).GetComponent<Text>().text = "";
 		}
+		backpackPart1 = new Resource[8];
+		backpackPart2 = new Resource[8];
+		currentView = backpackPart1;
+		firstView = true;
 		resourceIndex = 0;
 		isOpen = false;
 	}
@@ -337,12 +371,19 @@ public class InventoryManager : MonoBehaviourPun
         resourceCounts = new int[(int)ResourceType.SIZE];
 		foreach (GameObject slot in slots) {
 			slot.GetComponent<Image>().sprite = null;
+			Color slotColor = slot.GetComponent<Image>().color;
+			slotColor.a = 0.0f;
+			slot.GetComponent<Image>().color = slotColor;
 			slot.transform.GetChild(0).GetComponent<Text>().text = "";
 		}
         itemCounts = new int[(int)ItemType.SIZE];
         weaponCounts = new int[(int)WeaponType.SIZE];
         armorCounts = new int[(int)ArmorType.SIZE];
 
+		backpackPart1 = new Resource[8];
+		backpackPart2 = new Resource[8];
+		currentView = backpackPart1;
+		firstView = true;
         resourceIndex = 0;
         itemIndex = 0;
         weaponIndex = 0;
