@@ -25,6 +25,13 @@ public class HomeBaseUIManager : MonoBehaviour
 		storageCanvas.SetActive(true);
 		equipmentCanvas.SetActive(false);
 		craftingCanvas.SetActive(false);
+
+		GameObject img = GameObject.FindGameObjectWithTag("StorageItemImg");
+		GameObject name = GameObject.FindGameObjectWithTag("StorageItemName");
+		GameObject desc = GameObject.FindGameObjectWithTag("StorageItemDesc");
+		img.GetComponent<Image>().sprite = null;
+		name.GetComponent<Text>().text = "";
+		desc.GetComponent<Text>().text = "";
 	}
 
 	public void switchToCrafting() {
