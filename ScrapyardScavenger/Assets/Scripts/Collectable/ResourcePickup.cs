@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 
-public class ResourcePickup : MonoBehaviour
+public class ResourcePickup : MonoBehaviour, IPunObservable
 {
     public ResourceType type;
 
@@ -22,6 +23,7 @@ public class ResourcePickup : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+
         if (other.CompareTag("Player"))
         {
             int count = 1;
@@ -72,6 +74,20 @@ public class ResourcePickup : MonoBehaviour
             // Getting PlayerController's Inventory Manager
             other.transform.parent.GetComponent<PlayerControllerLoader>().inventoryManager.AddResourceToInventory(this.type);
             Destroy(this.gameObject);
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // We own this player; we are sending data to others
+            stream.SendNext((int)type);
+        }
+        else
+        {
+            // Other player; receiving data
+            this.type = (ResourceType)stream.ReceiveNext();
         }
     }
 }
