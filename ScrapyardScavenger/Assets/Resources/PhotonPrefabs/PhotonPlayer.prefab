@@ -110,6 +110,7 @@ MonoBehaviour:
   equipmentManager: {fileID: 0}
   inventoryManager: {fileID: 0}
   sceneManager: {fileID: 0}
+  skillManager: {fileID: 0}
   gunParent: {fileID: 2210166939918232469}
   meleeParent: {fileID: 0}
   grenadeParent: {fileID: 0}

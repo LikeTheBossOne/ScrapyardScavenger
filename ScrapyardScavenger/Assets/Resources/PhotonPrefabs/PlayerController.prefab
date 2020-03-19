@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6704274942547728802}
   - component: {fileID: 6704274942547728806}
   - component: {fileID: 6704274942547728805}
+  - component: {fileID: 8432151715047421411}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: GameController
@@ -109,6 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInHomeBase: 0
+  isInSkillMenu: 0
 --- !u!114 &6704274942547728806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,3 +179,15 @@ MonoBehaviour:
   medShotParent: {fileID: 0}
   isReloading: 0
   currentIndex: 0
+--- !u!114 &8432151715047421411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6704274942547728824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435677624745955499eb3ff4291489e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

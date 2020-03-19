@@ -3,78 +3,89 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public class SkillManager : MonoBehaviour
+// this is the in-game version that tracks what skills a player has
+public class SkillManager : MonoBehaviourPunCallbacks
 {
-
-    public Skill[] skills;
+    private List<Skill> skills;
     private int skillIndex;
-    private int currentXP;
+    private int tempXP; // this is the XP a player is currently collecting in the game
+    private int finalXP; // this is the final XP number
+
+    private bool twoMinuteFlag;
+
+    private float TWO_MINUTES = 120f;
+    private float FIVE_MINUTES = 300f;
 
     // Start is called before the first frame update
     void Start()
     {
-        // initialize all levels of the 3 skills to be locked
-        for (int i = 0; i < skills.Length; i++)
-        {
-            Skill currentLevel = skills[i];
-            for (int j = 0; j < currentLevel.levels.Length; j++)
-            {
-                currentLevel.levels[j].IsUnlocked = false;
-                string canvasName = currentLevel.levels[j].name + " Skill";
-                Debug.Log("Canvas name: " + canvasName);
-                currentLevel.levels[j].SetCanvas(GameObject.Find(canvasName));
-            }
-        }
+        // initialize to have 0 skills
+        skills = new List<Skill>();
 
-        skillIndex = 0;
-        currentXP = 0;
+        twoMinuteFlag = false;
+
+        // initialize to have 0 XP
+        tempXP = 0;
+        finalXP = 0;
+    }
+
+    private bool IsMultipleOfFive(float seconds)
+    {
+        return (seconds >= FIVE_MINUTES && seconds % FIVE_MINUTES == 0);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (!photonView.IsMine) return;
+        if (!photonView.IsMine) return;
 
+        if (!GetComponent<PlayerSceneManager>().isInHomeBase)
+        {
+            // check to see how long the player has been in the game
+            if (!twoMinuteFlag && Time.timeSinceLevelLoad >= TWO_MINUTES)
+            {
+                // gain xp for being in the game for 2 minutes
+                Debug.Log("Two minutes have passed");
+                GainXP((int) XPRewards.TwoMinutes);
+                twoMinuteFlag = true;
+            }
+            if (IsMultipleOfFive(Time.timeSinceLevelLoad))
+            {
+                Debug.Log("Five minutes have passed");
+                GainXP((int)XPRewards.FiveMinutes);
+            }
+
+            //Debug.Log("Temp XP: " + tempXP);
+        }
         
 
-        short changeSlot = 0;
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            changeSlot = 1;
-        }
-        else if (Input.GetKeyDown(KeyCode.C))
-        {
-            changeSlot = -1;
-        }
-
-        if (changeSlot != 0)
-        {
-            skillIndex += changeSlot;
-            skillIndex = mod(skillIndex, skills.Length);
-            Debug.Log($"Skill switched to {skills[skillIndex].name}");
-        }
-
-        // Upgrade selected skill
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            UnlockSkill(skills[skillIndex]);
-        }
-
+        // only used for testing purposes
         if (Input.GetKeyDown(KeyCode.N))
         {
             // add 100 XP
-            currentXP += 100;
-            Debug.Log("Current XP: " + currentXP);
+            tempXP += 100;
+            Debug.Log("Temp XP: " + tempXP);
         }
         if (Input.GetKeyDown(KeyCode.M))
         {
             // add 1,000 XP
-            currentXP += 1000;
-            Debug.Log("Current XP: " + currentXP);
+            tempXP += 1000;
+            Debug.Log("Temp XP: " + tempXP);
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            // add 1,000 XP
+            Debug.Log("Final XP: " + finalXP);
+            Debug.Log("Temp XP: " + tempXP);
         }
     }
 
-    public void UnlockSkill(Skill skill) {
+    public bool HasSkill(Skill skill)
+    {
+        return skills.Contains(skill);
+    }
+
+    public bool UnlockSkill(Skill skill) {
         // check to see if player can unlock this skill/upgrade it
         SkillLevel thisLevel = null;
         bool canUnlock = false;
@@ -91,44 +102,78 @@ public class SkillManager : MonoBehaviour
         if (!canUnlock)
         {
             Debug.Log("Cannot unlock the selected skill");
-            return;
+            return false;
         }
 
-        Debug.Log("currentXP: " + currentXP + ", and thisLevel.XPNeeded: " + thisLevel.XPNeeded);
-        if (currentXP < thisLevel.XPNeeded)
+        Debug.Log("finalXP: " + finalXP + ", and thisLevel.XPNeeded: " + thisLevel.XPNeeded);
+        if (finalXP < thisLevel.XPNeeded)
         {
             Debug.Log("Not enough XP to unlock this skill");
-            return;
+            return false;
         }
 
         // this call is for making sure each skill's effect takes place
         skill.Unlock(thisLevel, this);
         thisLevel.UnlockIcon();
 
+        if (!HasSkill(skill))
+        {
+            // just add it
+            skills.Add(skill);
+        }
+        else
+        {
+            // find it and then replace it
+            for (int i = 0; i < skills.Count; i++)
+            {
+                if (skills[i].name == skill.name)
+                {
+                    skills[i] = skill;
+                    break;
+                }
+            }
+        }
+        
+        
+
 
         // spend the XP
         SpendXP(thisLevel.XPNeeded);
-    }
-
-    public void GainXP(int xpAmount)
-    {
-        currentXP += xpAmount;
-    }
-
-    public bool SpendXP(int spendingAmount)
-    {
-        if (spendingAmount > currentXP)
-        {
-            return false;
-        }
-        Debug.Log("Current XP before spending: " + currentXP);
-        currentXP -= spendingAmount;
-        Debug.Log("Current XP after spending: " + currentXP);
         return true;
     }
 
-    private int mod(int x, int m)
+    
+    
+    // used for gaining XP in the game
+    public void GainXP(int xpAmount)
     {
-        return (x % m + m) % m;
+        tempXP += xpAmount;
+        Debug.Log("Temp XP: " + tempXP);
+    }
+
+    // used for spending XP in the home base
+    public bool SpendXP(int spendingAmount)
+    {
+        if (spendingAmount > finalXP)
+        {
+            return false;
+        }
+        Debug.Log("Final XP before spending: " + finalXP);
+        finalXP -= spendingAmount;
+        Debug.Log("Final XP after spending: " + finalXP);
+        return true;
+    }
+
+    // used if a player successfully makes it back to the home base
+    public void TransferXP()
+    {
+        finalXP += tempXP;
+        tempXP = 0;
+    }
+
+    // used if a player dies
+    public void ClearTempXP()
+    {
+        tempXP = 0;
     }
 }
