@@ -20,6 +20,10 @@ public class InGameDataManager : MonoBehaviourPun
 	public Item currentItem;
 	public Armor currentArmor;
 
+	public delegate void EquipmentSwitched();
+	public event EquipmentSwitched OnEquipmentSwitched;
+	public int currentIndex;
+
     public bool isOpen;
 	public bool refreshInv = false;
 
@@ -159,11 +163,20 @@ public class InGameDataManager : MonoBehaviourPun
 
 	public void TransferToStorage()
 	{
+		// First bring each resource back
 		foreach (Resource r in resources) {
 			if (resourceCounts[(int)r.type] > 0) {
 				GetComponent<BaseDataManager>().AddResourceToStorage(r, resourceCounts[(int)r.type]);
 			}
 		}
+
+		// Then bring each equipment back
+		for (int i = 0; i < 4; i++) {
+			GetComponent<BaseDataManager>().equipment[i] = currentWeapons[i];
+		}
+		GetComponent<BaseDataManager>().equipment[4] = currentItem;
+		GetComponent<BaseDataManager>().equippedArmor = currentArmor;
+
 		ClearOnLeave();
 	}
 
@@ -183,6 +196,11 @@ public class InGameDataManager : MonoBehaviourPun
 		currentView = backpackPart1;
 		firstView = true;
 		resourceIndex = 0;
+
+		currentWeapons = new Weapon[4];
+		currentItem = null;
+		currentArmor = null;
+
 		isOpen = false;
 	}
 
@@ -203,6 +221,10 @@ public class InGameDataManager : MonoBehaviourPun
 		currentView = backpackPart1;
 		firstView = true;
         resourceIndex = 0;
+
+		currentWeapons = new Weapon[4];
+		currentItem = null;
+		currentArmor = null;
 
         isOpen = false;
     }

@@ -24,7 +24,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        equipmentManager = GetComponent<PlayerControllerLoader>().equipmentManager;
+        equipmentManager = GetComponent<PlayerControllerLoader>().baseDataManager;
         pHud = GetComponent<PlayerHUD>();
 
         equipmentManager.OnEquipmentSwitched += EquipmentSwitched;

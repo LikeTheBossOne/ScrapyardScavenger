@@ -37,7 +37,16 @@ public class BaseDataManager : MonoBehaviourPunCallbacks, IOnEventCallback
 	public int[] armorCounts = null;
 	private int armorIndex;
 
-    private Equipment[] equipment = null;
+	/*
+	 * The equipment array is structured like the following:
+	 *   [0]: Weapon 1
+	 *   [1]: Weapon 2
+	 *   [2]: Throwable
+	 *   [3]: Melee
+	 *   [4]: Item
+	 */
+    public Equipment[] equipment = null;
+	public Armor equippedArmor = null;
 	private List<ResourcePersistent> resources = null;
 	private HashSet<Resource> resourceSet = null;
     public bool isReloading = false;
@@ -196,8 +205,9 @@ public class BaseDataManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public void Clear()
     {
         equipment = new Equipment[5];
-        equipment[0] = weapons[(int)WeaponType.AR];
-        equipment[1] = weapons[(int)WeaponType.Pistol];
+        equipment[0] = weapons[(int)WeaponType.Pistol];
+		equippedArmor = null;
+        
 		resources = new List<ResourcePersistent>();
 		resourceSet = new HashSet<Resource>();
     }
@@ -254,5 +264,18 @@ public class BaseDataManager : MonoBehaviourPunCallbacks, IOnEventCallback
 				resourceSet.Remove(rp.Resource);
 			}
 		}
+	}
+
+	public void TransferToInGame() {
+		for (int i = 0; i < 4; i++) {
+			GetComponent<InGameDataManager>().currentWeapons[i] = equipment[i] as Weapon;
+		}
+		GetComponent<InGameDataManager>().currentItem = equipment[4] as Item;
+		GetComponent<InGameDataManager>().currentArmor = equippedArmor;
+
+		// In case of player death, set default equipment to just a Pistol
+		equipment = new Equipment[5];
+		equipment[0] = weapons[(int)WeaponType.Pistol];
+		equippedArmor = null;
 	}
 }
