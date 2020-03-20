@@ -107,8 +107,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 0}
-  equipmentManager: {fileID: 0}
-  inventoryManager: {fileID: 0}
+  baseDataManager: {fileID: 0}
+  inGameDataManager: {fileID: 0}
   sceneManager: {fileID: 0}
   skillManager: {fileID: 0}
   gunParent: {fileID: 2210166939918232469}

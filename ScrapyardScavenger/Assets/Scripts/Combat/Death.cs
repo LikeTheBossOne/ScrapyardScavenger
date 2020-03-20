@@ -54,7 +54,7 @@ public class Death : MonoBehaviourPun
             GetComponent<PlayerMotor>().jumpForce = 0;
 
             PlayerControllerLoader pControllerLoader = GetComponent<PlayerControllerLoader>();
-            //pControllerLoader.baseDataManager.Clear();
+            pControllerLoader.baseDataManager.Clear();
             pControllerLoader.inGameDataManager.ClearOnDeath();
             GetComponent<PlayerControllerLoader>().skillManager.ClearTempXP();
 

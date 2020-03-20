@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using ExitGames.Client.Photon;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InGameDataManager : MonoBehaviourPun
+public class InGameDataManager : MonoBehaviourPun, IOnEventCallback
 {
     public PlayerSceneManager sceneManager;
 
@@ -20,9 +22,16 @@ public class InGameDataManager : MonoBehaviourPun
 	public Item currentItem;
 	public Armor currentArmor;
 
+	// Variables for player shoot
 	public delegate void EquipmentSwitched();
 	public event EquipmentSwitched OnEquipmentSwitched;
 	public int currentIndex;
+	private GameObject currentObject;
+	public Transform gunParent;
+	public Transform meleeParent;
+	public Transform grenadeParent;
+	public Transform medShotParent;
+	public bool isReloading = false;
 
     public bool isOpen;
 	public bool refreshInv = false;
@@ -71,10 +80,26 @@ public class InGameDataManager : MonoBehaviourPun
 			RefreshInventoryView();
         }
 
-        if (Input.GetKeyDown(KeyCode.H))
-        {
+        if (Input.GetKeyDown(KeyCode.H)) {
             PrintResources();
         }
+
+		if (Input.GetKeyDown(KeyCode.Alpha1)
+			&& currentIndex != 0
+			&& currentWeapons[0] != null)
+			photonView.RPC("Equip", RpcTarget.All, 0);
+		if (Input.GetKeyDown(KeyCode.Alpha2)
+			&& currentIndex != 1
+			&& currentWeapons[1] != null)
+			photonView.RPC("Equip", RpcTarget.All, 1);
+		if (Input.GetKeyDown(KeyCode.Alpha3)
+			&& currentIndex != 2
+			&& currentWeapons[2] != null)
+			photonView.RPC("Equip", RpcTarget.All, 2);
+		if (Input.GetKeyDown(KeyCode.Alpha4)
+			&& currentIndex != 3
+			&& currentWeapons[3] != null)
+			photonView.RPC("Equip", RpcTarget.All, 3);
     }
 
     public int ResourceCount(Resource resource)
@@ -111,6 +136,56 @@ public class InGameDataManager : MonoBehaviourPun
     {
         return (x % m + m) % m;
     }
+
+	[PunRPC]
+	void Equip(int index)
+	{
+		if (currentObject != null)
+			currentObject.SetActive(false);
+
+
+		Transform parent;
+		if (index == 0) parent = gunParent;
+		else if (index == 1) parent = gunParent;
+		else if (index == 2) parent = meleeParent;
+		else if (index == 3) parent = grenadeParent;
+		else if (index == 4) parent = medShotParent;
+		else return;
+
+		currentObject = parent.Equals(gunParent) ? parent.GetChild(index).gameObject : parent.GetChild(0).gameObject;
+
+		currentObject.SetActive(true);
+		currentIndex = index;
+
+		OnEquipmentSwitched?.Invoke();
+	}
+
+	public void OnEvent(EventData photonEvent)
+	{
+		byte eventCode = photonEvent.Code;
+		if (eventCode == (byte) NetworkCodes.PlayerJoined)
+		{
+			if (photonView.IsMine)
+			{
+				object[] content = new object[] { currentIndex, photonView.ViewID };
+				RaiseEventOptions raiseEventOptions = new RaiseEventOptions {Receivers = ReceiverGroup.Others};
+				SendOptions sendOptions = new SendOptions { Reliability = true };
+				PhotonNetwork.RaiseEvent((byte) NetworkCodes.PlayerJoinedResponse, content, raiseEventOptions, sendOptions);
+			}
+		}
+
+		else if (eventCode == (byte) NetworkCodes.PlayerJoinedResponse)
+		{
+			object[] data = (object[])photonEvent.CustomData;
+			if (photonView.ViewID == (int)data[1])
+				Equip((int)data[0]);
+		}
+	}
+
+	public Equipment getCurrentEquipment() {
+		if (currentIndex == -1) return null;
+		return currentWeapons[currentIndex];
+	}
 
 	public void AddResourceToInventory(ResourceType type) {
 		if (!photonView.IsMine) return;

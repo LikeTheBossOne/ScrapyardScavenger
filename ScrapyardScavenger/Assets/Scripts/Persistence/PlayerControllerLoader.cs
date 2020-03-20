@@ -38,6 +38,7 @@ public class PlayerControllerLoader : MonoBehaviourPun
     void Start()
     {
         baseDataManager.gunParent = gunParent;
+		inGameDataManager.gunParent = gunParent;
         baseDataManager.SetupInScene();
     }
 
