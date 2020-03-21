@@ -6,7 +6,8 @@ using UnityEngine;
 public class RoomController : MonoBehaviourPunCallbacks
 {
     [SerializeField] private int homeBaseSceneIndex;
-    [SerializeField] private int multiplayerSceneIndex;
+    [SerializeField] private int faceoffReadySceneIndex;
+
 
     public override void OnEnable()
     {
@@ -21,15 +22,30 @@ public class RoomController : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("Joined Room");
-        StartGame();
+        if (PhotonNetwork.CurrentRoom.MaxPlayers == 2)
+        {
+            StartSurvivalGame();
+        }
+        else
+        {
+            StartFaceoffGame();
+        }
     }
 
-    public void StartGame()
+    public void StartSurvivalGame()
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("Starting Game");
+            Debug.Log("Starting Survival Game");
             PhotonNetwork.LoadLevel(homeBaseSceneIndex);
+        }
+    }
+    public void StartFaceoffGame()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("Starting Faceoff Game");
+            PhotonNetwork.LoadLevel(faceoffReadySceneIndex);
         }
     }
 }

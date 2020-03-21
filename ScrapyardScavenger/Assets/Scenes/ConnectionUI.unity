@@ -272,7 +272,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 138, y: 0}
+  m_AnchoredPosition: {x: 131, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &133609312
@@ -317,7 +317,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 133609313}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1799678795}
+        m_MethodName: PlayFaceoff
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &133609313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -390,7 +401,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 138, y: 0}
+  m_AnchoredPosition: {x: 131, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &382988645
@@ -435,7 +446,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 382988646}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1799678795}
+        m_MethodName: CancelFaceoff
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &382988646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -659,7 +681,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 138, y: 35}
+  m_AnchoredPosition: {x: 131, y: 35}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &974236311
@@ -738,7 +760,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -123, y: 35}
+  m_AnchoredPosition: {x: -133, y: 35}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1059392963
@@ -971,7 +993,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 138, y: 0}
+  m_AnchoredPosition: {x: 131, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1180521136
@@ -1232,7 +1254,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -123, y: 0}
+  m_AnchoredPosition: {x: -133, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1495635906
@@ -1449,7 +1471,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -123, y: 0}
+  m_AnchoredPosition: {x: -133, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1628260752
@@ -1496,7 +1518,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1799678795}
-        m_MethodName: Cancel
+        m_MethodName: CancelSurvival
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1758,7 +1780,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -123, y: 0}
+  m_AnchoredPosition: {x: -133, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1888070994
@@ -1805,7 +1827,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1799678795}
-        m_MethodName: Play
+        m_MethodName: PlaySurvival
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2072,6 +2094,16 @@ PrefabInstance:
       propertyPath: multiplayerSceneIndex
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6352857435891664818, guid: c6d97bfac3af3804f8ab684dd5dd7e7e,
+        type: 3}
+      propertyPath: faceoffReadySceneIndex
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6352857435891664818, guid: c6d97bfac3af3804f8ab684dd5dd7e7e,
+        type: 3}
+      propertyPath: faceoffSceneIndex
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6352857435891664819, guid: c6d97bfac3af3804f8ab684dd5dd7e7e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2151,6 +2183,36 @@ PrefabInstance:
       propertyPath: cancelButton
       value: 
       objectReference: {fileID: 1628260750}
+    - target: {fileID: 7128523755711038011, guid: 2c788b90444730148b1485d8b68c6088,
+        type: 3}
+      propertyPath: survivalPlayButton
+      value: 
+      objectReference: {fileID: 1888070992}
+    - target: {fileID: 7128523755711038011, guid: 2c788b90444730148b1485d8b68c6088,
+        type: 3}
+      propertyPath: survivalCancelButton
+      value: 
+      objectReference: {fileID: 1628260750}
+    - target: {fileID: 7128523755711038011, guid: 2c788b90444730148b1485d8b68c6088,
+        type: 3}
+      propertyPath: faceoffPlayButton
+      value: 
+      objectReference: {fileID: 133609310}
+    - target: {fileID: 7128523755711038011, guid: 2c788b90444730148b1485d8b68c6088,
+        type: 3}
+      propertyPath: faceoffCancelButton
+      value: 
+      objectReference: {fileID: 382988643}
+    - target: {fileID: 7128523755711038011, guid: 2c788b90444730148b1485d8b68c6088,
+        type: 3}
+      propertyPath: survivalRoomSize
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7128523755711038011, guid: 2c788b90444730148b1485d8b68c6088,
+        type: 3}
+      propertyPath: faceoffRoomSize
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7128523755711038012, guid: 2c788b90444730148b1485d8b68c6088,
         type: 3}
       propertyPath: m_LocalPosition.x
