@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class PlayerShoot : MonoBehaviourPunCallbacks
 {
-    private InGameDataManager npdManager;
+    private InGameDataManager inGameManager;
 
     public LayerMask enemyLayer;
 
@@ -24,10 +24,10 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        npdManager = GetComponent<PlayerControllerLoader>().inGameDataManager;
+        inGameManager = GetComponent<PlayerControllerLoader>().inGameDataManager;
         pHud = GetComponent<PlayerHUD>();
 
-        npdManager.OnEquipmentSwitched += EquipmentSwitched;
+        inGameManager.OnEquipmentSwitched += EquipmentSwitched;
     }
 
     void Update()
@@ -35,13 +35,13 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
         if (!photonView.IsMine) return;
 
 
-        Gun gun = npdManager.getCurrentEquipment() as Gun;
+        Gun gun = inGameManager.getCurrentEquipment() as Gun;
         if (gun == null) return;
-        GunState gunState = gunParent.GetChild(npdManager.currentIndex).GetComponent<GunState>();
+        GunState gunState = gunParent.GetChild(inGameManager.currentWeaponIndex).GetComponent<GunState>();
 
         // No Ammo
         if (gunState != null
-            && !npdManager.isReloading
+            && !inGameManager.isReloading
             && gunState.ammoCount <= 0)
         {
             reloadCoroutine = StartCoroutine(Reload(gun.reloadTime));
@@ -50,7 +50,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 		pHud.AmmoChanged(gunState.ammoCount, gunState.baseAmmo);
 
 
-        if (!npdManager.isReloading
+        if (!inGameManager.isReloading
             && gunState.ammoCount > 0)
         {
             // Semi-Auto
@@ -86,18 +86,18 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 
     void OnDestroy()
     {
-        npdManager.OnEquipmentSwitched -= EquipmentSwitched;
+        inGameManager.OnEquipmentSwitched -= EquipmentSwitched;
     }
 
     IEnumerator Reload(float wait)
     {
-        npdManager.isReloading = true;
+        inGameManager.isReloading = true;
 		this.GetComponent<PlayerHUD>().crossHairReloading();
-        reloadingModel = gunParent.GetChild(npdManager.currentIndex).GetChild(0);
+        reloadingModel = gunParent.GetChild(inGameManager.currentWeaponIndex).GetChild(0);
 
         // ANIMATION
-        var animator = gunParent.GetChild(npdManager.currentIndex).GetComponent<Animator>();
-        GunState gunState = gunParent.GetChild(npdManager.currentIndex).GetComponent<GunState>();
+        var animator = gunParent.GetChild(inGameManager.currentWeaponIndex).GetComponent<Animator>();
+        GunState gunState = gunParent.GetChild(inGameManager.currentWeaponIndex).GetComponent<GunState>();
         if (animator != null)
         {
             animator.speed = 1.0f / wait;
@@ -107,11 +107,11 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 
         yield return new WaitForSeconds(wait);
 
-        Gun gun = npdManager.getCurrentEquipment() as Gun;
-        gunParent.GetChild(npdManager.currentIndex).GetComponent<GunState>().ammoCount = gun.baseClipSize;
+        Gun gun = inGameManager.getCurrentEquipment() as Gun;
+        gunParent.GetChild(inGameManager.currentWeaponIndex).GetComponent<GunState>().ammoCount = gun.baseClipSize;
         pHud.AmmoChanged(gun.baseClipSize, gun.baseClipSize);
 
-        npdManager.isReloading = false;
+        inGameManager.isReloading = false;
 		this.GetComponent<PlayerHUD>().crossHairReloaded();
         gunState.reloadStop();
     }
@@ -119,7 +119,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
     [PunRPC]
     void Shoot()
     {
-        GunState gunState = gunParent.GetChild(npdManager.currentIndex).GetComponent<GunState>();
+        GunState gunState = gunParent.GetChild(inGameManager.currentWeaponIndex).GetComponent<GunState>();
         gunState.bulletSound();
         Transform eyeCam = transform.Find("Cameras/Main Player Cam");
         RaycastHit hit = new RaycastHit();
@@ -131,7 +131,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 
             if (photonView.IsMine && hit.collider.gameObject.layer == 11)
             {
-                Gun gun = npdManager.getCurrentEquipment() as Gun;
+                Gun gun = inGameManager.getCurrentEquipment() as Gun;
                 if (gun == null)
                 {
                     Debug.Log("BAD");
@@ -170,7 +170,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 
         if (photonView.IsMine)
         {
-            gunState = gunParent.GetChild(npdManager.currentIndex).GetComponent<GunState>();
+            gunState = gunParent.GetChild(inGameManager.currentWeaponIndex).GetComponent<GunState>();
             gunState.ammoCount--;
             pHud.AmmoChanged(gunState.ammoCount, gunState.baseAmmo);
         }
@@ -203,9 +203,9 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
         if (reloadingModel != null)
             reloadingModel.localRotation = Quaternion.identity;
         
-        npdManager.isReloading = false;
+        inGameManager.isReloading = false;
 		this.GetComponent<PlayerHUD>().crossHairReloaded();
-        GunState gunState = gunParent.GetChild(npdManager.currentIndex).GetComponent<GunState>();
+        GunState gunState = gunParent.GetChild(inGameManager.currentWeaponIndex).GetComponent<GunState>();
         pHud.AmmoChanged(gunState.ammoCount, gunState.baseAmmo);
     }
 }

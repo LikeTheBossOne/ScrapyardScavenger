@@ -56,12 +56,23 @@ public class HomeBaseNetworkManager : MonoBehaviourPunCallbacks
                 button.GetComponent<Button>().interactable = false;
             }
 
+			if (playerController == null) {
+				foreach (GameObject obj in GameObject.FindGameObjectsWithTag("GameController"))
+				{
+					if (obj.GetPhotonView().IsMine)
+					{
+						playerController = obj;
+						break;
+					}
+				}
+			}
             if (PhotonNetwork.IsMasterClient)
             {
                 PhotonNetwork.CurrentRoom.IsOpen = false;
                 PhotonNetwork.CurrentRoom.IsVisible = false;
                 StartCoroutine(StartGame());
             }
+			playerController.GetPhotonView().RPC("TransferToInGame", RpcTarget.All);
         }
     }
 
@@ -117,19 +128,7 @@ public class HomeBaseNetworkManager : MonoBehaviourPunCallbacks
             yield return new WaitForSeconds(1);
         }
 
-		if (playerController == null) {
-			foreach (GameObject obj in GameObject.FindGameObjectsWithTag("GameController"))
-			{
-				if (obj.GetPhotonView().IsMine)
-				{
-					playerController = obj;
-					break;
-				}
-			}
-		}
-
 		playerController.GetComponent<InGameDataManager>().refreshInv = false;
-		playerController.GetComponent<BaseDataManager>().TransferToInGame();
 
         PhotonNetwork.LoadLevel(multiplayerIndex);
     }

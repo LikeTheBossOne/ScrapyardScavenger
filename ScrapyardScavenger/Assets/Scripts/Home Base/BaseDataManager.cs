@@ -9,7 +9,7 @@ using UnityEngine;
 public class BaseDataManager : MonoBehaviourPunCallbacks
 {
     public PlayerSceneManager sceneManager;
-    private InGameDataManager inventoryManager;
+    private InGameDataManager inGameManager;
 
     public Transform gunParent;
     public Transform meleeParent;
@@ -62,7 +62,7 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
     {
         currentIndex = -1;
         sceneManager = GetComponent<PlayerSceneManager>();
-        inventoryManager = GetComponent<InGameDataManager>();
+        inGameManager = GetComponent<InGameDataManager>();
 
         equipment = new Equipment[5];
         equipment[0] = weapons[(int)WeaponType.AR];
@@ -125,12 +125,13 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
         }
 
         if (photonView.IsMine)
-            photonView.RPC("Equip", RpcTarget.All, 0);
+            photonView.RPC("EquipWeapon", RpcTarget.All, 0);
     }
 
     #endregion Setup
 
-    public void Clear()
+	[PunRPC]
+    public void ClearEquipmentOnDeath()
     {
         equipment = new Equipment[5];
         equipment[0] = weapons[(int)WeaponType.Pistol];
@@ -191,9 +192,10 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
 		}
 	}
 
+	[PunRPC]
 	public void TransferToInGame() {
-		Array.Copy(equipment, 0, GetComponent<InGameDataManager>().currentWeapons, 0, 4);
-		GetComponent<InGameDataManager>().currentItem = equipment[4] as Item;
-		GetComponent<InGameDataManager>().currentArmor = equippedArmor;
+		Array.Copy(equipment, 0, inGameManager.currentWeapons, 0, 4);
+		inGameManager.currentItem = equipment[4] as Item;
+		inGameManager.currentArmor = equippedArmor;
 	}
 }

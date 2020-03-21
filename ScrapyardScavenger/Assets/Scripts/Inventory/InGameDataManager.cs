@@ -25,7 +25,7 @@ public class InGameDataManager : MonoBehaviourPun, IOnEventCallback
 	// Variables for player shoot
 	public delegate void EquipmentSwitched();
 	public event EquipmentSwitched OnEquipmentSwitched;
-	public int currentIndex;
+	public int currentWeaponIndex;
 	private GameObject currentObject;
 	public Transform gunParent;
 	public Transform meleeParent;
@@ -66,7 +66,7 @@ public class InGameDataManager : MonoBehaviourPun, IOnEventCallback
 			RefreshInventoryView();
 		}
 
-        // Check if player is opening/closing inventory
+        // Keycode check for switching inventory views
         if (Input.GetKeyDown(KeyCode.I))
         {
 			firstView = !firstView;
@@ -85,21 +85,21 @@ public class InGameDataManager : MonoBehaviourPun, IOnEventCallback
         }
 
 		if (Input.GetKeyDown(KeyCode.Alpha1)
-			&& currentIndex != 0
+			&& currentWeaponIndex != 0
 			&& currentWeapons[0] != null)
-			photonView.RPC("Equip", RpcTarget.All, 0);
+			photonView.RPC("EquipWeapon", RpcTarget.All, 0);
 		if (Input.GetKeyDown(KeyCode.Alpha2)
-			&& currentIndex != 1
+			&& currentWeaponIndex != 1
 			&& currentWeapons[1] != null)
-			photonView.RPC("Equip", RpcTarget.All, 1);
+			photonView.RPC("EquipWeapon", RpcTarget.All, 1);
 		if (Input.GetKeyDown(KeyCode.Alpha3)
-			&& currentIndex != 2
+			&& currentWeaponIndex != 2
 			&& currentWeapons[2] != null)
-			photonView.RPC("Equip", RpcTarget.All, 2);
+			photonView.RPC("EquipWeapon", RpcTarget.All, 2);
 		if (Input.GetKeyDown(KeyCode.Alpha4)
-			&& currentIndex != 3
+			&& currentWeaponIndex != 3
 			&& currentWeapons[3] != null)
-			photonView.RPC("Equip", RpcTarget.All, 3);
+			photonView.RPC("EquipWeapon", RpcTarget.All, 3);
     }
 
     public int ResourceCount(Resource resource)
@@ -138,7 +138,7 @@ public class InGameDataManager : MonoBehaviourPun, IOnEventCallback
     }
 
 	[PunRPC]
-	void Equip(int index)
+	void EquipWeapon(int index)
 	{
 		if (currentObject != null)
 			currentObject.SetActive(false);
@@ -155,7 +155,7 @@ public class InGameDataManager : MonoBehaviourPun, IOnEventCallback
 		currentObject = parent.Equals(gunParent) ? parent.GetChild(index).gameObject : parent.GetChild(0).gameObject;
 
 		currentObject.SetActive(true);
-		currentIndex = index;
+		currentWeaponIndex = index;
 
 		OnEquipmentSwitched?.Invoke();
 	}
@@ -167,7 +167,7 @@ public class InGameDataManager : MonoBehaviourPun, IOnEventCallback
 		{
 			if (photonView.IsMine)
 			{
-				object[] content = new object[] { currentIndex, photonView.ViewID };
+				object[] content = new object[] { currentWeaponIndex, photonView.ViewID };
 				RaiseEventOptions raiseEventOptions = new RaiseEventOptions {Receivers = ReceiverGroup.Others};
 				SendOptions sendOptions = new SendOptions { Reliability = true };
 				PhotonNetwork.RaiseEvent((byte) NetworkCodes.PlayerJoinedResponse, content, raiseEventOptions, sendOptions);
@@ -178,13 +178,13 @@ public class InGameDataManager : MonoBehaviourPun, IOnEventCallback
 		{
 			object[] data = (object[])photonEvent.CustomData;
 			if (photonView.ViewID == (int)data[1])
-				Equip((int)data[0]);
+				EquipWeapon((int)data[0]);
 		}
 	}
 
 	public Equipment getCurrentEquipment() {
-		if (currentIndex == -1) return null;
-		return currentWeapons[currentIndex];
+		if (currentWeaponIndex == -1) return null;
+		return currentWeapons[currentWeaponIndex];
 	}
 
 	public void AddResourceToInventory(ResourceType type) {
@@ -244,13 +244,6 @@ public class InGameDataManager : MonoBehaviourPun, IOnEventCallback
 				GetComponent<BaseDataManager>().AddResourceToStorage(r, resourceCounts[(int)r.type]);
 			}
 		}
-
-		// Then bring each equipment back
-		for (int i = 0; i < 4; i++) {
-			GetComponent<BaseDataManager>().equipment[i] = currentWeapons[i];
-		}
-		GetComponent<BaseDataManager>().equipment[4] = currentItem;
-		GetComponent<BaseDataManager>().equippedArmor = currentArmor;
 
 		ClearOnLeave();
 	}
