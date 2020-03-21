@@ -53,5 +53,9 @@ MonoBehaviour:
   - TakeDamageShambler
   - BeginLeave
   - ReadyToLeave
+  - ClearEquipmentOnDeath
+  - EquipWeapon
+  - KilledEnemy
+  - TransferToInGame
   DisableAutoOpenWizard: 1
   ShowSettings: 1
