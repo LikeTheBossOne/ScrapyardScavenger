@@ -39,30 +39,42 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (shamblerCoolDown <= 0)
+        if (PhotonNetwork.IsMasterClient)
         {
-            if (shamblerCount < shamblerMax)
+            if (shamblerCoolDown <= 0)
             {
-                //spawn logic
-                int selected = Random.Range(0, spawnPoints.Length);
-                PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", shambName), spawnPoints[selected].location.position, spawnPoints[selected].location.rotation);
-                shamblerCount++;
+                if (shamblerCount < shamblerMax)
+                {
+                    //spawn logic
+                    int selected = Random.Range(0, spawnPoints.Length);
+                    PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", shambName), spawnPoints[selected].location.position, spawnPoints[selected].location.rotation);
+                    shamblerCount++;
+                }
+                shamblerCoolDown = shamblerInterval;
             }
-            shamblerCoolDown = shamblerInterval;
+            else
+            {
+                shamblerCoolDown -= Time.deltaTime;
+            }
         }
-        else
-        {
-            shamblerCoolDown -= Time.deltaTime;
-        }
+        
     }
     [PunRPC]
     public void onShamblerKill()
     {
-        shamblerCount--;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            shamblerCount--;
+        }
+        
     }
     [PunRPC]
     public void onChargerKill()
     {
-        chargerCount--;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            chargerCount--;
+        }
+        
     }
 }
