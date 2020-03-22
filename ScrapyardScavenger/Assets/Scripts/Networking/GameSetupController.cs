@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class GameSetupController : MonoBehaviour
 {
+    public Vector3 player1StartPosition;
+    public Vector3 player2StartPosition;
+
     void Start()
     {
         CreatePlayer();
@@ -13,7 +16,14 @@ public class GameSetupController : MonoBehaviour
 
     private void CreatePlayer()
     {
-        Debug.Log("Creating Player");
-        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PhotonPlayer"), Vector3.zero, Quaternion.identity);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PhotonPlayer"), player1StartPosition, Quaternion.Euler(0, 90, 0));
+        }
+        else
+        {
+            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PhotonPlayer"), player2StartPosition, Quaternion.Euler(0, 90, 0));
+        }
+        
     }
 }

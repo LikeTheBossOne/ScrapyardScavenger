@@ -11,24 +11,12 @@ TagManager:
   - HomeScreenButton
   - ExtractionCircle
   - Shambler
-  - slot7
-  - slot2
-  - slot8
-  - slot6
-  - slot3
-  - slot4
-  - slot1
-  - slot5
-  - slot3Text
-  - slot7Text
-  - slot8Text
-  - slot1Text
-  - slot6Text
-  - slot2Text
-  - slot5Text
-  - slot4Text
   - crosshair
   - crafter
+  - Slot
+  - StorageItemImg
+  - StorageItemName
+  - StorageItemDesc
   layers:
   - Default
   - TransparentFX
