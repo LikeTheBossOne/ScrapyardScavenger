@@ -54,8 +54,8 @@ public class Death : MonoBehaviourPun
             GetComponent<PlayerMotor>().jumpForce = 0;
 
             PlayerControllerLoader pControllerLoader = GetComponent<PlayerControllerLoader>();
-            pControllerLoader.equipmentManager.Clear();
-            pControllerLoader.inventoryManager.ClearOnDeath();
+			pControllerLoader.playerController.GetPhotonView().RPC("ClearEquipmentOnDeath", RpcTarget.All);
+            pControllerLoader.inGameDataManager.ClearOnDeath();
             GetComponent<PlayerControllerLoader>().skillManager.ClearTempXP();
 
 			UI.SetActive(false);

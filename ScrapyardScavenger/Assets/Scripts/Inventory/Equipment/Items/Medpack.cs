@@ -8,7 +8,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item", menuName = "Items/Medpack")]
 public class Medpack : Item
 {   
-    public override void Use(InventoryManager manager)
+    public override void Use(InGameDataManager manager)
     {
         // use medpack
         float difference = manager.GetComponent<Health>().maxHealth - manager.GetComponent<Health>().currentHealth;
@@ -18,6 +18,6 @@ public class Medpack : Item
         manager.GetComponent<PlayerHUD>().heal(difference);
 
         // remove this from the manager?
-        manager.itemCounts[this.id]--;
+		manager.currentItem = null;
     }
 }

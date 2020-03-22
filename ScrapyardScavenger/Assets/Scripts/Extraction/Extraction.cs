@@ -221,7 +221,7 @@ public class Extraction : MonoBehaviourPunCallbacks
         Cursor.visible = true;
        	
 		// First, add any resources the player collected into the home base storage
-		playerController.GetComponent<InventoryManager>().TransferToStorage();
+		playerController.GetComponent<InGameDataManager>().TransferToStorage();
 
         // Then return to Home Base
         playerController.GetPhotonView().RPC("MasterClientGoToHomeBase", RpcTarget.All);

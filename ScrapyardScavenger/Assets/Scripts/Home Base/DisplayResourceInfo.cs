@@ -25,7 +25,7 @@ public class DisplayResourceInfo : MonoBehaviour
     {
 		if (controller != null) {
 			try {
-				rp = controller.GetComponent<EquipmentManager>().getResources()[slotIndex];
+				rp = controller.GetComponent<BaseDataManager>().getResources()[slotIndex];
 			} catch (Exception e) {
 				// The slot has nothing in it yet
 				rp = null;
