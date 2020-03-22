@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
   AppSettings:
-    AppIdRealtime: 933d99cf-1de7-4bb5-be54-a27fd5e1a2a6
+    AppIdRealtime: 
     AppIdChat: 
     AppIdVoice: 
     AppVersion: 
@@ -29,28 +29,25 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
+  - BeginLeave
+  - CancelLeave
+  - CleanUpProjectiles
   - ClickRpc
   - DestroyRpc
   - DestroySpaceship
-  - Fire
-  - RespawnSpaceship
   - Equip
-  - Shoot
-  - TakeDamage
-  - playerJoined
-  - playerReadied
-  - playerUnReadied
-  - PlayerUnReadied
-  - PlayerReadied
-  - PlayerNotReadied
-  - PlayerDied
-  - CancelLeave
-  - FirstPlayerReadyToLeave
-  - SecondPlayerReadyToLeave
+  - Fire
+  - KilledEnemy
+  - MasterClientGoToHomeBase
   - onChargerKill
   - onShamblerKill
-  - MasterClientGoToHomeBase
+  - PlayerDied
+  - PlayerNotReadied
+  - PlayerReadied
+  - ReadyToLeave
+  - RespawnSpaceship
+  - Shoot
+  - TakeDamage
   - TakeDamageShambler
-  - CleanUpProjectiles
   DisableAutoOpenWizard: 1
-  ShowSettings: 1
+  ShowSettings: 0
