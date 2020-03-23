@@ -49,5 +49,8 @@ MonoBehaviour:
   - Shoot
   - TakeDamage
   - TakeDamageShambler
+  - ClearEquipmentOnDeath
+  - EquipWeapon
+  - TransferToInGame
   DisableAutoOpenWizard: 1
   ShowSettings: 0
