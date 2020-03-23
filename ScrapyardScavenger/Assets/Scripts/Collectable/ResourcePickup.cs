@@ -71,8 +71,16 @@ public class ResourcePickup : MonoBehaviour, IPunObservable
             }*/
 
 
+            if (other.transform.parent.gameObject.GetPhotonView().IsMine)
+            {
+                NotificationSystem.Instance.Notify(new Notification($"Picked up {this.type.ToString()}", NotificationType.Neutral));
+            }
+
             // Getting PlayerController's Inventory Manager
-            other.transform.parent.GetComponent<PlayerControllerLoader>().inventoryManager.AddResourceToInventory(this.type);
+            other.transform.parent.GetComponent<PlayerControllerLoader>().inGameDataManager.AddResourceToInventory(this.type);
+
+            // Gain XP for collecting a resource
+            other.transform.parent.GetComponent<PlayerControllerLoader>().skillManager.GainXP((int) XPRewards.CollectResource);
             Destroy(this.gameObject);
         }
     }

@@ -35,7 +35,7 @@ public class CraftingUIGenerator : MonoBehaviour
 			Destroy(g);
 		}
 		cItems.Clear();
-		HashSet<Resource> resourceSet = controller.GetComponent<EquipmentManager>().getResourceSet();
+		HashSet<Resource> resourceSet = controller.GetComponent<BaseDataManager>().getResourceSet();
 
 		foreach (CraftableObject craftable in craftables) {
 			CraftingRecipe cr = craftable.recipe;
@@ -63,7 +63,7 @@ public class CraftingUIGenerator : MonoBehaviour
 
 	private int getCount(Resource re)
 	{
-		List<ResourcePersistent> currentResources = controller.GetComponent<EquipmentManager>().getResources();
+		List<ResourcePersistent> currentResources = controller.GetComponent<BaseDataManager>().getResources();
 		foreach (ResourcePersistent rp in currentResources) {
 			if (rp.Resource == re) {
 				return rp.Count;
@@ -74,19 +74,19 @@ public class CraftingUIGenerator : MonoBehaviour
 
 	public void Craft(CraftableObject c) {
 		foreach (ResourceAmount r in c.recipe.resources) {
-			controller.GetComponent<EquipmentManager>().RemoveResourceFromStorage(r.item, r.amount);
+			controller.GetComponent<BaseDataManager>().RemoveResourceFromStorage(r.item, r.amount);
 		}
 		if (c is Item)
 		{
-			controller.GetComponent<InventoryManager>().itemCounts[c.id]++;
+			controller.GetComponent<BaseDataManager>().itemCounts[c.id]++;
 		}
 		else if (c is Weapon)
 		{
-			controller.GetComponent<InventoryManager>().weaponCounts[c.id]++;
+			controller.GetComponent<BaseDataManager>().weaponCounts[c.id]++;
 		}
 		else if (c is Armor)
 		{
-			controller.GetComponent<InventoryManager>().armorCounts[c.id]++;
+			controller.GetComponent<BaseDataManager>().armorCounts[c.id]++;
 		}
 	}
 

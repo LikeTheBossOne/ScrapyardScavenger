@@ -29,29 +29,25 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
+  - BeginLeave
+  - CancelLeave
+  - CleanUpProjectiles
   - ClickRpc
   - DestroyRpc
   - DestroySpaceship
-  - Fire
-  - RespawnSpaceship
   - Equip
-  - Shoot
-  - TakeDamage
-  - playerJoined
-  - playerReadied
-  - playerUnReadied
-  - PlayerUnReadied
-  - PlayerReadied
-  - PlayerNotReadied
-  - PlayerDied
-  - CancelLeave
-  - FirstPlayerReadyToLeave
-  - SecondPlayerReadyToLeave
+  - Fire
+  - KilledEnemy
+  - MasterClientGoToHomeBase
   - onChargerKill
   - onShamblerKill
-  - MasterClientGoToHomeBase
-  - TakeDamageShambler
-  - BeginLeave
+  - PlayerDied
+  - PlayerNotReadied
+  - PlayerReadied
   - ReadyToLeave
+  - RespawnSpaceship
+  - Shoot
+  - TakeDamage
+  - TakeDamageShambler
   DisableAutoOpenWizard: 1
-  ShowSettings: 1
+  ShowSettings: 0

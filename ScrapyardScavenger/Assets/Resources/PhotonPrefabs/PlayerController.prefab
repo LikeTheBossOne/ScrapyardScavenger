@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6704274942547728802}
   - component: {fileID: 6704274942547728806}
   - component: {fileID: 6704274942547728805}
+  - component: {fileID: 8432151715047421411}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: GameController
@@ -109,6 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInHomeBase: 0
+  isInSkillMenu: 0
 --- !u!114 &6704274942547728806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,24 +142,21 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3b2f3243657b55442b50f0eabbd6e89d, type: 2}
   - {fileID: 11400000, guid: 5aaca4ef33baa1f48a6eef8d937d3a69, type: 2}
   resourceCounts: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  items:
-  - {fileID: 11400000, guid: dfeb334c2af116d488c57211e1de4b6a, type: 2}
-  - {fileID: 11400000, guid: aa830eef00a220145a877faa6cdb1802, type: 2}
-  itemCounts: 0000000000000000
-  weapons:
-  - {fileID: 11400000, guid: 11200d79ddcef964bb0b20339ec304f1, type: 2}
-  - {fileID: 11400000, guid: 0dff40c41d8fa7c4b8cc236050976d13, type: 2}
-  - {fileID: 11400000, guid: a0081ac72ad7d334aab85f82dcf1552c, type: 2}
-  - {fileID: 11400000, guid: 18fe4acb1ad3b3d48ab1ebbd8068f61d, type: 2}
-  weaponCounts: 0000000000000000000000000000000000000000
-  armors:
-  - {fileID: 11400000, guid: 82ae4d6819beabd4f88f1017f26ccedd, type: 2}
-  - {fileID: 11400000, guid: 2b3935a1aa4f4a243a06d32d0e0a2ccf, type: 2}
-  - {fileID: 11400000, guid: 6f0f70f38ef5db04fab9de3b76d06e4a, type: 2}
-  armorCounts: 000000000000000000000000
+  currentWeapons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  currentItem: {fileID: 0}
+  currentArmor: {fileID: 0}
+  currentIndex: 0
+  gunParent: {fileID: 0}
+  meleeParent: {fileID: 0}
+  grenadeParent: {fileID: 0}
+  medShotParent: {fileID: 0}
+  isReloading: 0
   isOpen: 0
   refreshInv: 0
-  controller: {fileID: 0}
 --- !u!114 &6704274942547728805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,5 +174,34 @@ MonoBehaviour:
   meleeParent: {fileID: 0}
   grenadeParent: {fileID: 0}
   medShotParent: {fileID: 0}
+  items:
+  - {fileID: 11400000, guid: dfeb334c2af116d488c57211e1de4b6a, type: 2}
+  - {fileID: 11400000, guid: aa830eef00a220145a877faa6cdb1802, type: 2}
+  itemCounts: 0000000000000000
+  weapons:
+  - {fileID: 11400000, guid: 11200d79ddcef964bb0b20339ec304f1, type: 2}
+  - {fileID: 11400000, guid: 0dff40c41d8fa7c4b8cc236050976d13, type: 2}
+  - {fileID: 11400000, guid: a0081ac72ad7d334aab85f82dcf1552c, type: 2}
+  - {fileID: 11400000, guid: 18fe4acb1ad3b3d48ab1ebbd8068f61d, type: 2}
+  weaponCounts: 0000000000000000000000000000000000000000
+  armors:
+  - {fileID: 11400000, guid: 82ae4d6819beabd4f88f1017f26ccedd, type: 2}
+  - {fileID: 11400000, guid: 2b3935a1aa4f4a243a06d32d0e0a2ccf, type: 2}
+  - {fileID: 11400000, guid: 6f0f70f38ef5db04fab9de3b76d06e4a, type: 2}
+  armorCounts: 000000000000000000000000
+  equipment: []
+  equippedArmor: {fileID: 0}
   isReloading: 0
   currentIndex: 0
+--- !u!114 &8432151715047421411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6704274942547728824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 435677624745955499eb3ff4291489e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 0}
   id: 10
-  description: 
+  description: An empty bottle of plastic. Upon closer inspection, there are remains
+    of some liquid found near the bottom.
   showInInventory: 0
   icon: {fileID: 21300000, guid: 0aa5015c85da2404aa4d922b0ac985c4, type: 3}
   imageSlotName: 

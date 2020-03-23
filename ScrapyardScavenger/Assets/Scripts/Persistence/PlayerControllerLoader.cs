@@ -6,9 +6,10 @@ using UnityEngine;
 public class PlayerControllerLoader : MonoBehaviourPun
 {
     public GameObject playerController;
-    public EquipmentManager equipmentManager;
-    public InventoryManager inventoryManager;
+    public BaseDataManager baseDataManager;
+    public InGameDataManager inGameDataManager;
     public PlayerSceneManager sceneManager;
+    public SkillManager skillManager;
 
     public Transform gunParent;
     public Transform meleeParent;
@@ -23,9 +24,10 @@ public class PlayerControllerLoader : MonoBehaviourPun
             if (obj.GetPhotonView().Owner.UserId == photonView.Owner.UserId)
             {
                 playerController = obj;
-                equipmentManager = obj.GetComponent<EquipmentManager>();
-                inventoryManager = obj.GetComponent<InventoryManager>();
+                baseDataManager = obj.GetComponent<BaseDataManager>();
+                inGameDataManager = obj.GetComponent<InGameDataManager>();
                 sceneManager = obj.GetComponent<PlayerSceneManager>();
+                skillManager = obj.GetComponent<SkillManager>();
             }
         }
 
@@ -35,8 +37,10 @@ public class PlayerControllerLoader : MonoBehaviourPun
 
     void Start()
     {
-        equipmentManager.gunParent = gunParent;
-        equipmentManager.SetupInScene();
+        baseDataManager.gunParent = gunParent;
+		inGameDataManager.gunParent = gunParent;
+        baseDataManager.SetupInScene();
+		playerController.GetPhotonView().RPC("EquipWeapon", RpcTarget.All, 0);
     }
 
     void Update()

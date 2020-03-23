@@ -13,6 +13,7 @@ public class ShamblerAttacks : MonoBehaviour
     public int spitRange = 10;
     public int spitRecharge = 10;
     public int spitDamage = 2;
+    public float spitSize;
     public float meleeCoolDown { get; private set; }
     public float spitCoolDown { get; private set; }
     public AcidSpit projectile;
@@ -22,6 +23,7 @@ public class ShamblerAttacks : MonoBehaviour
     {
         meleeCoolDown = 0;
         spitCoolDown = 0;
+        spitSize = projectile.GetComponent<SphereCollider>().radius;
     }
 
     // Update is called once per frame
@@ -46,9 +48,12 @@ public class ShamblerAttacks : MonoBehaviour
             Vector3 toTarg = gameObject.transform.position - target.transform.position;
             if (toTarg.magnitude <= spitRange)
             {
-                //Debug.Log("Shooting");
                 spitCoolDown = spitRecharge;
-                GameObject shot = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", projectileName), gameObject.transform.position, gameObject.transform.rotation);
+                Vector3 offset = new Vector3(spitSize + 0.1F,spitSize + 0.1F,spitSize + 0.1F);
+                offset += GetComponent<Collider>().bounds.size;
+                //offset.Scale(GetComponent<Collider>().bounds.size);
+                offset.Scale(toTarg.normalized);
+                GameObject shot = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", projectileName), gameObject.transform.position - offset, gameObject.transform.rotation);
                 //shot.transform.LookAt(-toTarg);
                 shot.GetComponent<AcidSpit>().shooter = gameObject.GetComponent<Collider>();
                 Object[] args = { gameObject };

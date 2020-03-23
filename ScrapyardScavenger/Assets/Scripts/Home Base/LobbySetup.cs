@@ -16,6 +16,9 @@ public class LobbySetup : MonoBehaviourPun
 
         
         PhotonNetwork.Instantiate("PhotonPrefabs/PlayerController", Vector3.zero, Quaternion.identity);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
 }

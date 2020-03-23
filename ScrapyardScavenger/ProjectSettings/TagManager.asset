@@ -14,6 +14,9 @@ TagManager:
   - crosshair
   - crafter
   - Slot
+  - StorageItemImg
+  - StorageItemName
+  - StorageItemDesc
   layers:
   - Default
   - TransparentFX
