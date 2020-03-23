@@ -6,11 +6,15 @@ public abstract class Skill : ScriptableObject
 {
 
     public string Description;
+    public int HighestLevel = 0;
 
     // list of levels for this skill
     public SkillLevel[] levels;
 
-    public abstract void Unlock(SkillLevel unlockedLevel, SkillManager skillManager);
+    public abstract void UnlockLevel(int levelIndex, SkillManager skillManager);
 
-
+    public bool IsUnlocked()
+    {
+        return levels[0].IsUnlocked;
+    }
 }

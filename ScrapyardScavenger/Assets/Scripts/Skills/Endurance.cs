@@ -9,11 +9,12 @@ using UnityEngine;
 public class Endurance : Skill
 {
 
-    public override void Unlock(SkillLevel unlockedLevel, SkillManager skillManager)
+    public override void UnlockLevel(int levelIndex, SkillManager skillManager)
     {
         // increase the length of time that a player can sprint
-        unlockedLevel.IsUnlocked = true;
-        
+        levels[levelIndex].Unlock(levelIndex);
+        HighestLevel = levelIndex;
+
         // comment this out for testing purposes with UI-integration
         /*PlayerMotor motor = skillManager.GetComponent<PlayerMotor>();
         motor.SetSprintLimit((int)unlockedLevel.Modifier);*/

@@ -6,7 +6,7 @@ using UnityEngine;
 // this is the in-game version that tracks what skills a player has
 public class SkillManager : MonoBehaviourPunCallbacks
 {
-    private List<Skill> skills;
+    public List<Skill> skills;
     private int skillIndex;
     private int tempXP; // this is the XP a player is currently collecting in the game
     private int finalXP; // this is the final XP number
@@ -19,8 +19,8 @@ public class SkillManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        // initialize to have 0 skills
-        skills = new List<Skill>();
+        // Initialize all the skills (to make sure previous gamedata doesn't carry over
+        InitializeSkills();
 
         twoMinuteFlag = false;
 
@@ -29,9 +29,38 @@ public class SkillManager : MonoBehaviourPunCallbacks
         finalXP = 0;
     }
 
+    private void InitializeSkills()
+    {
+        foreach (Skill skill in skills)
+        {
+            skill.HighestLevel = 0;
+            foreach (SkillLevel level in skill.levels)
+            {
+                level.IsUnlocked = false;
+            }
+        }
+    }
+
     private bool IsMultipleOfFive(float seconds)
     {
         return (seconds >= FIVE_MINUTES && seconds % FIVE_MINUTES == 0);
+    }
+
+    public bool HasAnySkills()
+    {
+        foreach (Skill skill in skills)
+        {
+            if (skill.IsUnlocked())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<Skill> GetSkills()
+    {
+        return skills;
     }
 
     // Update is called once per frame
@@ -80,65 +109,49 @@ public class SkillManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public bool HasSkill(Skill skill)
-    {
-        return skills.Contains(skill);
-    }
+    public bool UnlockSkill(int skillIndex, int levelIndex) {
+        // first, check to see if the player already has this skill
+        if (skills[skillIndex].levels[levelIndex].IsUnlocked)
+        {
+            Debug.Log("Skill is already unlocked");
+            return false;
+        }
 
-    public bool UnlockSkill(Skill skill) {
         // check to see if player can unlock this skill/upgrade it
         SkillLevel thisLevel = null;
-        bool canUnlock = false;
-        for (int i = 0; i < skill.levels.Length; i++)
+        bool canUnlock = true;
+
+        // basically check to see if the levels before it are unlocked
+        // use HighestLevel
+        for (int i = 0; i < levelIndex; i++)
         {
-            thisLevel = skill.levels[i];
+            thisLevel = skills[skillIndex].levels[i];
             if (!thisLevel.IsUnlocked)
             {
-                canUnlock = true;
+                canUnlock = false;
                 break;
             }
                 
         }
+
         if (!canUnlock)
         {
-            Debug.Log("Cannot unlock the selected skill");
+            Debug.Log("Cannot unlock the selected skill level");
             return false;
         }
 
-        Debug.Log("finalXP: " + finalXP + ", and thisLevel.XPNeeded: " + thisLevel.XPNeeded);
-        if (finalXP < thisLevel.XPNeeded)
+        // check to see if the player has enough XP to unlock this level
+        if (finalXP < skills[skillIndex].levels[levelIndex].XPNeeded)
         {
-            Debug.Log("Not enough XP to unlock this skill");
+            Debug.Log("Not enough XP to unlock this skill level");
             return false;
         }
 
         // this call is for making sure each skill's effect takes place
-        skill.Unlock(thisLevel, this);
-        thisLevel.UnlockIcon();
-
-        if (!HasSkill(skill))
-        {
-            // just add it
-            skills.Add(skill);
-        }
-        else
-        {
-            // find it and then replace it
-            for (int i = 0; i < skills.Count; i++)
-            {
-                if (skills[i].name == skill.name)
-                {
-                    skills[i] = skill;
-                    break;
-                }
-            }
-        }
-        
-        
-
+        skills[skillIndex].UnlockLevel(levelIndex, this);
 
         // spend the XP
-        SpendXP(thisLevel.XPNeeded);
+        SpendXP(skills[skillIndex].levels[levelIndex].XPNeeded);
         return true;
     }
 
@@ -148,7 +161,6 @@ public class SkillManager : MonoBehaviourPunCallbacks
     public void GainXP(int xpAmount)
     {
         tempXP += xpAmount;
-        Debug.Log("Temp XP: " + tempXP);
     }
 
     // used for spending XP in the home base
@@ -158,9 +170,7 @@ public class SkillManager : MonoBehaviourPunCallbacks
         {
             return false;
         }
-        Debug.Log("Final XP before spending: " + finalXP);
         finalXP -= spendingAmount;
-        Debug.Log("Final XP after spending: " + finalXP);
         return true;
     }
 
@@ -175,5 +185,10 @@ public class SkillManager : MonoBehaviourPunCallbacks
     public void ClearTempXP()
     {
         tempXP = 0;
+    }
+
+    public float GetFinalXP()
+    {
+        return finalXP;
     }
 }
