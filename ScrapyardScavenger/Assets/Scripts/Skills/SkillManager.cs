@@ -33,7 +33,7 @@ public class SkillManager : MonoBehaviourPunCallbacks
     {
         foreach (Skill skill in skills)
         {
-            skill.HighestLevel = 0;
+            skill.HighestLevel = -1;
             foreach (SkillLevel level in skill.levels)
             {
                 level.IsUnlocked = false;
@@ -118,20 +118,14 @@ public class SkillManager : MonoBehaviourPunCallbacks
         }
 
         // check to see if player can unlock this skill/upgrade it
-        SkillLevel thisLevel = null;
         bool canUnlock = true;
 
         // basically check to see if the levels before it are unlocked
         // use HighestLevel
-        for (int i = 0; i < levelIndex; i++)
+        Debug.Log("Highest level: " + skills[skillIndex].HighestLevel);
+        if (skills[skillIndex].HighestLevel + 1 != levelIndex)
         {
-            thisLevel = skills[skillIndex].levels[i];
-            if (!thisLevel.IsUnlocked)
-            {
-                canUnlock = false;
-                break;
-            }
-                
+            canUnlock = false;
         }
 
         if (!canUnlock)

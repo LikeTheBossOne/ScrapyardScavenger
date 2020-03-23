@@ -6,7 +6,7 @@ public abstract class Skill : ScriptableObject
 {
 
     public string Description;
-    public int HighestLevel = 0;
+    public int HighestLevel = -1;
 
     // list of levels for this skill
     public SkillLevel[] levels;
