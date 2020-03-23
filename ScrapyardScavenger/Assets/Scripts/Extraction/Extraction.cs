@@ -234,7 +234,10 @@ public class Extraction : MonoBehaviourPunCallbacks
 		playerController.GetComponent<InventoryManager>().TransferToStorage();
 
         // Then return to Home Base
-        GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetPhotonView().RPC("MasterClientGoToHomeBase", RpcTarget.All);
+        if (GameControllerSingleton.instance.aliveCount == 2)
+        {
+            GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetComponent<PlayerControllerLoader>().playerController.GetPhotonView().RPC("MasterClientGoToHomeBase", RpcTarget.All);
+        }
         playerController.GetPhotonView().RPC("MasterClientGoToHomeBase", RpcTarget.All);
 
         if (photonView.IsMine)
