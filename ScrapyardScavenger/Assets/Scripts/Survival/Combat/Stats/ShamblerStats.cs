@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class ShamblerStats : Stats
+public class ShamblerStats : Stats, IPunObservable
 {
     
     public float damage { get; private set; }
@@ -20,6 +20,7 @@ public class ShamblerStats : Stats
     void Update()
     {
         
+
     }
 
     [PunRPC]
@@ -30,40 +31,48 @@ public class ShamblerStats : Stats
         health = health - damage;
         Debug.Log("Enemy Damaged");
 
-        
+
 
         if (health <= 0)
         {
-            GameObject spawner = FindObjectOfType<EnemySpawner>().gameObject;
-            Debug.Log("Spawner: " + spawner);
-            spawner.GetPhotonView().RPC("onShamblerKill", RpcTarget.All);
-
-            // notify the player so he can change his XP
-            // find the player first
-            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-            Debug.Log("Player obj length: " + players.Length);
-            foreach (GameObject player in players)
+            if (PhotonNetwork.IsMasterClient)
             {
-                if (player.name == "Body")
+                GameObject spawner = FindObjectOfType<EnemySpawner>().gameObject;
+                Debug.Log("Spawner: " + spawner);
+                spawner.GetPhotonView().RPC("onShamblerKill", RpcTarget.All);
+                // notify the player so he can change his XP
+                // find the player first
+                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+                Debug.Log("Player obj length: " + players.Length);
+                foreach (GameObject player in players)
                 {
-                    Debug.Log("Ignoring body");
-                    continue;
+                    if (player.name == "Body")
+                    {
+                        Debug.Log("Ignoring body");
+                        continue;
+                    }
+                    if (player.GetPhotonView().ViewID == shooterID)
+                    {
+                        player.GetPhotonView().RPC("KilledEnemy", RpcTarget.All, (int)EnemyType.Shambler);
+                    }
+
                 }
-                if (player.GetPhotonView().ViewID == shooterID)
-                {
-                    player.GetPhotonView().RPC("KilledEnemy", RpcTarget.All, (int) EnemyType.Shambler);
-                }
-                
             }
+
 
             Destroy(gameObject);
 
         }
-
-        /*if (atkStatus > 0)
+    }
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
         {
-            status = atkStatus;
-        }*/
-        //GetComponentInParent<ShamblerDetection>().gotShot(damager);
+            stream.SendNext(health);
+        }
+        else
+        {
+            this.health = (int)stream.ReceiveNext();
+        }
     }
 }

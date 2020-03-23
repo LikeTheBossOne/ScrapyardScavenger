@@ -11,15 +11,15 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9f3758f8f58fdef43803eb9be1df0608, type: 3}
   m_Name: PhotonServerSettings
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   AppSettings:
     AppIdRealtime: 933d99cf-1de7-4bb5-be54-a27fd5e1a2a6
-    AppIdChat: 
-    AppIdVoice: 
-    AppVersion: 
+    AppIdChat:
+    AppIdVoice:
+    AppVersion:
     UseNameServer: 1
-    FixedRegion: 
-    Server: 
+    FixedRegion:
+    Server:
     Port: 0
     Protocol: 0
     EnableLobbyStatistics: 0
@@ -29,27 +29,25 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
+  - BeginLeave
+  - CancelLeave
+  - CleanUpProjectiles
   - ClickRpc
   - DestroyRpc
   - DestroySpaceship
-  - Fire
-  - RespawnSpaceship
   - Equip
-  - Shoot
-  - TakeDamage
-  - playerJoined
-  - playerReadied
-  - playerUnReadied
-  - PlayerUnReadied
-  - PlayerReadied
-  - PlayerNotReadied
-  - PlayerDied
-  - CancelLeave
-  - FirstPlayerReadyToLeave
-  - SecondPlayerReadyToLeave
+  - Fire
+  - KilledEnemy
+  - MasterClientGoToHomeBase
   - onChargerKill
   - onShamblerKill
-  - MasterClientGoToHomeBase
+  - PlayerDied
+  - PlayerNotReadied
+  - PlayerReadied
+  - ReadyToLeave
+  - RespawnSpaceship
+  - Shoot
+  - TakeDamage
   - TakeDamageShambler
   - BeginLeave
   - ReadyToLeave
@@ -59,4 +57,4 @@ MonoBehaviour:
   - TransferToInGame
   - SetTeam
   DisableAutoOpenWizard: 1
-  ShowSettings: 1
+  ShowSettings: 0

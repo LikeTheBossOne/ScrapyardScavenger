@@ -46,8 +46,12 @@ public class ShamblerAI : MonoBehaviour
     }
     private void Update()
     {
-        changeState();
-        handleState();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            changeState();
+            handleState();
+        }
+
 
     }
     public void changeState()
