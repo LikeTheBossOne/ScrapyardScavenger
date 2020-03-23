@@ -21,30 +21,27 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
 	public Item[] items = null;
 	[SerializeField]
 	public int[] itemCounts = null;
-	private int itemIndex;
 
 	// Crafts and counts are indexed based on the CraftableObject's ID
 	[SerializeField]
 	public Weapon[] weapons = null;
 	[SerializeField]
 	public int[] weaponCounts = null;
-	private int weaponIndex;
 
 	// Crafts and counts are indexed based on the CraftableObject's ID
 	[SerializeField]
 	public Armor[] armors = null;
 	[SerializeField]
 	public int[] armorCounts = null;
-	private int armorIndex;
 
-	/*
-	 * The equipment array is structured like the following:
-	 *   [0]: Weapon 1
-	 *   [1]: Weapon 2
-	 *   [2]: Throwable
-	 *   [3]: Melee
-	 *   [4]: Item
-	 */
+    /*
+     * The equipment array is structured like the following:
+     *   [0]: Weapon 1
+     *   [1]: Weapon 2
+     *   [2]: Throwable
+     *   [3]: Melee
+     *   [4]: Item
+     */
     public Equipment[] equipment = null;
 	public Armor equippedArmor = null;
 	private List<ResourcePersistent> resources = null;
@@ -70,10 +67,6 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
 
 		resources = new List<ResourcePersistent>();
 		resourceSet = new HashSet<Resource>();
-
-		itemIndex = 0;
-		weaponIndex = 0;
-		armorIndex = 0;
     }
 
     void Update()
