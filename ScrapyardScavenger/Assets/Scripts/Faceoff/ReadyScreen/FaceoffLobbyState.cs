@@ -9,6 +9,7 @@ public class FaceoffLobbyState : MonoBehaviourPunCallbacks
 {
     public int faceoffSceneIndex;
     public Text readyAmountText;
+    public Text teamText;
     public GameObject readyButton;
 
     private int readyCount = 0;
@@ -17,6 +18,11 @@ public class FaceoffLobbyState : MonoBehaviourPunCallbacks
     void Start()
     {
         SetReadyText();
+        int pNum = PhotonNetwork.LocalPlayer.ActorNumber - 1;
+        teamText.text = $"Team {pNum % 2 + 1}";
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     #region RPCs

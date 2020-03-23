@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Photon.Pun;
 using System.IO;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -49,7 +50,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         source = GetComponent<AudioSource>();
         Debug.Log(source);
         
-
+        normalCam.gameObject.SetActive(true);
         baseFOV = normalCam.fieldOfView;
         sprintFOVModifier = 1.2f;
         sprintLimit = 5; // 5 seconds
@@ -67,6 +68,18 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         // If not me, don't update!
         if (!photonView.IsMine) return;
 
+        if (myRigidbody == null)
+        {
+            myRigidbody = GetComponent<Rigidbody>();
+        }
+
+        if (source == null)
+        {
+            source = GetComponent<AudioSource>();
+        }
+
+        if (source == null || myRigidbody == null) return;
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             isPaused = !isPaused;
@@ -79,7 +92,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         if (((myRigidbody.velocity.magnitude < .1) || (myRigidbody.velocity.y > .1 || myRigidbody.velocity.y < -.1)) && source.isPlaying)
         {
             source.volume -= .05f;
-            if(source.volume == 0)
+            if (source.volume == 0)
             {
                 source.Stop();
             }
@@ -216,5 +229,4 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         isCoolingDown = false;
         Debug.Log("Done cooling down");
     }
-
 }

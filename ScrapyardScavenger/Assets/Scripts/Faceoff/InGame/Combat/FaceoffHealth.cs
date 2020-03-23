@@ -3,26 +3,26 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public class Health : MonoBehaviourPunCallbacks
+public class FaceoffHealth : MonoBehaviourPun
 {
     public int maxHealth;
     public int currentHealth { get; private set; }
     private float armorModifier = 1.0f;
     private float skillModifier = 1.0f;
 
-	public PlayerHUD pHud;
-    public Death death;
+    public FaceoffPlayerHUD pHud;
+    public FaceoffDeath death;
 
     void Start()
     {
-        currentHealth = (int) (maxHealth * skillModifier * armorModifier);
-		pHud = GetComponent<PlayerHUD>();
-        death = GetComponent<Death>();
+        currentHealth = (int)(maxHealth * skillModifier * armorModifier);
+        pHud = GetComponent<FaceoffPlayerHUD>();
+        death = GetComponent<FaceoffDeath>();
     }
 
     void Update()
     {
-        
+
     }
 
     public void ChangeHealthSkill(float modifier)
@@ -39,7 +39,7 @@ public class Health : MonoBehaviourPunCallbacks
     {
         if (photonView.IsMine)
         {
-			pHud.takeDamage((float) damage);
+            pHud.takeDamage((float)damage);
             currentHealth -= damage;
         }
         if (currentHealth <= 0)
@@ -54,6 +54,6 @@ public class Health : MonoBehaviourPunCallbacks
         {
             currentHealth += amount;
         }
-        
+
     }
 }

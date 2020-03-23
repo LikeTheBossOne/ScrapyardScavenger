@@ -48,7 +48,7 @@ public class AcidSpit : MonoBehaviour
                 if (collision.collider.bounds.Contains(player.position))
                 {
                     Debug.Log("player hit");
-                    player.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, shooter.GetComponent<ShamblerAttacks>().spitDamage);
+                    player.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, shooter.GetComponent<ShamblerAttacks>().spitDamage, -1);
                 }
             }
             

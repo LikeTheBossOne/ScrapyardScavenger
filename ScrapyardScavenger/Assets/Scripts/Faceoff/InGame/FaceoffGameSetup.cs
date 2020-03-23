@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using UnityEngine;
 
@@ -12,33 +13,24 @@ public class FaceoffGameSetup : MonoBehaviour
 
     void Start()
     {
-        CreatePlayer();
+        CreatePlayers();
     }
 
-    private void CreatePlayer()
+    private void CreatePlayers()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            Dictionary<int, Player> players = PhotonNetwork.CurrentRoom.Players;
+        int pNum = PhotonNetwork.LocalPlayer.ActorNumber - 1;
 
-            if (PhotonNetwork.CurrentRoom.PlayerCount < 3)
-            {
-                int i = 0;
-                foreach (var player in players)
-                {
-                    Vector3 spawn = i % 2 == 0
-                        ? team1Spawn.transform.GetChild((i + 1) / 2).position
-                        : team2Spawn.transform.GetChild((i + 1) / 2).position;
-                    Vector3 rotation = i % 2 == 0
-                        ? new Vector3(0, 90, 0)
-                        : new Vector3(0, -90, 0);
+        FaceoffPlayerManager playerManager = FindObjectOfType<FaceoffPlayerManager>();
+        playerManager.clientTeam = (TeamGroup) (pNum % 2);
 
-                    GameObject p = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PhotonPlayer"), spawn, Quaternion.Euler(rotation));
-                    p.GetPhotonView().TransferOwnership(player.Key);
+        Vector3 spawn = pNum % 2 == 0
+            ? team1Spawn.transform.GetChild((pNum + 1) / 2).position
+            : team2Spawn.transform.GetChild((pNum + 1) / 2).position;
+        Vector3 rotation = pNum % 2 == 0
+            ? new Vector3(0, 90, 0)
+            : new Vector3(0, -90, 0);
 
-                    i++;
-                }
-            }
-        }
+        GameObject p = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "FaceoffPlayer"), spawn, Quaternion.Euler(rotation));
+        p.GetPhotonView().RPC("SetTeam", RpcTarget.All, pNum % 2);
     }
 }

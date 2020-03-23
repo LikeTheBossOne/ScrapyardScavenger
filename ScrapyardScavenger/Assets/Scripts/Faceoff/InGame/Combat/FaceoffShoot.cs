@@ -4,15 +4,15 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PlayerShoot : MonoBehaviourPunCallbacks
+public class FaceoffShoot : MonoBehaviourPun
 {
-    private InGameDataManager inGameManager;
+    public FaceoffInGameData inGameManager;
 
     public LayerMask enemyLayer;
 
     public GameObject bulletHolePrefab;
 
-    public PlayerHUD pHud;
+    public FaceoffPlayerHUD pHud;
 
     public Transform gunParent;
 
@@ -24,8 +24,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        inGameManager = GetComponent<PlayerControllerLoader>().inGameDataManager;
-        pHud = GetComponent<PlayerHUD>();
+        pHud = GetComponent<FaceoffPlayerHUD>();
 
         inGameManager.OnEquipmentSwitched += EquipmentSwitched;
     }
@@ -35,7 +34,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
         if (!photonView.IsMine) return;
 
 
-        Gun gun = inGameManager.getCurrentEquipment() as Gun;
+        Gun gun = inGameManager.GetCurrentEquipment() as Gun;
         if (gun == null) return;
         GunState gunState = gunParent.GetChild(inGameManager.currentWeaponIndex).GetComponent<GunState>();
 
@@ -47,7 +46,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
             reloadCoroutine = StartCoroutine(Reload(gun.reloadTime));
         }
 
-		pHud.AmmoChanged(gunState.ammoCount, gunState.baseAmmo);
+        pHud.AmmoChanged(gunState.ammoCount, gunState.baseAmmo);
 
 
         if (!inGameManager.isReloading
@@ -92,7 +91,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
     IEnumerator Reload(float wait)
     {
         inGameManager.isReloading = true;
-		this.GetComponent<PlayerHUD>().crossHairReloading();
+        this.GetComponent<FaceoffPlayerHUD>().crossHairReloading();
         reloadingModel = gunParent.GetChild(inGameManager.currentWeaponIndex).GetChild(0);
 
         // ANIMATION
@@ -107,12 +106,12 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 
         yield return new WaitForSeconds(wait);
 
-        Gun gun = inGameManager.getCurrentEquipment() as Gun;
+        Gun gun = inGameManager.GetCurrentEquipment() as Gun;
         gunParent.GetChild(inGameManager.currentWeaponIndex).GetComponent<GunState>().ammoCount = gun.baseClipSize;
         pHud.AmmoChanged(gun.baseClipSize, gun.baseClipSize);
 
         inGameManager.isReloading = false;
-		this.GetComponent<PlayerHUD>().crossHairReloaded();
+        this.GetComponent<FaceoffPlayerHUD>().crossHairReloaded();
         gunState.reloadStop();
     }
 
@@ -131,39 +130,27 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 
             if (photonView.IsMine && hit.collider.gameObject.layer == 11)
             {
-                Gun gun = inGameManager.getCurrentEquipment() as Gun;
+                Gun gun = inGameManager.GetCurrentEquipment() as Gun;
                 if (gun == null)
                 {
                     Debug.Log("BAD");
                     return;
                 }
-               // Debug.Log("Collider: " + hit.collider);
-               // Debug.Log("GameObject: " + hit.collider.gameObject);
-               // Debug.Log("Transform: " + hit.collider.gameObject.transform);
-                //Debug.Log("Parent: " + hit.collider.gameObject.transform.parent);
-                //Debug.Log("Parent's GameObject: " + hit.collider.gameObject.transform.parent.gameObject);
                 GameObject enemy;
                 if (hit.collider.gameObject.transform.parent)
                 {
                     enemy = hit.collider.gameObject.transform.parent.gameObject;
-                    
+
                 }
                 else
                 {
                     enemy = hit.collider.gameObject;
-                    
+
                 }
 
-				this.GetComponent<PlayerHUD>().hitCrossHair();
-                if (enemy.tag == "Shambler")
-                {
-					enemy.GetPhotonView().RPC("TakeDamageShambler", RpcTarget.All, (int)gun.baseDamage, photonView.ViewID);
-                }
-                else
-                {
-                    enemy.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (int)gun.baseDamage, PhotonNetwork.LocalPlayer.ActorNumber);
-                }
-                
+                this.GetComponent<FaceoffPlayerHUD>().hitCrossHair();
+                enemy.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (int)gun.baseDamage, PhotonNetwork.LocalPlayer.ActorNumber);
+
             }
 
         }
@@ -179,19 +166,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
     [PunRPC]
     protected void TakeDamage(int damage, int actor)
     {
-        GetComponent<Health>().TakeDamage(damage, actor);
-    }
-
-    [PunRPC]
-    public void KilledEnemy(int enemy)
-    {
-        if (photonView.IsMine)
-        {
-            if (enemy == (int)EnemyType.Shambler) 
-                GetComponent<PlayerControllerLoader>().skillManager.GainXP((int)XPRewards.KillShambler);
-            if (enemy == (int)EnemyType.Charger)
-                GetComponent<PlayerControllerLoader>().skillManager.GainXP((int)XPRewards.KillCharger);
-        }
+        GetComponent<FaceoffHealth>().TakeDamage(damage, actor);
     }
 
     void EquipmentSwitched()
@@ -201,9 +176,9 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 
         if (reloadingModel != null)
             reloadingModel.localRotation = Quaternion.identity;
-        
+
         inGameManager.isReloading = false;
-		this.GetComponent<PlayerHUD>().crossHairReloaded();
+        this.GetComponent<FaceoffPlayerHUD>().crossHairReloaded();
         GunState gunState = gunParent.GetChild(inGameManager.currentWeaponIndex).GetComponent<GunState>();
         pHud.AmmoChanged(gunState.ammoCount, gunState.baseAmmo);
     }

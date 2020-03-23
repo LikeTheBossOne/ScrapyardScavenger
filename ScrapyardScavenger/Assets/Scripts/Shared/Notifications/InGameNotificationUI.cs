@@ -11,6 +11,11 @@ public class InGameNotificationUI : MonoBehaviour
     {
         NotificationSystem.Instance.OnNotificationAdded += NotificationAdded;
         NotificationSystem.Instance.OnNotificationRemoved += NotificationRemoved;
+        foreach (var notif in NotificationSystem.Instance.notifications)
+        {
+            NotificationAdded(notif);
+        }
+
     }
 
     void Update()

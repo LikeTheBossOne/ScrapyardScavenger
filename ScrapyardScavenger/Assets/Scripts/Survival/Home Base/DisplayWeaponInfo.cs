@@ -6,8 +6,11 @@ using UnityEngine.UI;
 
 public class DisplayWeaponInfo : MonoBehaviour
 {
-	public GameObject pController;
-	private Weapon weapon;
+    public bool isSurvival;
+	public BaseDataManager survivalData;
+    public FaceoffInGameData faceoffData;
+
+    public Weapon weapon;
 	public int weaponIndex;
 	public Text weaponText;
 	public Image weaponImage;
@@ -40,18 +43,21 @@ public class DisplayWeaponInfo : MonoBehaviour
 
     void OnEnable()
     {
-        if (pController == null)
+        if (isSurvival)
         {
-            foreach (GameObject obj in GameObject.FindGameObjectsWithTag("GameController"))
+            if (survivalData == null)
             {
-                if (obj.GetPhotonView().IsMine)
+                foreach (GameObject obj in GameObject.FindGameObjectsWithTag("GameController"))
                 {
-                    pController = obj;
-                    break;
+                    if (obj.GetPhotonView().IsMine)
+                    {
+                        survivalData = obj.GetComponent<BaseDataManager>();
+                        break;
+                    }
                 }
             }
+
+            weapon = (Weapon)survivalData.getEquipment()[weaponIndex];
         }
-        
-        weapon = (Weapon)pController.GetComponent<BaseDataManager>().getEquipment()[weaponIndex];
     }
 }

@@ -23,8 +23,8 @@ public class PlayerVision : MonoBehaviourPunCallbacks
         camCenter = cams.localRotation;
         isPaused = false;
 
-        playerDeath = GetComponent<Death>();
-        playerDeath.OnPlayerDeath += OnDeath;
+        // playerDeath = GetComponent<Death>();
+        // playerDeath.OnPlayerDeath += OnDeath;
     }
 
     
