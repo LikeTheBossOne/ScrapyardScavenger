@@ -24,8 +24,8 @@ public class FaceoffGameSetup : MonoBehaviour
         playerManager.clientTeam = (TeamGroup) (pNum % 2);
 
         Vector3 spawn = pNum % 2 == 0
-            ? team1Spawn.transform.GetChild((pNum + 1) / 2).position
-            : team2Spawn.transform.GetChild((pNum + 1) / 2).position;
+            ? team1Spawn.transform.GetChild(pNum / 2).position
+            : team2Spawn.transform.GetChild(pNum / 2).position;
         Vector3 rotation = pNum % 2 == 0
             ? new Vector3(0, 90, 0)
             : new Vector3(0, -90, 0);
