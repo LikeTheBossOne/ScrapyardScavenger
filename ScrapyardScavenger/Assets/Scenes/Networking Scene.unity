@@ -16134,7 +16134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcb567cc938d06e459fb5266aaf3aad0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playArea: {fileID: 0}
+  playArea: {fileID: 280147315}
   ground:
     serializedVersion: 2
     m_Bits: 512
