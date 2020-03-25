@@ -161,7 +161,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
                 }
                 else
                 {
-                    enemy.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (int)gun.baseDamage, PhotonNetwork.LocalPlayer.ActorNumber);
+                    enemy.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (int)gun.baseDamage);
                 }
                 
             }
@@ -177,9 +177,9 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    protected void TakeDamage(int damage, int actor)
+    protected void TakeDamage(int damage)
     {
-        GetComponent<Health>().TakeDamage(damage, actor);
+        GetComponent<Health>().TakeDamage(damage);
     }
 
     [PunRPC]

@@ -35,7 +35,7 @@ public class Health : MonoBehaviourPunCallbacks
         armorModifier = modifier;
     }
 
-    public void TakeDamage(int damage, int actor)
+    public void TakeDamage(int damage)
     {
         if (photonView.IsMine)
         {
@@ -44,7 +44,7 @@ public class Health : MonoBehaviourPunCallbacks
         }
         if (currentHealth <= 0)
         {
-            photonView.RPC("PlayerDied", RpcTarget.All, actor);
+            photonView.RPC("PlayerDied", RpcTarget.All);
         }
     }
 
