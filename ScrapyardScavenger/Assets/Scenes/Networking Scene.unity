@@ -9237,7 +9237,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 299427781}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0, y: 1.3, z: 0.05}
+  m_LocalPosition: {x: -0, y: 5.5, z: 0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 826987392}
@@ -9252,7 +9252,7 @@ Light:
   m_GameObject: {fileID: 299427781}
   m_Enabled: 1
   serializedVersion: 9
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 0.6254521, b: 0.08018869, a: 1}
   m_Intensity: 2
   m_Range: 20
@@ -14133,7 +14133,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 431167521}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0, y: 1.3, z: 0.05}
+  m_LocalPosition: {x: -0, y: 4.78, z: 0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1926092443}
@@ -14148,7 +14148,7 @@ Light:
   m_GameObject: {fileID: 431167521}
   m_Enabled: 1
   serializedVersion: 9
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 0.6254521, b: 0.08018869, a: 1}
   m_Intensity: 2
   m_Range: 20
@@ -14774,7 +14774,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 444209015}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0, y: 1.3, z: 0.05}
+  m_LocalPosition: {x: -0, y: 4.97, z: 0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1637484209}
@@ -14789,7 +14789,7 @@ Light:
   m_GameObject: {fileID: 444209015}
   m_Enabled: 1
   serializedVersion: 9
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 0.6254521, b: 0.08018869, a: 1}
   m_Intensity: 2
   m_Range: 20
@@ -17261,7 +17261,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 515043461}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0, y: 1.3, z: 0.05}
+  m_LocalPosition: {x: -0, y: 4.78, z: 0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 221391279}
@@ -17276,7 +17276,7 @@ Light:
   m_GameObject: {fileID: 515043461}
   m_Enabled: 1
   serializedVersion: 9
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 0.6254521, b: 0.08018869, a: 1}
   m_Intensity: 2
   m_Range: 20
@@ -29589,7 +29589,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 897602851}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0, y: 1.3, z: 0.05}
+  m_LocalPosition: {x: -0, y: 6.03, z: 0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 53547332}
@@ -29604,7 +29604,7 @@ Light:
   m_GameObject: {fileID: 897602851}
   m_Enabled: 1
   serializedVersion: 9
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 0.6254521, b: 0.08018869, a: 1}
   m_Intensity: 2
   m_Range: 20
@@ -31517,7 +31517,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 951445262}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0, y: 1.3, z: 0.05}
+  m_LocalPosition: {x: -0, y: 4.78, z: 0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 574719928}
@@ -31532,7 +31532,7 @@ Light:
   m_GameObject: {fileID: 951445262}
   m_Enabled: 1
   serializedVersion: 9
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 0.6254521, b: 0.08018869, a: 1}
   m_Intensity: 2
   m_Range: 20
@@ -32041,7 +32041,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 972359580}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0, y: 1.3, z: 0.05}
+  m_LocalPosition: {x: 0, y: 4.9699984, z: 0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 10451253}
@@ -32056,7 +32056,7 @@ Light:
   m_GameObject: {fileID: 972359580}
   m_Enabled: 1
   serializedVersion: 9
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 0.6254521, b: 0.08018869, a: 1}
   m_Intensity: 2
   m_Range: 20
@@ -32788,7 +32788,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 996086943}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0, y: 1.3, z: 0.05}
+  m_LocalPosition: {x: 0.5103053, y: 4.9275312, z: -0.1724732}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 588037516}
@@ -32803,7 +32803,7 @@ Light:
   m_GameObject: {fileID: 996086943}
   m_Enabled: 1
   serializedVersion: 9
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 0.6254521, b: 0.08018869, a: 1}
   m_Intensity: 2
   m_Range: 20
@@ -44751,7 +44751,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1324544532}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0, y: 1.3, z: 0.05}
+  m_LocalPosition: {x: -0, y: 4.78, z: 0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 582797847}
@@ -44766,7 +44766,7 @@ Light:
   m_GameObject: {fileID: 1324544532}
   m_Enabled: 1
   serializedVersion: 9
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 0.6254521, b: 0.08018869, a: 1}
   m_Intensity: 2
   m_Range: 20
@@ -48780,7 +48780,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1434047464}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0, y: 1.3, z: 0.05}
+  m_LocalPosition: {x: 0, y: 4.9699984, z: 0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1087361542}
@@ -48795,7 +48795,7 @@ Light:
   m_GameObject: {fileID: 1434047464}
   m_Enabled: 1
   serializedVersion: 9
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 0.6254521, b: 0.08018869, a: 1}
   m_Intensity: 2
   m_Range: 20
@@ -48871,7 +48871,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1437900128}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0, y: 1.3, z: 0.05}
+  m_LocalPosition: {x: -0, y: 4.78, z: 0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2042732224}
@@ -48886,7 +48886,7 @@ Light:
   m_GameObject: {fileID: 1437900128}
   m_Enabled: 1
   serializedVersion: 9
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 0.6254521, b: 0.08018869, a: 1}
   m_Intensity: 2
   m_Range: 20
@@ -51392,7 +51392,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1505084412}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0, y: 1.3, z: 0.05}
+  m_LocalPosition: {x: -0, y: 4.78, z: 0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 832356285}
@@ -51407,7 +51407,7 @@ Light:
   m_GameObject: {fileID: 1505084412}
   m_Enabled: 1
   serializedVersion: 9
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 0.6254521, b: 0.08018869, a: 1}
   m_Intensity: 2
   m_Range: 20
@@ -51483,7 +51483,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1506524403}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0, y: 1.3, z: 0.05}
+  m_LocalPosition: {x: -0, y: 4.78, z: 0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 835623315}
@@ -51498,7 +51498,7 @@ Light:
   m_GameObject: {fileID: 1506524403}
   m_Enabled: 1
   serializedVersion: 9
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 0.6254521, b: 0.08018869, a: 1}
   m_Intensity: 2
   m_Range: 20
@@ -54975,7 +54975,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1614934479}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0, y: 1.3, z: 0.05}
+  m_LocalPosition: {x: 0, y: 4.9699984, z: 0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 43822840}
@@ -54990,7 +54990,7 @@ Light:
   m_GameObject: {fileID: 1614934479}
   m_Enabled: 1
   serializedVersion: 9
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 0.6254521, b: 0.08018869, a: 1}
   m_Intensity: 2
   m_Range: 20
@@ -62374,7 +62374,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1859770983}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0, y: 1.3, z: 0.05}
+  m_LocalPosition: {x: 0, y: 4.9699984, z: 0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1480488729}
@@ -62389,7 +62389,7 @@ Light:
   m_GameObject: {fileID: 1859770983}
   m_Enabled: 1
   serializedVersion: 9
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 1, g: 0.6254521, b: 0.08018869, a: 1}
   m_Intensity: 2
   m_Range: 20
