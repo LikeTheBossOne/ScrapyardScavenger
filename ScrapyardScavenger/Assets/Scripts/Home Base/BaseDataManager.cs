@@ -30,7 +30,7 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
 
 	// Crafts and counts are indexed based on the CraftableObject's ID
 	[SerializeField]
-	public Armor[] armors = null;
+	public List<Armor> armors = null;
 	[SerializeField]
 	public int[] armorCounts = null;
 
@@ -65,7 +65,9 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
         equipment[0] = weapons[(int)WeaponType.AR];
         equipment[1] = weapons[(int)WeaponType.Pistol];
 
-		resources = new List<ResourcePersistent>();
+        armors = new List<Armor>();
+
+        resources = new List<ResourcePersistent>();
 		resourceSet = new HashSet<Resource>();
     }
 
