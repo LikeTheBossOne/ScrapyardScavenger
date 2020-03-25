@@ -83,8 +83,6 @@ public class SkillManager : MonoBehaviourPunCallbacks
                 Debug.Log("Five minutes have passed");
                 GainXP((int)XPRewards.FiveMinutes);
             }
-
-            //Debug.Log("Temp XP: " + tempXP);
         }
         
 

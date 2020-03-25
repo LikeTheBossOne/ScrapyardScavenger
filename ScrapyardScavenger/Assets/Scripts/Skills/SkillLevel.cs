@@ -6,7 +6,6 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "New Skill Level", menuName = "Skill Levels/SkillLevel")]
 public class SkillLevel : ScriptableObject
 {
-    //public string canvasName;
     private GameObject Level_Canvas;
     public string Level_Name; // I, II, or III
     public string Skill_Effect; // effect for this specific skill level
@@ -15,16 +14,16 @@ public class SkillLevel : ScriptableObject
     public float Modifier; // really only used for health? but extensible for other attributes if we want
 
     private string Skill_Description;
-    private Image SelectBorder; // not popup
-    private Image Skill_Icon; // not popup
-    private Text Skill_Numeral; // not popup
+    private Image SelectBorder;
+    private Image Skill_Icon;
+    private Text Skill_Numeral;
 
-    private Canvas Skill_Popup; // popup window
-    private Text Required_XP_Text; // popup window
-    private Text Description_Text; // popup
-    private Text Effect_Text; // popup
-    private Text Title_Text; // popup
-    private Text Instructions_Text; // popup
+    private Canvas Skill_Popup;
+    private Text Required_XP_Text;
+    private Text Description_Text;
+    private Text Effect_Text;
+    private Text Title_Text;
+    private Text Instructions_Text;
     
 
     public void SetCanvas(GameObject obj)
@@ -108,14 +107,6 @@ public class SkillLevel : ScriptableObject
         // and display the popup window
         Skill_Popup.gameObject.SetActive(true);
         SetPopupText();
-
-
-        /*if (!IsUnlocked)
-        {
-            Required_XP_Text.gameObject.SetActive(true);
-            Required_XP_Text.text = XPNeeded + " XP";
-
-        }*/
     }
 
     public void DeselectIcon()
@@ -133,19 +124,7 @@ public class SkillLevel : ScriptableObject
 
     public void UnlockIcon()
     {
-        // set the icon and the numeral objects
-        /*Image[] images = Level_Canvas.GetComponentsInChildren<Image>();
-        Image skill_Icon = null;
-        for (int i = 0; i < images.Length; i++)
-        {
-            if (images[i].name == "Icon")
-            {
-                skill_Icon = images[i];
-                break;
-            }
-        }*/
         float alpha = 1.0f;
-        //Text skill_Numeral = Level_Canvas.GetComponentInChildren<Text>();
         Skill_Icon.color = new Color(Skill_Icon.color.r, Skill_Icon.color.g, Skill_Icon.color.b, alpha);
         Skill_Numeral.color = new Color(Skill_Numeral.color.r, Skill_Numeral.color.g, Skill_Numeral.color.b, alpha);
     }
