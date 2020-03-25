@@ -33,14 +33,23 @@ public class SkillTreeObserver : MonoBehaviour
         for (int i = 0; i < displaySkills.Count; i++)
         {
             Skill currentSkill = displaySkills[i];
-            for (int j = 0; j < currentSkill.levels.Length; j++)
+            
+            string rootCanvasName = currentSkill.name + " Skills";
+            Debug.Log("Root canvas name: " + rootCanvasName);
+            foreach (Component comp in GameObject.Find(rootCanvasName).GetComponentsInChildren<Canvas>())
             {
-                string canvasName = currentSkill.levels[j].name + " Skill";
-                currentSkill.levels[j].SetCanvas(GameObject.Find(canvasName));
-
-                if (currentSkill.levels[j].IsUnlocked)
+                Debug.Log("Canvas name: " + comp.name);
+                // find the level with this name, just to make it more extensible than hardcoding three levels
+                for (int j = 0; j < currentSkill.levels.Length; j++)
                 {
-                    currentSkill.levels[j].UnlockIcon();
+                    Debug.Log("Level name: " + currentSkill.levels[j].Level_Name);
+                    if ("Level " + currentSkill.levels[j].Level_Name == comp.name)
+                    {
+                        
+                        currentSkill.levels[j].SetCanvas(comp.gameObject);
+                        currentSkill.levels[j].SetSkillDescription(currentSkill.Description);
+                        if (currentSkill.levels[j].IsUnlocked) currentSkill.levels[j].UnlockIcon();
+                    }
                 }
             }
         }
