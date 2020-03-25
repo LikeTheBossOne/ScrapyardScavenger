@@ -8,6 +8,7 @@ public class ShamblerAI : MonoBehaviour
 {
    public enum State
     {
+        idle,
         wander,
         chase,
         attack,
@@ -29,6 +30,7 @@ public class ShamblerAI : MonoBehaviour
     //public float playerOffset;
     public ShamblerDetection senses;
     public ShamblerAttacks weapons;
+    public Animator animator;
     // Start is called before the first frame update
     private void OnEnable()
     {
@@ -42,6 +44,11 @@ public class ShamblerAI : MonoBehaviour
         wandAngle = 60;
         wandRad = 10;
         weapons = GetComponent<ShamblerAttacks>();
+        animator = GetComponentInChildren<Animator>();
+        if (animator)
+        {
+            Debug.Log(animator.parameters);
+        }
         //playerOffset = 5;
     }
     private void Update()
@@ -56,31 +63,59 @@ public class ShamblerAI : MonoBehaviour
     }
     public void changeState()
     {
-        
-        if (senses.visionCheck())
+        if (senses.playersExist())
         {
-            if (distanceToOther(senses.detected) <= weapons.meleeRange )
+            if (senses.visionCheck())
             {
-                //&& !weapons.meleeOnCoolDown()
-                currentState = State.bite;
-            }else
-            if (distanceToOther(senses.detected) <= weapons.spitRange )
-            {
-                // target in attack range/
-                //currentState = State.attack;
-                //&& !weapons.spitOnCoolDown()
-                currentState = State.spit;
+                if (distanceToOther(senses.detected) <= weapons.meleeRange)
+                {
+                    //&& !weapons.meleeOnCoolDown()
+                    currentState = State.bite;
+                    if (animator)
+                    {
+                        animator.SetBool("walking", false);
+                    }
+                }
+                else
+                if (distanceToOther(senses.detected) <= weapons.spitRange)
+                {
+                    // target in attack range/
+                    //currentState = State.attack;
+                    //&& !weapons.spitOnCoolDown()
+                    currentState = State.spit;
+                    if (animator)
+                    {
+                        animator.SetBool("walking", false);
+                    }
+                }
+                else
+                {
+                    currentState = State.chase;
+                    if (animator)
+                    {
+                        animator.SetBool("walking", true);
+                    }
+                }
+                //currentState = State.chase;
             }
             else
             {
-                currentState = State.chase;
+                currentState = State.wander;
+                if (animator)
+                {
+                    animator.SetBool("walking", true);
+                }
             }
-            //currentState = State.chase;
         }
         else
         {
-            currentState = State.wander;
+            currentState = State.idle;
+            if (animator)
+            {
+                animator.SetBool("walking",false);
+            }
         }
+        
     } 
     // Update is called once per frame
     public void handleState()
@@ -159,6 +194,10 @@ public class ShamblerAI : MonoBehaviour
             setDestination(GetComponentInParent<Transform>().position);
             gameObject.transform.LookAt(senses.detected, gameObject.transform.up);
             weapons.bite(senses.detected.gameObject);
+        }
+        if (currentState == State.idle)
+        {
+            setDestination(gameObject.transform.position);
         }
         
     }
