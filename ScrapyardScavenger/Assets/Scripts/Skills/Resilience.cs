@@ -15,10 +15,6 @@ public class Resilience : Skill
         levels[levelIndex].Unlock(levelIndex);
         HighestLevel = levelIndex;
 
-        // comment this out for testing purposes with UI-integration
-        /*Health health = skillManager.GetComponent<Health>();
-        health.ChangeHealthSkill(unlockedLevel.Modifier);*/
-
     }
 
 }
