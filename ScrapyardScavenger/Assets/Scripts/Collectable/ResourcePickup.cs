@@ -28,59 +28,37 @@ public class ResourcePickup : MonoBehaviour, IPunObservable
         {
             int count = 1;
             // before adding to the count, check the player's Scavenger skill
-            /*SkillManager skillManager = other.transform.parent.GetComponent<SkillManager>();
-            Skill scavengerSkill = null;
-            for (int i = 0; i < skillManager.skills.Length; i++)
+            SkillLevel scavengerLevel = other.transform.parent.gameObject.GetComponent<PlayerControllerLoader>().skillManager.GetSkillByName("Scavenger");
+            if (scavengerLevel != null)
             {
-                if (skillManager.skills[i].name == "Scavenger")
+                // they have it, so calculate the count
+                Debug.Log("Player has Scavenger, chance is: " + scavengerLevel.Modifier);
+
+                // use random chance to see if the player should get 2 resources
+                float chance = scavengerLevel.Modifier;
+                float randomNumber = (float) Random.value;
+                Debug.Log("randomNumber: " + randomNumber);
+                if (randomNumber <= chance)
                 {
-                    // this is the Scavenger skill, so check to see which is the highest level
-                    scavengerSkill = skillManager.skills[i];
-                    break;
+                    Debug.Log("Collecting 2!");
+                    count = 2;
                 }
             }
-
-            // if they have the Scavenger skill, do a random chance thing and see if they should get 2 resources
-            float chance = 0;
-            
-
-            if (scavengerSkill != null)
-            {
-                // player has this skill
-                SkillLevel highestLevel = null;
-                for (int i = 0; i < scavengerSkill.levels.Length; i++)
-                {
-                    if (scavengerSkill.levels[i].IsUnlocked)
-                        highestLevel = scavengerSkill.levels[i];
-                    else
-                        break;
-                }
-
-                if (highestLevel != null)
-                {
-                    chance = highestLevel.Modifier;
-
-                    // calculate the count?
-                    //Random random = new Random();
-                    float randomNumber = (float)Random.value;
-                    if (randomNumber <= chance)
-                    {
-                        count = 2;
-                    }
-                }
-            }*/
+            else Debug.Log("Player does NOT have Scavenger");
 
 
             if (other.transform.parent.gameObject.GetPhotonView().IsMine)
             {
-                NotificationSystem.Instance.Notify(new Notification($"Picked up {this.type.ToString()}", NotificationType.Neutral));
+                NotificationSystem.Instance.Notify(new Notification($"Picked up {count} {this.type.ToString()}", NotificationType.Neutral));
             }
 
             // Getting PlayerController's Inventory Manager
-            other.transform.parent.GetComponent<PlayerControllerLoader>().inGameDataManager.AddResourceToInventory(this.type);
+            for (int i = 0; i < count; i++)
+                other.transform.parent.GetComponent<PlayerControllerLoader>().inGameDataManager.AddResourceToInventory(this.type);
 
             // Gain XP for collecting a resource
-            other.transform.parent.GetComponent<PlayerControllerLoader>().skillManager.GainXP((int) XPRewards.CollectResource);
+            int reward = (int) XPRewards.CollectResource;
+            other.transform.parent.GetComponent<PlayerControllerLoader>().skillManager.GainXP(reward * count);
             Destroy(this.gameObject);
         }
     }
