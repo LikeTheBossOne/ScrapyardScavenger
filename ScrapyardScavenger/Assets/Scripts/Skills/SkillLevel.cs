@@ -57,11 +57,9 @@ public class SkillLevel : ScriptableObject
             if (canv.name == "Skill Popup")
             {
                 // this is the popup window
-                Debug.Log("Found the popup window");
                 Skill_Popup = canv;
                 foreach (Text textObj in Skill_Popup.GetComponentsInChildren<Text>())
                 {
-                    Debug.Log("Text name: " + textObj.name);
                     if (textObj.name == "Skill Title") Title_Text = textObj;
                     else if (textObj.name == "Skill Description") Description_Text = textObj;
                     else if (textObj.name == "Level Effect") Effect_Text = textObj;

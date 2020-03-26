@@ -14,10 +14,6 @@ public class Endurance : Skill
         // increase the length of time that a player can sprint
         levels[levelIndex].Unlock(levelIndex);
         HighestLevel = levelIndex;
-
-        // comment this out for testing purposes with UI-integration
-        /*PlayerMotor motor = skillManager.GetComponent<PlayerMotor>();
-        motor.SetSprintLimit((int)unlockedLevel.Modifier);*/
     }
 
 }

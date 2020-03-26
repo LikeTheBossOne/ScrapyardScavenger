@@ -63,6 +63,20 @@ public class SkillManager : MonoBehaviourPunCallbacks
         return skills;
     }
 
+    public SkillLevel GetSkillByName(string searchName)
+    {
+        foreach (Skill skill in skills)
+        {
+            if (skill.name == searchName)
+            {
+                // this is it, return the highest level
+                if (skill.IsUnlocked()) return skill.levels[skill.HighestLevel];
+                else return null;
+            }
+        }
+        return null;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -120,7 +134,6 @@ public class SkillManager : MonoBehaviourPunCallbacks
 
         // basically check to see if the levels before it are unlocked
         // use HighestLevel
-        Debug.Log("Highest level: " + skills[skillIndex].HighestLevel);
         if (skills[skillIndex].HighestLevel + 1 != levelIndex)
         {
             canUnlock = false;

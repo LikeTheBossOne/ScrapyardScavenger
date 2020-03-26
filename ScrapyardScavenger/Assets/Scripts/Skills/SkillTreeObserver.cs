@@ -35,14 +35,11 @@ public class SkillTreeObserver : MonoBehaviour
             Skill currentSkill = displaySkills[i];
             
             string rootCanvasName = currentSkill.name + " Skills";
-            Debug.Log("Root canvas name: " + rootCanvasName);
             foreach (Component comp in GameObject.Find(rootCanvasName).GetComponentsInChildren<Canvas>())
             {
-                Debug.Log("Canvas name: " + comp.name);
                 // find the level with this name, just to make it more extensible than hardcoding three levels
                 for (int j = 0; j < currentSkill.levels.Length; j++)
                 {
-                    Debug.Log("Level name: " + currentSkill.levels[j].Level_Name);
                     if ("Level " + currentSkill.levels[j].Level_Name == comp.name)
                     {
                         
@@ -73,7 +70,7 @@ public class SkillTreeObserver : MonoBehaviour
             displaySkills[skillIndex].levels[levelIndex].DeselectIcon();
             skillIndex += changeSkillSlot;
             skillIndex = mod(skillIndex, displaySkills.Count);
-            Debug.Log($"Skill switched to {displaySkills[skillIndex].levels[levelIndex].name}");
+            //Debug.Log($"Skill switched to {displaySkills[skillIndex].levels[levelIndex].name}");
 
             // highlight the selected skill in the UI?
             displaySkills[skillIndex].levels[levelIndex].SelectIcon();
