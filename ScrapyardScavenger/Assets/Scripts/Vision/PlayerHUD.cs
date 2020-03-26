@@ -34,7 +34,7 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 		if (!photonView.IsMine) return;
 		playerHealthSlider.value = 100;
 
-        Gun startGun = GetComponent<PlayerControllerLoader>().equipmentManager.getCurrentEquipment() as Gun;
+        Gun startGun = GetComponent<PlayerControllerLoader>().inGameDataManager.getCurrentEquipment() as Gun;
         if (startGun != null)
         {
             AmmoChanged(startGun.baseClipSize, startGun.baseClipSize);

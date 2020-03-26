@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 0}
   id: 12
-  description: 
+  description: A simple pin used extensively in crafting.
   showInInventory: 0
   icon: {fileID: 21300000, guid: 92151b1b187c65a4b98198069bedb1bb, type: 3}
   imageSlotName: 

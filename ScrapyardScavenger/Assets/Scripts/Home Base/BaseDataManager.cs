@@ -6,17 +6,47 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 
-public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
+public class BaseDataManager : MonoBehaviourPunCallbacks
 {
     public PlayerSceneManager sceneManager;
-    private InventoryManager inventoryManager;
+    private InGameDataManager inGameManager;
 
     public Transform gunParent;
     public Transform meleeParent;
     public Transform grenadeParent;
     public Transform medShotParent;
 
-    private Equipment[] equipment = null;
+	// Crafts and counts are indexed based on the CraftableObject's ID
+	[SerializeField]
+	public Item[] items = null;
+	[SerializeField]
+	public int[] itemCounts = null;
+	private int itemIndex;
+
+	// Crafts and counts are indexed based on the CraftableObject's ID
+	[SerializeField]
+	public Weapon[] weapons = null;
+	[SerializeField]
+	public int[] weaponCounts = null;
+	private int weaponIndex;
+
+	// Crafts and counts are indexed based on the CraftableObject's ID
+	[SerializeField]
+	public Armor[] armors = null;
+	[SerializeField]
+	public int[] armorCounts = null;
+	private int armorIndex;
+
+	/*
+	 * The equipment array is structured like the following:
+	 *   [0]: Weapon 1
+	 *   [1]: Weapon 2
+	 *   [2]: Throwable
+	 *   [3]: Melee
+	 *   [4]: Item
+	 */
+    public Equipment[] equipment = null;
+	public Armor equippedArmor = null;
 	private List<ResourcePersistent> resources = null;
 	private HashSet<Resource> resourceSet = null;
     public bool isReloading = false;
@@ -32,14 +62,18 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         currentIndex = -1;
         sceneManager = GetComponent<PlayerSceneManager>();
-        inventoryManager = GetComponent<InventoryManager>();
+        inGameManager = GetComponent<InGameDataManager>();
 
         equipment = new Equipment[5];
-        equipment[0] = inventoryManager.weapons[(int)WeaponType.AR];
-        equipment[1] = inventoryManager.weapons[(int)WeaponType.Pistol];
+        equipment[0] = weapons[(int)WeaponType.AR];
+        equipment[1] = weapons[(int)WeaponType.Pistol];
 
 		resources = new List<ResourcePersistent>();
 		resourceSet = new HashSet<Resource>();
+
+		itemIndex = 0;
+		weaponIndex = 0;
+		armorIndex = 0;
     }
 
     void Update()
@@ -48,27 +82,6 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
             return;
         if (sceneManager.isInHomeBase)
             return;
-
-        if (Input.GetKeyDown(KeyCode.Alpha1)
-            && currentIndex != 0
-            && equipment[0] != null)
-            photonView.RPC("Equip", RpcTarget.All, 0);
-        if (Input.GetKeyDown(KeyCode.Alpha2)
-            && currentIndex != 1
-            && equipment[1] != null)
-            photonView.RPC("Equip", RpcTarget.All, 1);
-        if (Input.GetKeyDown(KeyCode.Alpha3)
-            && currentIndex != 2
-            && equipment[2] != null)
-            photonView.RPC("Equip", RpcTarget.All, 2);
-        if (Input.GetKeyDown(KeyCode.Alpha4)
-            && currentIndex != 3
-            && equipment[3] != null)
-            photonView.RPC("Equip", RpcTarget.All, 3);
-        if (Input.GetKeyDown(KeyCode.Alpha5)
-            && currentIndex != 4
-            && equipment[4] != null)
-            photonView.RPC("Equip", RpcTarget.All, 4);
     }
 
     #region Setup
@@ -112,69 +125,17 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
 
         if (photonView.IsMine)
-            photonView.RPC("Equip", RpcTarget.All, 0);
+            photonView.RPC("EquipWeapon", RpcTarget.All, 0);
     }
 
     #endregion Setup
 
-    [PunRPC]
-    void Equip(int index)
-    {
-        if (currentObject != null)
-            currentObject.SetActive(false);
-
-
-        Transform parent;
-        if (index == 0) parent = gunParent;
-        else if (index == 1) parent = gunParent;
-        else if (index == 2) parent = meleeParent;
-        else if (index == 3) parent = grenadeParent;
-        else if (index == 4) parent = medShotParent;
-        else return;
-
-        currentObject = parent.Equals(gunParent) ? parent.GetChild(index).gameObject : parent.GetChild(0).gameObject;
-
-        currentObject.SetActive(true);
-        currentIndex = index;
-
-        OnEquipmentSwitched?.Invoke();
-    }
-
-    public void OnEvent(EventData photonEvent)
-    {
-        byte eventCode = photonEvent.Code;
-        if (eventCode == (byte) NetworkCodes.PlayerJoined)
-        {
-            if (photonView.IsMine)
-            {
-                object[] content = new object[] { currentIndex, photonView.ViewID };
-                RaiseEventOptions raiseEventOptions = new RaiseEventOptions {Receivers = ReceiverGroup.Others};
-                SendOptions sendOptions = new SendOptions { Reliability = true };
-                PhotonNetwork.RaiseEvent((byte) NetworkCodes.PlayerJoinedResponse, content, raiseEventOptions, sendOptions);
-            }
-        }
-
-        else if (eventCode == (byte) NetworkCodes.PlayerJoinedResponse)
-        {
-            object[] data = (object[])photonEvent.CustomData;
-            if (photonView.ViewID == (int)data[1])
-                Equip((int)data[0]);
-        }
-    }
-
-    public Equipment getCurrentEquipment()
-    {
-        if (currentIndex == -1) return null;
-        return equipment[currentIndex];
-    }
-
-    public void Clear()
+	[PunRPC]
+    public void ClearEquipmentOnDeath()
     {
         equipment = new Equipment[5];
-        equipment[0] = inventoryManager.weapons[(int)WeaponType.AR];
-        equipment[1] = inventoryManager.weapons[(int)WeaponType.Pistol];
-		resources = new List<ResourcePersistent>();
-		resourceSet = new HashSet<Resource>();
+        equipment[0] = weapons[(int)WeaponType.Pistol];
+		equippedArmor = null;
     }
 	public Equipment[] getEquipment()
 	{
@@ -229,5 +190,12 @@ public class EquipmentManager : MonoBehaviourPunCallbacks, IOnEventCallback
 				resourceSet.Remove(rp.Resource);
 			}
 		}
+	}
+
+	[PunRPC]
+	public void TransferToInGame() {
+		Array.Copy(equipment, 0, inGameManager.currentWeapons, 0, 4);
+		inGameManager.currentItem = equipment[4] as Item;
+		inGameManager.currentArmor = equippedArmor;
 	}
 }

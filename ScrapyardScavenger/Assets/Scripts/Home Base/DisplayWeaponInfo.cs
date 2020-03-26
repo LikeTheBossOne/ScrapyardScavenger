@@ -52,6 +52,6 @@ public class DisplayWeaponInfo : MonoBehaviour
             }
         }
         
-        weapon = (Weapon)pController.GetComponent<EquipmentManager>().getEquipment()[weaponIndex];
+        weapon = (Weapon)pController.GetComponent<BaseDataManager>().getEquipment()[weaponIndex];
     }
 }
