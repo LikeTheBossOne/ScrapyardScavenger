@@ -176,4 +176,26 @@ public class SkillManager : MonoBehaviourPunCallbacks
     {
         tempXP = 0;
     }
+
+    public bool CanBuyWithTemp(int cost)
+    {
+        return cost <= finalXP + tempXP;
+    }
+
+    public bool BuyWithTemp(int cost)
+    {
+        if (CanBuyWithTemp(cost))
+        {
+            tempXP -= cost;
+            if (tempXP < 0)
+            {
+                finalXP += tempXP;
+                tempXP = 0;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
 }

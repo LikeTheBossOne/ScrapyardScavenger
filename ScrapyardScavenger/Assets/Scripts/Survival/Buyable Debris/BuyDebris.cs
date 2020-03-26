@@ -1,0 +1,61 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using Photon.Pun;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class BuyDebris : MonoBehaviourPun
+{
+    public LayerMask buyableLayer;
+
+    private SkillManager skillManager;
+
+    private Text buyText;
+
+    void Start()
+    {
+        skillManager = GetComponent<PlayerControllerLoader>().skillManager;
+
+        buyText = GameObject.Find("Buyable Canvas").GetComponentInChildren<Text>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (!photonView.IsMine) return;
+        BuyableCheck();
+    }
+
+    private void BuyableCheck()
+    {
+        Transform eyeCam = transform.Find("Cameras/Main Player Cam");
+        RaycastHit hit = new RaycastHit();
+        if (Physics.Raycast(eyeCam.position, eyeCam.forward, out hit, 2.5f, buyableLayer))
+        {
+            Transform buyableObj = hit.collider.transform;
+            int cost = buyableObj.parent.GetComponent<Buyable>().cost;
+
+            if (skillManager.CanBuyWithTemp(cost))
+            {
+                buyText.text = "Press B to buy for " + cost;
+
+                if (Input.GetKeyDown(KeyCode.B))
+                {
+                    if (skillManager.BuyWithTemp(cost))
+                    {
+                        int index = buyableObj.parent.GetSiblingIndex();
+                        PersistentBuyableManager.Instance.gameObject.GetPhotonView().RPC("RemoveBuyable", RpcTarget.All, index);
+                    }
+                }
+            }
+            else
+            {
+                buyText.text = "This costs " + cost;
+            }
+        }
+        else
+        {
+            buyText.text = "";
+        }
+    }
+}

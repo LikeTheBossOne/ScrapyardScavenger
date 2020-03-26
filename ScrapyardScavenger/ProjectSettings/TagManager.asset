@@ -18,6 +18,15 @@ TagManager:
   - StorageItemName
   - StorageItemDesc
   - Settings
+  - slot3Text
+  - slot1Text
+  - slot8Text
+  - slot7Text
+  - slot5Text
+  - slot2Text
+  - slot6Text
+  - slot4Text
+  - Buyables
   layers:
   - Default
   - TransparentFX
@@ -33,7 +42,7 @@ TagManager:
   - ShootableEnemy
   - Truck
   - 
-  - 
+  - Buyable
   - 
   - 
   - 

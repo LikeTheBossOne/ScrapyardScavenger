@@ -40,7 +40,10 @@ public class PlayerControllerLoader : MonoBehaviourPun
         baseDataManager.gunParent = gunParent;
 		inGameDataManager.gunParent = gunParent;
         baseDataManager.SetupInScene();
-		playerController.GetPhotonView().RPC("EquipWeapon", RpcTarget.All, 0);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            playerController.GetPhotonView().RPC("EquipWeapon", RpcTarget.All, 0);
+        }
     }
 
     void Update()

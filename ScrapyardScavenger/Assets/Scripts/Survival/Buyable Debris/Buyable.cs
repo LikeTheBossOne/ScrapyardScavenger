@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Photon.Pun;
 using UnityEngine;
 
-public class PlayerControllerLoaderBase : MonoBehaviourPun
+public class Buyable : MonoBehaviour
 {
-    
+    public int cost = 1000;
 }
