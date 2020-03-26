@@ -32,13 +32,15 @@ public class Health : MonoBehaviourPunCallbacks
         skillModifier = modifier;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int baseDamage)
     {
         if (photonView.IsMine)
         {
             float armorMultiplier = dataManager.currentArmor != null ? dataManager.currentArmor.damageMultiplier : 1f;
-			pHud.takeDamage((float) damage * armorMultiplier);
-            currentHealth -= damage;
+            float totalDamage = baseDamage * armorMultiplier;
+
+			pHud.takeDamage(totalDamage);
+            currentHealth -= (int)Mathf.Floor(totalDamage);
             if (currentHealth <= 0)
             {
                 photonView.RPC("PlayerDied", RpcTarget.All);
