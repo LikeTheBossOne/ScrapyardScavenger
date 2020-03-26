@@ -149,7 +149,7 @@ MonoBehaviour:
   - {fileID: 0}
   currentItem: {fileID: 0}
   currentArmor: {fileID: 0}
-  currentIndex: 0
+  currentWeaponIndex: 0
   gunParent: {fileID: 0}
   meleeParent: {fileID: 0}
   grenadeParent: {fileID: 0}
