@@ -17,6 +17,7 @@ TagManager:
   - StorageItemImg
   - StorageItemName
   - StorageItemDesc
+  - Settings
   layers:
   - Default
   - TransparentFX
