@@ -9,11 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7cb1bd1f7ebbdd4796bea393fa82e2b, type: 3}
-  m_Name: Scavenger III
+  m_Script: {fileID: 11500000, guid: 2e355be3db82155498316b1941511a6d, type: 3}
+  m_Name: StickyGrenade
   m_EditorClassIdentifier: 
-  Level_Name: III
-  Skill_Effect: 60% chance to collect 2 resources
-  XPNeeded: 8000
-  IsUnlocked: 0
-  Modifier: 0.6
+  id: 0
+  name: 
+  description: 
+  showInInventory: 1
+  icon: {fileID: 0}
+  recipe: {fileID: 0}
+  prefab: {fileID: 0}
+  baseDamage: 100
+  baseDetonationTime: 5

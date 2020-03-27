@@ -13,5 +13,7 @@ public enum WeaponType
     MetalRod,
     Pistol,
     WoodenBat,
+    Frag,
+    Sticky,
     SIZE
 }

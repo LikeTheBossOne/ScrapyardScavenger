@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffbbeb841b7ab5343b0d48938edb2f1b, type: 3}
   m_Name: Resilience
   m_EditorClassIdentifier: 
-  Description: Resilience skill description
+  Description: With your thick skin, you can further endure mutant attacks!
+  HighestLevel: -1
   levels:
   - {fileID: 11400000, guid: ccb49eb11b11eb543a53d905d82165d5, type: 2}
   - {fileID: 11400000, guid: d5f9ceb5ed61b374e906b5b39cb3a5e4, type: 2}
