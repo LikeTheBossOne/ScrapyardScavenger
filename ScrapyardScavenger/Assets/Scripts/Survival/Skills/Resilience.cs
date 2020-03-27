@@ -9,14 +9,11 @@ using UnityEngine;
 public class Resilience : Skill
 {
 
-    public override void Unlock(SkillLevel unlockedLevel, SkillManager skillManager)
+    public override void UnlockLevel(int levelIndex, SkillManager skillManager)
     {
         // increase the max health through a modifier
-        unlockedLevel.IsUnlocked = true;
-
-        // comment this out for testing purposes with UI-integration
-        /*Health health = skillManager.GetComponent<Health>();
-        health.ChangeHealthSkill(unlockedLevel.Modifier);*/
+        levels[levelIndex].Unlock(levelIndex);
+        HighestLevel = levelIndex;
 
     }
 
