@@ -53,5 +53,7 @@ MonoBehaviour:
   - EquipWeapon
   - TransferToInGame
   - SetTeam
+  - PlaceBuyables
+  - RemoveBuyable
   DisableAutoOpenWizard: 1
   ShowSettings: 0
