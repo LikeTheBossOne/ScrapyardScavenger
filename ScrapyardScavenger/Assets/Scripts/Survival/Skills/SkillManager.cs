@@ -16,6 +16,9 @@ public class SkillManager : MonoBehaviourPunCallbacks
     private float TWO_MINUTES = 120f;
     private float FIVE_MINUTES = 300f;
 
+    public delegate void XPChanged(int amount);
+    public event XPChanged OnXPChanged;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -166,6 +169,7 @@ public class SkillManager : MonoBehaviourPunCallbacks
     public void GainXP(int xpAmount)
     {
         tempXP += xpAmount;
+        OnXPChanged?.Invoke(xpAmount);
     }
 
     // used for spending XP in the home base
@@ -176,6 +180,7 @@ public class SkillManager : MonoBehaviourPunCallbacks
             return false;
         }
         finalXP -= spendingAmount;
+        OnXPChanged?.Invoke(-spendingAmount);
         return true;
     }
 
@@ -190,6 +195,33 @@ public class SkillManager : MonoBehaviourPunCallbacks
     public void ClearTempXP()
     {
         tempXP = 0;
+    }
+    public bool CanBuyWithTemp(int cost)
+    {
+        return cost <= finalXP + tempXP;
+    }
+
+    public bool BuyWithTemp(int cost)
+    {
+        if (CanBuyWithTemp(cost))
+        {
+            tempXP -= cost;
+            if (tempXP < 0)
+            {
+                finalXP += tempXP;
+                tempXP = 0;
+            }
+            OnXPChanged?.Invoke(-cost);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public int GetTotalXP()
+    {
+        return finalXP + tempXP;
     }
 
     public float GetFinalXP()
