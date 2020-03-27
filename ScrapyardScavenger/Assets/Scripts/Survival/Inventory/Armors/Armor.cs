@@ -9,6 +9,7 @@ using UnityEngine;
  */
 public class Armor : CraftableObject
 {
+    public float damageMultiplier;
 }
 
 public enum ArmorType

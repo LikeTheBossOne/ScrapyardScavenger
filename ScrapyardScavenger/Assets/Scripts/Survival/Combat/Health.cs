@@ -7,17 +7,19 @@ public class Health : MonoBehaviourPunCallbacks
 {
     public int maxHealth;
     public int currentHealth { get; private set; }
-    private float armorModifier = 1.0f;
     private float skillModifier = 1.0f;
 
 	public PlayerHUD pHud;
     public Death death;
+    public InGameDataManager dataManager;
 
     void Start()
     {
-        
+
 		pHud = GetComponent<PlayerHUD>();
         death = GetComponent<Death>();
+        if (photonView.IsMine)
+            dataManager = GetComponent<PlayerControllerLoader>().inGameDataManager;
 
         // see if the player has the Resilience skill
         SkillLevel resilienceLevel = GetComponent<PlayerControllerLoader>().skillManager.GetSkillByName("Resilience");
@@ -29,13 +31,13 @@ public class Health : MonoBehaviourPunCallbacks
         }
         else Debug.Log("Player does NOT have Resilience");
 
-        currentHealth = (int)(maxHealth * skillModifier * armorModifier);
+        currentHealth = (int) (maxHealth * skillModifier);
         Debug.Log("Player is starting with current health: " + currentHealth); // this may cause problems when we implement the medpack
     }
 
     void Update()
     {
-        
+
     }
 
     public void ChangeHealthSkill(float modifier)
@@ -43,21 +45,19 @@ public class Health : MonoBehaviourPunCallbacks
         skillModifier = modifier;
     }
 
-    public void ChangeHealthArmor(float modifier)
-    {
-        armorModifier = modifier;
-    }
-
-    public void TakeDamage(int damage)
+    public void TakeDamage(int baseDamage)
     {
         if (photonView.IsMine)
         {
-			pHud.takeDamage((float) damage);
-            currentHealth -= damage;
-        }
-        if (currentHealth <= 0)
-        {
-            photonView.RPC("PlayerDied", RpcTarget.All);
+            float armorMultiplier = dataManager.currentArmor != null ? dataManager.currentArmor.damageMultiplier : 1f;
+            float totalDamage = baseDamage * armorMultiplier;
+
+			pHud.takeDamage(totalDamage);
+            currentHealth -= (int)Mathf.Floor(totalDamage);
+            if (currentHealth <= 0)
+            {
+                photonView.RPC("PlayerDied", RpcTarget.All);
+            }
         }
     }
 
@@ -67,6 +67,6 @@ public class Health : MonoBehaviourPunCallbacks
         {
             currentHealth += amount;
         }
-        
+
     }
 }

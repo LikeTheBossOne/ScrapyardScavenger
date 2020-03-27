@@ -202,6 +202,7 @@ MonoBehaviour:
   maxHealth: 100
   pHud: {fileID: 0}
   death: {fileID: 0}
+  dataManager: {fileID: 0}
 --- !u!114 &6728999789569742380
 MonoBehaviour:
   m_ObjectHideFlags: 0

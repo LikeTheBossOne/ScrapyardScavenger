@@ -18,3 +18,4 @@ MonoBehaviour:
   showInInventory: 1
   icon: {fileID: 21300000, guid: 93297b179ecf1f34a9480064dc4bbbc4, type: 3}
   recipe: {fileID: 11400000, guid: a464bffa88b685e409bcea60e6ee7311, type: 2}
+  damageMultiplier: 0.9
