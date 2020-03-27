@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14452fdb452777245ba09d7945419a4d, type: 3}
   m_Name: Endurance
   m_EditorClassIdentifier: 
-  Description: Endurance description here
+  Description: Your legs strengthen, allowing you to escape from enemies and save
+    your life!
+  HighestLevel: 0
   levels:
   - {fileID: 11400000, guid: c2dc8cd79b30931408d07881008506a1, type: 2}
   - {fileID: 11400000, guid: 1f6dd55b6ec4dd646aa414f6185cc23d, type: 2}

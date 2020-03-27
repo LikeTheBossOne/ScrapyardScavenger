@@ -15,9 +15,22 @@ public class Health : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        currentHealth = (int) (maxHealth * skillModifier * armorModifier);
+        
 		pHud = GetComponent<PlayerHUD>();
         death = GetComponent<Death>();
+
+        // see if the player has the Resilience skill
+        SkillLevel resilienceLevel = GetComponent<PlayerControllerLoader>().skillManager.GetSkillByName("Resilience");
+        if (resilienceLevel != null)
+        {
+            // they have it, so set it
+            skillModifier = resilienceLevel.Modifier;
+            Debug.Log("Player has Resilience, modifier is: " + skillModifier);
+        }
+        else Debug.Log("Player does NOT have Resilience");
+
+        currentHealth = (int)(maxHealth * skillModifier * armorModifier);
+        Debug.Log("Player is starting with current health: " + currentHealth); // this may cause problems when we implement the medpack
     }
 
     void Update()
