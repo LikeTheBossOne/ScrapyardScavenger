@@ -24,6 +24,7 @@ public class SkillLevel : ScriptableObject
     private Text Effect_Text;
     private Text Title_Text;
     private Text Instructions_Text;
+    private Button Unlock_Button;
     
 
     public void SetCanvas(GameObject obj)
@@ -66,6 +67,7 @@ public class SkillLevel : ScriptableObject
                     else if (textObj.name == "Required XP") Required_XP_Text = textObj;
                     else if (textObj.name == "Instructions") Instructions_Text = textObj;
                 }
+                Unlock_Button = Skill_Popup.GetComponentInChildren<Button>();
             }
         }
         
@@ -125,6 +127,8 @@ public class SkillLevel : ScriptableObject
         float alpha = 1.0f;
         Skill_Icon.color = new Color(Skill_Icon.color.r, Skill_Icon.color.g, Skill_Icon.color.b, alpha);
         Skill_Numeral.color = new Color(Skill_Numeral.color.r, Skill_Numeral.color.g, Skill_Numeral.color.b, alpha);
+        // disable Unlock button
+        Unlock_Button.gameObject.SetActive(false);
     }
 
 }

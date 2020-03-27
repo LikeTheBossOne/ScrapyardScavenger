@@ -102,15 +102,29 @@ public class SkillTreeObserver : MonoBehaviour
         // Upgrade selected skill
         if (Input.GetKeyDown(KeyCode.B))
         {
-            // check to see if player can unlock this skill/upgrade it
-            if (playerController.GetComponent<SkillManager>().UnlockSkill(skillIndex, levelIndex))
-            {
-                UpdateXPInUI();
-            }
-            
+            AttemptUnlock();
         }
 
         
+    }
+
+    public void AttemptUnlock()
+    {
+        // check to see if player can unlock this skill/upgrade it
+        if (playerController.GetComponent<SkillManager>().UnlockSkill(skillIndex, levelIndex))
+        {
+            UpdateXPInUI();
+        }
+    }
+
+    public void ClickSkill(int si, int li)
+    {
+        displaySkills[skillIndex].levels[levelIndex].DeselectIcon();
+
+        skillIndex = si;
+        levelIndex = li;
+
+        displaySkills[skillIndex].levels[levelIndex].SelectIcon();
     }
 
     private void UpdateXPInUI()
