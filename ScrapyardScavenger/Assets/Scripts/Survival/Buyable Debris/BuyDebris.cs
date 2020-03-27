@@ -37,7 +37,7 @@ public class BuyDebris : MonoBehaviourPun
 
             if (skillManager.CanBuyWithTemp(cost))
             {
-                buyText.text = "Press B to buy for " + cost;
+                buyText.text = $"Press B to clear Debris\n[Cost: {cost} XP]";
 
                 if (Input.GetKeyDown(KeyCode.B))
                 {
@@ -50,7 +50,7 @@ public class BuyDebris : MonoBehaviourPun
             }
             else
             {
-                buyText.text = "This costs " + cost;
+                buyText.text = $"Can't clear Debris!\n[Cost: {cost} XP]";
             }
         }
         else
