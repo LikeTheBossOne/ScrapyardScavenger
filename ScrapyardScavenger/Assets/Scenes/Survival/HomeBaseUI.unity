@@ -709,6 +709,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: AttemptUnlock
       objectReference: {fileID: 0}
+    - target: {fileID: 4809490975555019683, guid: 417e358bdec4fb540a3458a641052fc5,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 43.304077
+      objectReference: {fileID: 0}
     - target: {fileID: 7309746260287284342, guid: 417e358bdec4fb540a3458a641052fc5,
         type: 3}
       propertyPath: skillIndex
@@ -945,7 +950,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &432973393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2136,7 +2141,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3758,8 +3763,8 @@ RectTransform:
   m_Father: {fileID: 1639030765}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5354,6 +5359,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: AttemptUnlock
       objectReference: {fileID: 0}
+    - target: {fileID: 4809490975555019683, guid: 417e358bdec4fb540a3458a641052fc5,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 43.304077
+      objectReference: {fileID: 0}
     - target: {fileID: 7309746260287284342, guid: 417e358bdec4fb540a3458a641052fc5,
         type: 3}
       propertyPath: skillIndex
@@ -5672,7 +5682,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1644820907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7768,6 +7778,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4809490975555019683, guid: 417e358bdec4fb540a3458a641052fc5,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 43.304077
       objectReference: {fileID: 0}
     - target: {fileID: 7309746260287284342, guid: 417e358bdec4fb540a3458a641052fc5,
         type: 3}
