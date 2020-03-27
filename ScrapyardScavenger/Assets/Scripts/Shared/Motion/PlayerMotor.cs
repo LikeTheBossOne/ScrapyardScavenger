@@ -61,6 +61,16 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         isSprinting = false;
         isCoolingDown = false;
         pastSprintPressed = false;
+
+        // check to see if the player has the Endurance skill?
+        SkillLevel enduranceLevel = GetComponent<PlayerControllerLoader>().skillManager.GetSkillByName("Endurance");
+        if (enduranceLevel != null)
+        {
+            // they have it, so set it
+            sprintLimit = (int) enduranceLevel.Modifier;
+            Debug.Log("Player has Endurance, modifier is: " + sprintLimit);
+        }
+        else Debug.Log("Player does NOT have Endurance");
     }
 
     void Update()

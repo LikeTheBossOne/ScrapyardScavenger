@@ -9,11 +9,11 @@ using UnityEngine;
 public class Scavenger : Skill
 {
 
-    public override void Unlock(SkillLevel unlockedLevel, SkillManager skillManager)
+    public override void UnlockLevel(int levelIndex, SkillManager skillManager)
     {
         // increase the chance of collecting 2 resources instead of 1
-        unlockedLevel.IsUnlocked = true;
-
+        levels[levelIndex].Unlock(levelIndex);
+        HighestLevel = levelIndex;
 
     }
 

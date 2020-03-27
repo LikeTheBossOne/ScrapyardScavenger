@@ -224,8 +224,12 @@ public class Extraction : MonoBehaviourPunCallbacks
 		playerController.GetComponent<InGameDataManager>().TransferToStorage();
 
         // Then return to Home Base
+        if (GameControllerSingleton.instance.aliveCount == 2)
+        {
+            GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetComponent<PlayerControllerLoader>().playerController.GetPhotonView().RPC("MasterClientGoToHomeBase", RpcTarget.All);
+        }
         playerController.GetPhotonView().RPC("MasterClientGoToHomeBase", RpcTarget.All);
-        
+
         if (photonView.IsMine)
             PhotonNetwork.Destroy(this.gameObject);
     }

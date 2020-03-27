@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7cb1bd1f7ebbdd4796bea393fa82e2b, type: 3}
   m_Name: Resilience II
   m_EditorClassIdentifier: 
-  Icon: {fileID: 0}
+  Level_Name: II
+  Skill_Effect: Increase maximum health by 1.5x
   XPNeeded: 2500
   IsUnlocked: 0
   Modifier: 1.5
