@@ -11,7 +11,6 @@ public class ShamblerAI : MonoBehaviour
         idle,
         wander,
         chase,
-        attack,
         spit,
         bite,
     }
@@ -71,10 +70,7 @@ public class ShamblerAI : MonoBehaviour
                 {
                     //&& !weapons.meleeOnCoolDown()
                     currentState = State.bite;
-                    if (animator)
-                    {
-                        animator.SetBool("walking", false);
-                    }
+                    
                 }
                 else
                 if (distanceToOther(senses.detected) <= weapons.spitRange)
@@ -83,37 +79,25 @@ public class ShamblerAI : MonoBehaviour
                     //currentState = State.attack;
                     //&& !weapons.spitOnCoolDown()
                     currentState = State.spit;
-                    if (animator)
-                    {
-                        animator.SetBool("walking", false);
-                    }
+                    
                 }
                 else
                 {
                     currentState = State.chase;
-                    if (animator)
-                    {
-                        animator.SetBool("walking", true);
-                    }
+                    
                 }
                 //currentState = State.chase;
             }
             else
             {
                 currentState = State.wander;
-                if (animator)
-                {
-                    animator.SetBool("walking", true);
-                }
+                
             }
         }
         else
         {
             currentState = State.idle;
-            if (animator)
-            {
-                animator.SetBool("walking",false);
-            }
+            
         }
         
     } 
@@ -127,6 +111,10 @@ public class ShamblerAI : MonoBehaviour
             //System.Console.WriteLine("Player seen.");
             transform.LookAt(senses.detected.position, transform.up);
             setDestination(senses.detected.position);
+            if (animator)
+            {
+                animator.SetBool("walking", true);
+            }
         }
         if (currentState == State.wander)
         {
@@ -155,6 +143,7 @@ public class ShamblerAI : MonoBehaviour
             if (distanceToOther(close) < toPlayerOffset)
             {
                 toPlayer = toPlayer * (float)distanceToOther(close);
+
             }
             else
             {
@@ -167,20 +156,9 @@ public class ShamblerAI : MonoBehaviour
             //transform.LookAt(moveTarg, transform.up);
             moveTo = moveTarg;
             setDestination(moveTo);
-        }
-        if (currentState == State.attack)
-        {
-            setDestination(GetComponentInParent<Transform>().position);
-            gameObject.transform.LookAt(senses.detected, gameObject.transform.up);
-            if (distanceToOther(senses.detected) <= weapons.meleeRange)
+            if (animator)
             {
-                //target in melee range
-                weapons.bite(senses.detected.gameObject);
-            }
-            else
-            {
-                //target in spit range
-                weapons.spit(senses.detected.gameObject);
+                animator.SetBool("walking", true);
             }
         }
         if (currentState == State.spit)
@@ -188,16 +166,28 @@ public class ShamblerAI : MonoBehaviour
             setDestination(GetComponentInParent<Transform>().position);
             gameObject.transform.LookAt(senses.detected, gameObject.transform.up);
             weapons.spit(senses.detected.gameObject);
+            if (animator)
+            {
+                animator.SetBool("walking", false);
+            }
         }
         if (currentState == State.bite)
         {
             setDestination(GetComponentInParent<Transform>().position);
             gameObject.transform.LookAt(senses.detected, gameObject.transform.up);
             weapons.bite(senses.detected.gameObject);
+            if (animator)
+            {
+                animator.SetBool("walking", false);
+            }
         }
         if (currentState == State.idle)
         {
             setDestination(gameObject.transform.position);
+            if (animator)
+            {
+                animator.SetBool("walking", false);
+            }
         }
         
     }
