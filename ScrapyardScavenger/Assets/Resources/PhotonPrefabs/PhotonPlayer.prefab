@@ -24,7 +24,6 @@ GameObject:
   - component: {fileID: 2697323939956501158}
   - component: {fileID: 6505326394283060669}
   - component: {fileID: -1630396162063884706}
-  - component: {fileID: 404991247367305121}
   m_Layer: 11
   m_Name: PhotonPlayer
   m_TagString: Player
@@ -427,21 +426,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inGamePlayerManager: {fileID: 0}
---- !u!114 &404991247367305121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 564345459977318626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0861fa443495074884487f6c2b38894, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buyableLayer:
-    serializedVersion: 2
-    m_Bits: 16384
 --- !u!1 &647147794768695746
 GameObject:
   m_ObjectHideFlags: 0

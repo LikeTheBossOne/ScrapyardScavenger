@@ -26,7 +26,6 @@ TagManager:
   - slot2Text
   - slot6Text
   - slot4Text
-  - Buyables
   layers:
   - Default
   - TransparentFX
@@ -42,7 +41,7 @@ TagManager:
   - ShootableEnemy
   - Truck
   - StaticEnvironment
-  - Buyable
+  - 
   - 
   - 
   - 
