@@ -19,6 +19,8 @@ public class GameSetupController : MonoBehaviour
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PhotonPlayer"), player1StartPosition, Quaternion.Euler(0, 90, 0));
+
+            PhotonNetwork.Instantiate("PhotonPrefabs/BuyableManager", Vector3.zero, Quaternion.identity);
         }
         else
         {
