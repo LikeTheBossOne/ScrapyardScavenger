@@ -29,6 +29,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     private bool isSprinting;
     private bool isCoolingDown;
     
+    public Animator animator;
     
     private bool isPaused;
 
@@ -60,6 +61,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         isSprinting = false;
         isCoolingDown = false;
         pastSprintPressed = false;
+        animator = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -168,6 +170,26 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         normalCam.fieldOfView = isSprinting
             ? Mathf.Lerp(normalCam.fieldOfView, baseFOV * sprintFOVModifier, Time.fixedDeltaTime * 8f)
             : Mathf.Lerp(normalCam.fieldOfView, baseFOV, Time.fixedDeltaTime * 2f);
+
+        if (animator)
+        {
+            if (isSprinting)
+            {
+                animator.SetBool("run", true);
+                animator.SetBool("walk", false);
+            }
+            else if (speed > 0.01)
+            {
+                animator.SetBool("run", false);
+                animator.SetBool("walk", true);
+            }
+            else
+            {
+                animator.SetBool("run", false);
+                animator.SetBool("walk", false);
+            }
+        }
+        
 
         pastSprintPressed = sprintPressed;
     }
