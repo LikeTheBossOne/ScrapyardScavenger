@@ -55,6 +55,7 @@ public class Death : MonoBehaviourPun
 
             PlayerControllerLoader pControllerLoader = GetComponent<PlayerControllerLoader>();
 			pControllerLoader.playerController.GetPhotonView().RPC("ClearEquipmentOnDeath", RpcTarget.All);
+			pControllerLoader.baseDataManager.ClearEquipmentOnDeath();
             pControllerLoader.inGameDataManager.ClearOnDeath();
             GetComponent<PlayerControllerLoader>().skillManager.ClearTempXP();
 

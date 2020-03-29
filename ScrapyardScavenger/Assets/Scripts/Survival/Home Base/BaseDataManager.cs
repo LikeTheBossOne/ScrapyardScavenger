@@ -30,7 +30,7 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
 
 	// Crafts and counts are indexed based on the CraftableObject's ID
 	[SerializeField]
-	public List<Armor> armors = null;
+	public Armor[] armors = null;
 	[SerializeField]
 	public int[] armorCounts = null;
 
@@ -64,8 +64,8 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
         equipment = new Equipment[5];
         equipment[0] = weapons[(int)WeaponType.AR];
         equipment[1] = weapons[(int)WeaponType.Pistol];
-
-        armors = new List<Armor>();
+		weaponCounts[(int)WeaponType.AR]++;
+		weaponCounts[(int)WeaponType.Pistol]++;
 
         resources = new List<ResourcePersistent>();
 		resourceSet = new HashSet<Resource>();
@@ -128,8 +128,15 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
 	[PunRPC]
     public void ClearEquipmentOnDeath()
     {
-        equipment = new Equipment[5];
+		// For now, reset their craftable counts until type fields are made
+		weaponCounts[equipment[0].id] = 0;
+		weaponCounts[equipment[1].id] = 0;
+		armorCounts[equippedArmor.id] = 0;
+		itemCounts[equipment[4].id] = 0;
+
+		equipment = new Equipment[5];
         equipment[0] = weapons[(int)WeaponType.Pistol];
+		weaponCounts[(int)WeaponType.Pistol]++;
 		equippedArmor = null;
     }
 	public Equipment[] getEquipment()
