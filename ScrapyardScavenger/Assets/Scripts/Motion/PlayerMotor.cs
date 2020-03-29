@@ -28,6 +28,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     private bool isEnergized;
     private bool isSprinting;
     private bool isCoolingDown;
+    private float deadZone;
     
     public Animator animator;
     
@@ -62,6 +63,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         isCoolingDown = false;
         pastSprintPressed = false;
         animator = GetComponentInChildren<Animator>();
+        deadZone = 0.01f;
     }
 
     void Update()
@@ -178,7 +180,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
                 animator.SetBool("run", true);
                 animator.SetBool("walk", false);
             }
-            else if (speed > 0.01)
+            else if (verticalInput > deadZone || horizontalInput > deadZone)
             {
                 animator.SetBool("run", false);
                 animator.SetBool("walk", true);
