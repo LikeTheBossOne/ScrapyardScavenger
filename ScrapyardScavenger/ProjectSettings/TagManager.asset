@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Health
+  - AmmoCount
+  - Pick Up
+  - ScavengerSkill
+  - HomeScreenButton
+  - ExtractionCircle
+  - Shambler
+  - crosshair
+  - crafter
+  - Slot
+  - StorageItemImg
+  - StorageItemName
+  - StorageItemDesc
+  - Settings
+  - slot3Text
+  - slot1Text
+  - slot8Text
+  - slot7Text
+  - slot5Text
+  - slot2Text
+  - slot6Text
+  - slot4Text
+  - Buyables
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - PostProcessing
+  - Ground
+  - ShootableTerrain
+  - ShootableEnemy
+  - Truck
+  - StaticEnvironment
+  - Buyable
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0

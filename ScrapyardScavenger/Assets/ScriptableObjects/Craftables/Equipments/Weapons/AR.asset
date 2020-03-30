@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a7361f3a02a47848b4d5b281f0a69a3, type: 3}
+  m_Name: AR
+  m_EditorClassIdentifier: 
+  id: 0
+  name: Assault Rifle
+  description: 
+  showInInventory: 1
+  icon: {fileID: 21300000, guid: fa0abfdb66fc16e4da2799735607de16, type: 3}
+  recipe: {fileID: 11400000, guid: f235bc78396b39c48a5f0e6c7592bc6d, type: 2}
+  prefab: {fileID: 1766406241958178707, guid: 78b28d2f1639042419884345402801b8, type: 3}
+  baseDamage: 30
+  headShotMultiplier: 2
+  baseRateOfFire: 600
+  baseClipSize: 25
+  reloadTime: 3
+  modifiers: []
+  isAutomatic: 1
