@@ -23,6 +23,11 @@ public class ShamblerStats : Stats, IPunObservable
 
     }
 
+    public void ModifyDamage(float modifier)
+    {
+        damage = damage * modifier;
+    }
+
     [PunRPC]
     void TakeDamageShambler(int damage, int shooterID)
     {

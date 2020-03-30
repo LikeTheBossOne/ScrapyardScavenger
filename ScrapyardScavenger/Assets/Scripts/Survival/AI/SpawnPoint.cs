@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnPoint : MonoBehaviour
 {
     public Transform location;
-    public bool IsFunctional;
+    public bool IsFunctional = false;
     public Zones Zone;
 
     private void Start()
