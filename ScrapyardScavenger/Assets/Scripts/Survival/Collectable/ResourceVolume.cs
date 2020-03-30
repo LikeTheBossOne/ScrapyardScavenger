@@ -12,7 +12,7 @@ public class ResourceVolume : MonoBehaviourPun
     public LayerMask ground;
 
     public GameObject collectable;
-    public int averageSpawnAmount;
+    public int totalSpawnTries;
 
     [EnumFlags]
     [SerializeField]
@@ -66,12 +66,11 @@ public class ResourceVolume : MonoBehaviourPun
             float area = bounds.size.x * bounds.size.z;
             
             float binomialRandom = Random.Range(0, area) - Random.Range(0, area);
-            int amountToSpawn = (int)Math.Round((area + binomialRandom) * averageSpawnAmount / totalArea);
-            int spawnedCount = 0;
-            int runs = 0;
+            int spawnTries = (int)Math.Round((area + binomialRandom) * totalSpawnTries / totalArea);
+            int tryCount = 0;
 
             // Spawn the amount of resources
-            while (spawnedCount < amountToSpawn && runs < 50)
+            while (tryCount < spawnTries)
             {
                 float randX = Random.Range(bounds.min.x, bounds.max.x);
                 float randZ = Random.Range(bounds.min.z, bounds.max.z);
@@ -90,11 +89,9 @@ public class ResourceVolume : MonoBehaviourPun
                         Quaternion.identity
                     );
                     objToSpawn.GetComponent<ResourcePickup>().type = (ResourceType)resources[Random.Range(0, resources.Count)];
-
-                    spawnedCount++;
                 }
 
-                runs++;
+                tryCount++;
             }
         }
         
