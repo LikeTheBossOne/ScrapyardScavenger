@@ -98,9 +98,6 @@ MonoBehaviour:
   maxExistTime: 10
   Velocity: 10
   direction: {x: 0, y: 0, z: 0}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 2048
   groundLayer:
     serializedVersion: 2
     m_Bits: 512

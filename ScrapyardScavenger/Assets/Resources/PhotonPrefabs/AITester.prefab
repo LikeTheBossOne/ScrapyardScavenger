@@ -216,7 +216,7 @@ MonoBehaviour:
   meleeRecharge: 2
   meleeDamage: 5
   spitRange: 10
-  spitRecharge: 10
+  spitRecharge: 5
   spitDamage: 10
   spitSize: 0
   projectile: {fileID: 7758600212226562078, guid: 0ac2452e7ddb1cf42a28cc2c934bf81f,
