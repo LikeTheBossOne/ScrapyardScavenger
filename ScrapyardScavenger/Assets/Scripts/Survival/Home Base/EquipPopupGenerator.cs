@@ -20,6 +20,7 @@ public class EquipPopupGenerator : MonoBehaviour
 	public Text effect1;
 	public Text effect2;
 	public GameObject unEqButton;
+	public GameObject noneText;
 
 	// Start is called before the first frame update
     void Start()
@@ -96,7 +97,7 @@ public class EquipPopupGenerator : MonoBehaviour
 
 	public void GenerateEquipment(int option)
 	{
-		Debug.Log("Generating equipment: " + option.ToString());
+		noneText.SetActive(false);
 		idxFocus = option;
 		if (generated == null) {
 			generated = new List<GameObject>();
@@ -118,17 +119,23 @@ public class EquipPopupGenerator : MonoBehaviour
 					equippableGuns.Add(pController.GetComponent<BaseDataManager>().weapons[i] as Gun);
 				}
 			}
-			foreach (Gun gun in equippableGuns) {
-				GameObject temp = Instantiate(equipPrefab) as GameObject;
-				temp.GetComponent<EquipLoader>().img.sprite = gun.icon;
-				temp.GetComponent<EquipLoader>().name.text = gun.name;
-				temp.GetComponent<EquipLoader>().desc.text = gun.description;
-				temp.GetComponent<EquipLoader>().effect1Text.text = "Power: " + gun.baseDamage.ToString();
-				temp.GetComponent<EquipLoader>().effect2Text.text = "Ammo: " + gun.baseClipSize.ToString();
-				temp.GetComponent<Button>().onClick.AddListener(() => EquipToPlayer(gun));
-				temp.transform.parent = container.transform;
-				temp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-				generated.Add(temp);
+			if (equippableGuns.Count > 0) {
+				foreach (Gun gun in equippableGuns) {
+					GameObject temp = Instantiate(equipPrefab) as GameObject;
+					temp.GetComponent<EquipLoader>().img.sprite = gun.icon;
+					temp.GetComponent<EquipLoader>().name.text = gun.name;
+					temp.GetComponent<EquipLoader>().desc.text = gun.description;
+					temp.GetComponent<EquipLoader>().effect1Text.text = "Power: " + gun.baseDamage.ToString();
+					temp.GetComponent<EquipLoader>().effect2Text.text = "Ammo: " + gun.baseClipSize.ToString();
+					temp.GetComponent<EquipLoader>().count.text = "x" + counts[gun.id].ToString();
+					temp.GetComponent<Button>().onClick.AddListener(() => EquipToPlayer(gun));
+					temp.transform.parent = container.transform;
+					temp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+					generated.Add(temp);
+				}
+			} else {
+				noneText.SetActive(true);
+				noneText.GetComponent<Text>().text = "No guns available";
 			}
 			break;
 			case 2:
@@ -139,17 +146,23 @@ public class EquipPopupGenerator : MonoBehaviour
 					equippableGrenades.Add(pController.GetComponent<BaseDataManager>().weapons[i] as Grenade);
 				}
 			}
-			foreach (Grenade gre in equippableGrenades) {
-				GameObject temp = Instantiate(equipPrefab) as GameObject;
-				temp.GetComponent<EquipLoader>().img.sprite = gre.icon;
-				temp.GetComponent<EquipLoader>().name.text = gre.name;
-				temp.GetComponent<EquipLoader>().desc.text = gre.description;
-				temp.GetComponent<EquipLoader>().effect1Text.text = "Power: " + gre.baseDamage.ToString();
-				temp.GetComponent<EquipLoader>().effect2Text.text = "Detonation Time: " + gre.baseDetonationTime.ToString();
-				temp.GetComponent<Button>().onClick.AddListener(() => EquipToPlayer(gre));
-				temp.transform.parent = container.transform;
-				temp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-				generated.Add(temp);
+			if (equippableGrenades.Count > 0) {
+				foreach (Grenade gre in equippableGrenades) {
+					GameObject temp = Instantiate(equipPrefab) as GameObject;
+					temp.GetComponent<EquipLoader>().img.sprite = gre.icon;
+					temp.GetComponent<EquipLoader>().name.text = gre.name;
+					temp.GetComponent<EquipLoader>().desc.text = gre.description;
+					temp.GetComponent<EquipLoader>().effect1Text.text = "Power: " + gre.baseDamage.ToString();
+					temp.GetComponent<EquipLoader>().effect2Text.text = "Detonation Time: " + gre.baseDetonationTime.ToString();
+					temp.GetComponent<EquipLoader>().count.text = "x" + counts[gre.id].ToString();
+					temp.GetComponent<Button>().onClick.AddListener(() => EquipToPlayer(gre));
+					temp.transform.parent = container.transform;
+					temp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+					generated.Add(temp);
+				}
+			} else {
+				noneText.SetActive(true);
+				noneText.GetComponent<Text>().text = "No grenades available";
 			}
 			break;
 			case 3:
@@ -160,17 +173,23 @@ public class EquipPopupGenerator : MonoBehaviour
 					equippableMelees.Add(pController.GetComponent<BaseDataManager>().weapons[i] as Melee);
 				}
 			}
-			foreach (Melee mel in equippableMelees) {
-				GameObject temp = Instantiate(equipPrefab) as GameObject;
-				temp.GetComponent<EquipLoader>().img.sprite = mel.icon;
-				temp.GetComponent<EquipLoader>().name.text = mel.name;
-				temp.GetComponent<EquipLoader>().desc.text = mel.description;
-				temp.GetComponent<EquipLoader>().effect1Text.text = "Power: " + mel.baseDamage.ToString();
-				temp.GetComponent<EquipLoader>().effect2Text.text = "";
-				temp.GetComponent<Button>().onClick.AddListener(() => EquipToPlayer(mel));
-				temp.transform.parent = container.transform;
-				temp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-				generated.Add(temp);
+			if (equippableMelees.Count > 0) {
+				foreach (Melee mel in equippableMelees) {
+					GameObject temp = Instantiate(equipPrefab) as GameObject;
+					temp.GetComponent<EquipLoader>().img.sprite = mel.icon;
+					temp.GetComponent<EquipLoader>().name.text = mel.name;
+					temp.GetComponent<EquipLoader>().desc.text = mel.description;
+					temp.GetComponent<EquipLoader>().effect1Text.text = "Power: " + mel.baseDamage.ToString();
+					temp.GetComponent<EquipLoader>().effect2Text.text = "";
+					temp.GetComponent<EquipLoader>().count.text = "x" + counts[mel.id].ToString();
+					temp.GetComponent<Button>().onClick.AddListener(() => EquipToPlayer(mel));
+					temp.transform.parent = container.transform;
+					temp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+					generated.Add(temp);
+				}
+			} else {
+				noneText.SetActive(true);
+				noneText.GetComponent<Text>().text = "No melee weapons available";
 			}
 			break;
 			case 4:
@@ -181,17 +200,23 @@ public class EquipPopupGenerator : MonoBehaviour
 					equippableItems.Add(pController.GetComponent<BaseDataManager>().items[i]);
 				}
 			}
-			foreach (Item it in equippableItems) {
-				GameObject temp = Instantiate(equipPrefab) as GameObject;
-				temp.GetComponent<EquipLoader>().img.sprite = it.icon;
-				temp.GetComponent<EquipLoader>().name.text = it.name;
-				temp.GetComponent<EquipLoader>().desc.text = it.description;
-				temp.GetComponent<EquipLoader>().effect1Text.text = "";
-				temp.GetComponent<EquipLoader>().effect2Text.text = "";
-				temp.GetComponent<Button>().onClick.AddListener(() => EquipToPlayer(it));
-				temp.transform.parent = container.transform;
-				temp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-				generated.Add(temp);
+			if (equippableItems.Count > 0) {
+				foreach (Item it in equippableItems) {
+					GameObject temp = Instantiate(equipPrefab) as GameObject;
+					temp.GetComponent<EquipLoader>().img.sprite = it.icon;
+					temp.GetComponent<EquipLoader>().name.text = it.name;
+					temp.GetComponent<EquipLoader>().desc.text = it.description;
+					temp.GetComponent<EquipLoader>().effect1Text.text = "";
+					temp.GetComponent<EquipLoader>().effect2Text.text = "";
+					temp.GetComponent<EquipLoader>().count.text = "x" + counts[it.id].ToString();
+					temp.GetComponent<Button>().onClick.AddListener(() => EquipToPlayer(it));
+					temp.transform.parent = container.transform;
+					temp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+					generated.Add(temp);
+				}
+			} else {
+				noneText.SetActive(true);
+				noneText.GetComponent<Text>().text = "No items available";
 			}
 			break;
 			case 5:
@@ -202,17 +227,23 @@ public class EquipPopupGenerator : MonoBehaviour
 					equippableArmors.Add(pController.GetComponent<BaseDataManager>().armors[i]);
 				}
 			}
-			foreach (Armor a in equippableArmors) {
-				GameObject temp = Instantiate(equipPrefab) as GameObject;
-				temp.GetComponent<EquipLoader>().img.sprite = a.icon;
-				temp.GetComponent<EquipLoader>().name.text = a.name;
-				temp.GetComponent<EquipLoader>().desc.text = a.description;
-				temp.GetComponent<EquipLoader>().effect1Text.text = "";
-				temp.GetComponent<EquipLoader>().effect2Text.text = "";
-				temp.GetComponent<Button>().onClick.AddListener(() => EquipToPlayer(a));
-				temp.transform.parent = container.transform;
-				temp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-				generated.Add(temp);
+			if (equippableArmors.Count > 0) {
+				foreach (Armor a in equippableArmors) {
+					GameObject temp = Instantiate(equipPrefab) as GameObject;
+					temp.GetComponent<EquipLoader>().img.sprite = a.icon;
+					temp.GetComponent<EquipLoader>().name.text = a.name;
+					temp.GetComponent<EquipLoader>().desc.text = a.description;
+					temp.GetComponent<EquipLoader>().effect1Text.text = "";
+					temp.GetComponent<EquipLoader>().effect2Text.text = "";
+					temp.GetComponent<EquipLoader>().count.text = "x" + counts[a.id].ToString();
+					temp.GetComponent<Button>().onClick.AddListener(() => EquipToPlayer(a));
+					temp.transform.parent = container.transform;
+					temp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+					generated.Add(temp);
+				}
+			} else {
+				noneText.SetActive(true);
+				noneText.GetComponent<Text>().text = "No armor available";
 			}
 			break;
 		}

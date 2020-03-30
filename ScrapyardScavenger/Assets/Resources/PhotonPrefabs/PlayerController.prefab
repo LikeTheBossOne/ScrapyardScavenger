@@ -185,7 +185,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 18fe4acb1ad3b3d48ab1ebbd8068f61d, type: 2}
   - {fileID: 11400000, guid: be1e568827325594ba3dd28cc9f823dd, type: 2}
   - {fileID: 11400000, guid: 6efe82a5e6f22e243b37875d3233f794, type: 2}
-  weaponCounts: 0000000000000000000000000000000000000000
+  weaponCounts: 000000000000000000000000000000000000000000000000
   armors:
   - {fileID: 11400000, guid: 82ae4d6819beabd4f88f1017f26ccedd, type: 2}
   - {fileID: 11400000, guid: 2b3935a1aa4f4a243a06d32d0e0a2ccf, type: 2}

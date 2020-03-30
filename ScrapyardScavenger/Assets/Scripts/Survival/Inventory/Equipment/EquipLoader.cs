@@ -10,4 +10,5 @@ public class EquipLoader : MonoBehaviour
 	public Text desc;
 	public Text effect1Text;
 	public Text effect2Text;
+	public Text count;
 }

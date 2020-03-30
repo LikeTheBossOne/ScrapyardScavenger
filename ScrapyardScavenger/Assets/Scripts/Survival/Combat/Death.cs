@@ -55,7 +55,6 @@ public class Death : MonoBehaviourPun
 
             PlayerControllerLoader pControllerLoader = GetComponent<PlayerControllerLoader>();
 			pControllerLoader.playerController.GetPhotonView().RPC("ClearEquipmentOnDeath", RpcTarget.All);
-			pControllerLoader.baseDataManager.ClearEquipmentOnDeath();
             pControllerLoader.inGameDataManager.ClearOnDeath();
             GetComponent<PlayerControllerLoader>().skillManager.ClearTempXP();
 
@@ -69,7 +68,8 @@ public class Death : MonoBehaviourPun
         GameControllerSingleton.instance.aliveCount--;
         if (GameControllerSingleton.instance.aliveCount <= 0)
         {            
-            PhotonNetwork.LoadLevel(homeBaseSceneIndex);
+			Debug.Log("Are we hitting this?");
+			PhotonNetwork.LoadLevel(homeBaseSceneIndex);
         }
 
         if (photonView.IsMine)

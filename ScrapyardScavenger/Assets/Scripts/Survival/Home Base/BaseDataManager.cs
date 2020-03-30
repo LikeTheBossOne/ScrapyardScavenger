@@ -128,11 +128,10 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
 	[PunRPC]
     public void ClearEquipmentOnDeath()
     {
-		// For now, reset their craftable counts until type fields are made
-		weaponCounts[equipment[0].id] = 0;
-		weaponCounts[equipment[1].id] = 0;
-		armorCounts[equippedArmor.id] = 0;
-		itemCounts[equipment[4].id] = 0;
+		if (equipment[0] != null) weaponCounts[equipment[0].id]--;
+		if (equipment[1] != null) weaponCounts[equipment[1].id]--;
+		if (equippedArmor != null) armorCounts[equippedArmor.id]--;
+		if (equipment[4] != null) itemCounts[equipment[4].id]--;
 
 		equipment = new Equipment[5];
         equipment[0] = weapons[(int)WeaponType.Pistol];
