@@ -22554,7 +22554,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 483887310}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 20, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2009459855}
@@ -22581,8 +22581,8 @@ MonoBehaviour:
     m_Bits: 512
   collectable: {fileID: 4183550215993222447, guid: c751d1fd3a6a3634180bc061aef4eda4,
     type: 3}
-  averageSpawnAmount: 20
-  resourceFlags: 49185
+  averageSpawnAmount: 8
+  resourceFlags: 41217
 --- !u!1001 &486330669
 PrefabInstance:
   m_ObjectHideFlags: 0
