@@ -21,6 +21,11 @@ public class EnemySpawner : MonoBehaviour
     public int shamblerMax;
     public int chargerMax;
     private const int startGracePeriod = 60;
+
+    public int WaveNumber = 1; // consider changing to 0 and incorporating grace period
+    private List<Zones> ActiveZones; // list of zones that the players are in
+
+
     // Start is called before the first frame update
     private void OnEnable()
     {
@@ -34,6 +39,7 @@ public class EnemySpawner : MonoBehaviour
         chargerCoolDown = chargerInterval;
         shamblerMax = 5;
         chargerMax = 2;
+        ActiveZones = new List<Zones>();
     }
 
     // Update is called once per frame
@@ -41,13 +47,21 @@ public class EnemySpawner : MonoBehaviour
     {
         if (PhotonNetwork.IsMasterClient)
         {
+            // calculate which zones the players are in
+            // do this later
+
             if (shamblerCoolDown <= 0)
             {
                 if (shamblerCount < shamblerMax)
                 {
-                    //spawn logic
+                    // spawn logic
                     int selected = Random.Range(0, spawnPoints.Length);
-                    PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", shambName), spawnPoints[selected].location.position, spawnPoints[selected].location.rotation);
+
+                    GameObject shambler = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", shambName), spawnPoints[selected].location.position, spawnPoints[selected].location.rotation);
+                    // set the shambler's max health & damage based off of wave number
+                    float waveModifier = 1.0f + (0.2f * (WaveNumber - 1));
+                    shambler.GetComponent<Stats>().ModifyHealth(waveModifier);
+                    Debug.Log("Spawned a Shambler with " + shambler.GetComponent<Stats>().GetCurrentHealth() + " health");
                     shamblerCount++;
                 }
                 shamblerCoolDown = shamblerInterval;
@@ -56,9 +70,23 @@ public class EnemySpawner : MonoBehaviour
             {
                 shamblerCoolDown -= Time.deltaTime;
             }
+
+            // for testing purposes, make 'Z' advance the wave
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                NextWave();
+            }
         }
         
     }
+
+    public void NextWave()
+    {
+        WaveNumber++;
+        Debug.Log("Wave number is now " + WaveNumber);
+        // change the difficulty of any new enemies who spawn
+    }
+
     [PunRPC]
     public void onShamblerKill()
     {

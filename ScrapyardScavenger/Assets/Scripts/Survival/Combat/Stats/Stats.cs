@@ -8,8 +8,8 @@ public class Stats : MonoBehaviour
     public enum Condition{
         normal,
     }
-    public int maxHealth;
-    public int health;
+    public int baseHealth;
+    protected int health; // consider making health a float
     public int status;
     // Start is called before the first frame update
     void Start()
@@ -22,6 +22,17 @@ public class Stats : MonoBehaviour
     {
         
     }
+
+    public int GetCurrentHealth()
+    {
+        return health;
+    }
+
+    public void ModifyHealth(float modifier)
+    {
+        health = (int) (health * modifier);
+    }
+
     [PunRPC]
     protected void TakeDamage(int damage)
     {

@@ -5,14 +5,14 @@ using Photon.Pun;
 
 public class ShamblerStats : Stats, IPunObservable
 {
-    
-    public float damage { get; private set; }
+
+    public float damage; //{ get; private set; }
     
     // Start is called before the first frame update
     private void OnEnable()
     {
-        health = 10;
-        damage = 10;
+        health = baseHealth;
+        //damage = 10;
         status = 0;
     }
 
@@ -28,8 +28,9 @@ public class ShamblerStats : Stats, IPunObservable
     {
         //, GameObject damager, int atkStatus
         //note GameObjects can be passed by RPC
+        int previousHealth = health;
         health = health - damage;
-        Debug.Log("Enemy Damaged");
+        Debug.Log("Enemy Damaged, health from " + previousHealth + " to " + health);
 
 
 
@@ -38,17 +39,14 @@ public class ShamblerStats : Stats, IPunObservable
             if (PhotonNetwork.IsMasterClient)
             {
                 GameObject spawner = FindObjectOfType<EnemySpawner>().gameObject;
-                Debug.Log("Spawner: " + spawner);
                 spawner.GetPhotonView().RPC("onShamblerKill", RpcTarget.All);
                 // notify the player so he can change his XP
                 // find the player first
                 GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-                Debug.Log("Player obj length: " + players.Length);
                 foreach (GameObject player in players)
                 {
                     if (player.name == "Body")
                     {
-                        Debug.Log("Ignoring body");
                         continue;
                     }
                     if (player.GetPhotonView().ViewID == shooterID)
