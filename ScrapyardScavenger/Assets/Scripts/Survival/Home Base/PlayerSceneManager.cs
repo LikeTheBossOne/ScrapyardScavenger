@@ -19,8 +19,10 @@ public class PlayerSceneManager : MonoBehaviourPun
     public void MasterClientGoToHomeBase()
     {
         isInHomeBase = true;
-        if (photonView.IsMine)
+		if (photonView.IsMine) {
             GetComponent<SkillManager>().TransferXP();
+			GetComponent<InGameDataManager>().TransferToStorage();
+		}
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.LoadLevel(1);

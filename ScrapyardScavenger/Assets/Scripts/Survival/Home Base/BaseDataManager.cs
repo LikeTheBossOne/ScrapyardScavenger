@@ -62,9 +62,9 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
         inGameManager = GetComponent<InGameDataManager>();
 
         equipment = new Equipment[5];
-        equipment[0] = weapons[(int)WeaponType.AR];
-        equipment[1] = weapons[(int)WeaponType.Pistol];
-		weaponCounts[(int)WeaponType.AR]++;
+        //equipment[0] = weapons[(int)WeaponType.AR];
+        equipment[0] = weapons[(int)WeaponType.Pistol];
+		//weaponCounts[(int)WeaponType.AR]++;
 		weaponCounts[(int)WeaponType.Pistol]++;
 
         resources = new List<ResourcePersistent>();
