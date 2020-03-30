@@ -130,6 +130,8 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
     {
 		if (equipment[0] != null) weaponCounts[equipment[0].id]--;
 		if (equipment[1] != null) weaponCounts[equipment[1].id]--;
+		if (equipment[2] != null) weaponCounts[equipment[2].id]--;
+		if (equipment[3] != null) weaponCounts[equipment[3].id]--;
 		if (equippedArmor != null) armorCounts[equippedArmor.id]--;
 		if (equipment[4] != null) itemCounts[equipment[4].id]--;
 
