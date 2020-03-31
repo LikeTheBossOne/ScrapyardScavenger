@@ -51,6 +51,10 @@ public class ShamblerStats : Stats, IPunObservable
                         Debug.Log("Ignoring body");
                         continue;
                     }
+                    if (player.name == "Collision")
+                    {
+                        continue;
+                    }
                     if (player.GetPhotonView().ViewID == shooterID)
                     {
                         player.GetPhotonView().RPC("KilledEnemy", RpcTarget.All, (int)EnemyType.Shambler);
