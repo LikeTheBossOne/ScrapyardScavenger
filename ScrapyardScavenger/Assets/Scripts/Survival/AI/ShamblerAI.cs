@@ -6,7 +6,7 @@ using Photon.Pun;
 //note: enemeyController may be useful to look at
 public class ShamblerAI : MonoBehaviour
 {
-   public enum State
+    public enum State
     {
         idle,
         wander,
@@ -70,7 +70,7 @@ public class ShamblerAI : MonoBehaviour
                 {
                     //&& !weapons.meleeOnCoolDown()
                     currentState = State.bite;
-                    
+
                 }
                 else
                 if (distanceToOther(senses.detected) <= weapons.spitRange)
@@ -79,28 +79,30 @@ public class ShamblerAI : MonoBehaviour
                     //currentState = State.attack;
                     //&& !weapons.spitOnCoolDown()
                     currentState = State.spit;
-                    
+
                 }
                 else
                 {
                     currentState = State.chase;
-                    
+
                 }
                 //currentState = State.chase;
             }
             else
             {
                 currentState = State.wander;
-                
+
             }
         }
         else
         {
             currentState = State.idle;
-            
+
+
         }
-        
-    } 
+
+    }
+
     // Update is called once per frame
     public void handleState()
     {
@@ -113,7 +115,10 @@ public class ShamblerAI : MonoBehaviour
             setDestination(senses.detected.position);
             if (animator)
             {
-                animator.SetBool("walking", true);
+
+                gameObject.GetPhotonView().RPC("walk", RpcTarget.All);
+                //animator.SetBool("walking", true);
+
             }
         }
         if (currentState == State.wander)
@@ -158,7 +163,10 @@ public class ShamblerAI : MonoBehaviour
             setDestination(moveTo);
             if (animator)
             {
-                animator.SetBool("walking", true);
+
+                gameObject.GetPhotonView().RPC("walk", RpcTarget.All);
+                //animator.SetBool("walking", true);
+
             }
         }
         if (currentState == State.spit)
@@ -168,7 +176,10 @@ public class ShamblerAI : MonoBehaviour
             weapons.spit(senses.detected.gameObject);
             if (animator)
             {
-                animator.SetBool("walking", false);
+
+                gameObject.GetPhotonView().RPC("idle", RpcTarget.All);
+                //animator.SetBool("walking", false);
+
             }
         }
         if (currentState == State.bite)
@@ -178,7 +189,10 @@ public class ShamblerAI : MonoBehaviour
             weapons.bite(senses.detected.gameObject);
             if (animator)
             {
-                animator.SetBool("walking", false);
+
+                gameObject.GetPhotonView().RPC("idle", RpcTarget.All);
+                //animator.SetBool("walking", false);
+
             }
         }
         if (currentState == State.idle)
@@ -186,10 +200,13 @@ public class ShamblerAI : MonoBehaviour
             setDestination(gameObject.transform.position);
             if (animator)
             {
-                animator.SetBool("walking", false);
+
+                gameObject.GetPhotonView().RPC("idle", RpcTarget.All);
+                //animator.SetBool("walking", false);
+
             }
         }
-        
+
     }
 
     //Finds the closest player
@@ -203,7 +220,7 @@ public class ShamblerAI : MonoBehaviour
             RectTransform player = obj.GetComponent<RectTransform>();
 
             double dist = distanceToOther(player);
-            if ( dist < cDist)
+            if (dist < cDist)
             {
                 closest = player;
                 cDist = dist;
@@ -217,8 +234,19 @@ public class ShamblerAI : MonoBehaviour
     }
 
     double distanceToOther(RectTransform other)
-    {        
-        return Mathf.Sqrt(Mathf.Pow(other.position.x - transform.position.x,2) + Mathf.Pow(other.position.y- transform.position.y,2) + Mathf.Pow(other.position.z-transform.position.z,2));
+    {
+        return Mathf.Sqrt(Mathf.Pow(other.position.x - transform.position.x, 2) + Mathf.Pow(other.position.y - transform.position.y, 2) + Mathf.Pow(other.position.z - transform.position.z, 2));
     }
-    
+
+    [PunRPC]
+    public void walk()
+    {
+        animator.SetBool("walking", true);
+    }
+
+    [PunRPC]
+    public void idle()
+    {
+        animator.SetBool("walking", true);
+    }
 }
