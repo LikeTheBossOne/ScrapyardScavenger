@@ -6,26 +6,24 @@ using Photon.Pun;
 [RequireComponent(typeof(Collider))]
 public class AcidSpit : MonoBehaviour
 {
-    public Collider shooter { get; set; }
-    public InGamePlayerManager pManage { get; set; }
+    public Collider Shooter { get; set; }
     public int maxExistTime = 5;
-    public int Velocity = 10;
+    public int velocity = 10;
     public Vector3 direction;
 
-    public LayerMask groundLayer;
-    public LayerMask mapLayer;
+
+    public LayerMask hardLayers;
 
     private void Update()
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            transform.position += direction * Velocity * Time.deltaTime;
+            transform.position += direction * velocity * Time.deltaTime;
         }
 
     }
     private void OnEnable()
     {
-        pManage = FindObjectOfType<InGamePlayerManager>();
         Destroy(gameObject, maxExistTime);
     }
 
@@ -44,10 +42,10 @@ public class AcidSpit : MonoBehaviour
             GameObject collObj = collision.gameObject;
             if (collObj.CompareTag("Player"))
             {
-                collObj.GetPhotonView().RPC("TakeDamage", RpcTarget.All, shooter.GetComponent<ShamblerAttacks>().spitDamage);
+                collObj.GetPhotonView().RPC("TakeDamage", RpcTarget.All, Shooter.GetComponent<ShamblerAttacks>().spitDamage);
                 PhotonNetwork.Destroy(gameObject);
             }
-            else if (((1 << collObj.layer) & (mapLayer.value | groundLayer.value)) != 0)
+            else if (((1 << collObj.layer) & hardLayers.value) != 0)
             {
                 PhotonNetwork.Destroy(gameObject);
             }

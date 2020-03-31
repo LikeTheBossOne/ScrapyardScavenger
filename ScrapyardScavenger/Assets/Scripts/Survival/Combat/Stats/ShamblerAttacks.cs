@@ -55,7 +55,7 @@ public class ShamblerAttacks : MonoBehaviour
 
                 GameObject shot = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", projectileName), gameObject.transform.position - offset, gameObject.transform.rotation);
                 AcidSpit spit = shot.GetComponent<AcidSpit>();
-                spit.shooter = gameObject.GetComponent<Collider>();
+                spit.Shooter = gameObject.GetComponent<Collider>();
                 spit.Shoot(-toTarg);
             }
             
@@ -70,8 +70,9 @@ public class ShamblerAttacks : MonoBehaviour
             if (toTarg.magnitude <= meleeRange)
             {
                 meleeCoolDown = meleeRecharge;
-                //insert play animation
-                //target.GetPhotonView().RPC("TakeDamage", RpcTarget.All,  meleeDamage, gameObject, 0);
+
+                target.GetPhotonView().RPC("TakeDamage", RpcTarget.All, meleeDamage);
+                // Insert Animation
             }
         }
     }

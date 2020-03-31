@@ -96,14 +96,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxExistTime: 10
-  Velocity: 10
+  velocity: 10
   direction: {x: 0, y: 0, z: 0}
-  groundLayer:
+  hardLayers:
     serializedVersion: 2
-    m_Bits: 512
-  mapLayer:
-    serializedVersion: 2
-    m_Bits: 8192
+    m_Bits: 30208
 --- !u!54 &-8778947822957307604
 Rigidbody:
   m_ObjectHideFlags: 0
