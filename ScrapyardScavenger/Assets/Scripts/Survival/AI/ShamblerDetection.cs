@@ -96,4 +96,9 @@ public class ShamblerDetection : MonoBehaviour
     {
         return Mathf.Sqrt(Mathf.Pow(transform.position.x - other.position.x, 2) + Mathf.Pow(transform.position.y - other.position.y, 2) + Mathf.Pow(transform.position.z - other.position.z, 2));
     }
+
+    public bool PlayersExist()
+    {
+        return pManager.players.Count > 0;
+    }
 }

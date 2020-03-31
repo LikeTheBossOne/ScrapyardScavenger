@@ -6,11 +6,11 @@ using Photon.Pun;
 //note: enemeyController may be useful to look at
 public class ShamblerAI : MonoBehaviour
 {
-   public enum State
-   {
+    public enum State
+    {
+        idle,
         wander,
         chase,
-        attack,
         spit,
         bite,
    }
@@ -30,6 +30,7 @@ public class ShamblerAI : MonoBehaviour
     //public float playerOffset;
     public ShamblerDetection senses;
     public ShamblerAttacks weapons;
+    public Animator animator;
     // Start is called before the first frame update
     private void OnEnable()
     {
@@ -43,6 +44,11 @@ public class ShamblerAI : MonoBehaviour
         wandAngle = 60;
         wandRad = 10;
         weapons = GetComponent<ShamblerAttacks>();
+        animator = GetComponentInChildren<Animator>();
+        if (animator)
+        {
+            Debug.Log(animator.parameters);
+        }
         //playerOffset = 5;
     }
 
@@ -57,32 +63,44 @@ public class ShamblerAI : MonoBehaviour
 
     public void ChangeState()
     {
-        
-        if (senses.VisionCheck())
+        if (senses.PlayersExist())
         {
-            if (DistanceToOther(senses.detected) <= weapons.meleeRange )
+            if (senses.VisionCheck())
             {
-                //&& !weapons.meleeOnCoolDown()
-                currentState = State.bite;
-            }
-            else if (DistanceToOther(senses.detected) <= weapons.spitRange )
-            {
-                // target in attack range/
-                //currentState = State.attack;
-                //&& !weapons.spitOnCoolDown()
-                currentState = State.spit;
+                if (DistanceToOther(senses.detected) <= weapons.meleeRange)
+                {
+                    //&& !weapons.meleeOnCoolDown()
+                    currentState = State.bite;
+
+                }
+                else if (DistanceToOther(senses.detected) <= weapons.spitRange)
+                {
+                    // target in attack range/
+                    //currentState = State.attack;
+                    //&& !weapons.spitOnCoolDown()
+                    currentState = State.spit;
+
+                }
+                else
+                {
+                    currentState = State.chase;
+
+                }
+                //currentState = State.chase;
             }
             else
             {
-                currentState = State.chase;
+                currentState = State.wander;
+
             }
-            //currentState = State.chase;
         }
         else
         {
-            currentState = State.wander;
+            currentState = State.idle;
+
         }
-    } 
+
+    }
     // Update is called once per frame
     public void HandleState()
     {
@@ -93,6 +111,11 @@ public class ShamblerAI : MonoBehaviour
             //System.Console.WriteLine("Player seen.");
             transform.LookAt(senses.detected.position, transform.up);
             SetDestination(senses.detected.position);
+            if (animator)
+            {
+                gameObject.GetPhotonView().RPC("Walk", RpcTarget.All);
+                //animator.SetBool("walking", true);
+            }
         }
         if (currentState == State.wander)
         {
@@ -133,20 +156,10 @@ public class ShamblerAI : MonoBehaviour
             //transform.LookAt(moveTarg, transform.up);
             moveTo = moveTarg;
             SetDestination(moveTo);
-        }
-        if (currentState == State.attack)
-        {
-            SetDestination(GetComponentInParent<Transform>().position);
-            gameObject.transform.LookAt(senses.detected, gameObject.transform.up);
-            if (DistanceToOther(senses.detected) <= weapons.meleeRange)
+            if (animator)
             {
-                //target in melee range
-                weapons.Bite(senses.detected.gameObject);
-            }
-            else
-            {
-                //target in spit range
-                weapons.Spit(senses.detected.gameObject);
+                gameObject.GetPhotonView().RPC("Walk", RpcTarget.All);
+                //animator.SetBool("walking", true);
             }
         }
         if (currentState == State.spit)
@@ -154,14 +167,33 @@ public class ShamblerAI : MonoBehaviour
             SetDestination(GetComponentInParent<Transform>().position);
             gameObject.transform.LookAt(senses.detected, gameObject.transform.up);
             weapons.Spit(senses.detected.gameObject);
+            if (animator)
+            {
+                gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
+                //animator.SetBool("walking", false);
+            }
         }
         if (currentState == State.bite)
         {
             SetDestination(GetComponentInParent<Transform>().position);
             gameObject.transform.LookAt(senses.detected, gameObject.transform.up);
             weapons.Bite(senses.detected.gameObject);
+            if (animator)
+            {
+                gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
+                //animator.SetBool("walking", false);
+            }
         }
-        
+        if (currentState == State.idle)
+        {
+            SetDestination(gameObject.transform.position);
+            if (animator)
+            {
+                gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
+                //animator.SetBool("walking", false);
+            }
+        }
+
     }
 
     RectTransform FindClosestPlayer()
@@ -175,7 +207,7 @@ public class ShamblerAI : MonoBehaviour
             RectTransform player = obj.GetComponent<RectTransform>();
 
             double dist = DistanceToOther(player);
-            if ( dist < cDist)
+            if (dist < cDist)
             {
                 closest = player;
                 cDist = dist;
@@ -190,8 +222,19 @@ public class ShamblerAI : MonoBehaviour
     }
 
     double DistanceToOther(RectTransform other)
-    {        
-        return Mathf.Sqrt(Mathf.Pow(other.position.x - transform.position.x,2) + Mathf.Pow(other.position.y- transform.position.y,2) + Mathf.Pow(other.position.z-transform.position.z,2));
+    {
+        return Mathf.Sqrt(Mathf.Pow(other.position.x - transform.position.x, 2) + Mathf.Pow(other.position.y - transform.position.y, 2) + Mathf.Pow(other.position.z - transform.position.z, 2));
     }
-    
+
+    [PunRPC]
+    public void Walk()
+    {
+        animator.SetBool("walking", true);
+    }
+
+    [PunRPC]
+    public void Idle()
+    {
+        animator.SetBool("walking", true);
+    }
 }
