@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 4
   name: Frag
-  description: 
+  description: A well-crafted grenade that deals plenty of damage to foes within its
+    explosive range.
   showInInventory: 1
   icon: {fileID: 21300000, guid: 530b907458f419240b90d8c6e3855e5a, type: 3}
   recipe: {fileID: 0}

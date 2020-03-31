@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   name: Metal Armor
-  description: Metal Armor desc
+  description: This extremely durable armor is once believed to have been used by
+    elite soldiers before the fallout.
   showInInventory: 1
   icon: {fileID: 21300000, guid: 6ea8177a106180a419c83f08028b93d4, type: 3}
   recipe: {fileID: 11400000, guid: 28cb464b2b31b21448c0e1daa243f690, type: 2}

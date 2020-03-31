@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   name: Energy Drink
-  description: Energy drink desc here
+  description: This concoction is high in sugar and boost your movement speed for
+    a short amount of time.
   showInInventory: 1
   icon: {fileID: 21300000, guid: c82e63eab3f66104b9d141d218e78e76, type: 3}
   recipe: {fileID: 11400000, guid: 44fdc5fadb14c40439da812debeb8a84, type: 2}

@@ -235,9 +235,10 @@ public class InGameDataManager : MonoBehaviourPun, IOnEventCallback
         }
 		refreshInv = true;
 	}
-
+		
 	public void TransferToStorage()
 	{
+		Debug.Log("Transferring to storage");
 		// First bring each resource back
 		foreach (Resource r in resources) {
 			if (resourceCounts[(int)r.type] > 0) {
@@ -276,12 +277,16 @@ public class InGameDataManager : MonoBehaviourPun, IOnEventCallback
     {
 		Debug.Log("Clearing resources");
         resourceCounts = new int[(int)ResourceType.SIZE];
-		foreach (GameObject slot in slots) {
-			slot.GetComponent<Image>().sprite = null;
-			Color slotColor = slot.GetComponent<Image>().color;
-			slotColor.a = 0.0f;
-			slot.GetComponent<Image>().color = slotColor;
-			slot.transform.GetChild(0).GetComponent<Text>().text = "";
+		try {
+			foreach (GameObject slot in slots) {
+				slot.GetComponent<Image>().sprite = null;
+				Color slotColor = slot.GetComponent<Image>().color;
+				slotColor.a = 0.0f;
+				slot.GetComponent<Image>().color = slotColor;
+				slot.transform.GetChild(0).GetComponent<Text>().text = "";
+			}
+		} catch (Exception e) {
+			// If something happens... oh well
 		}
 
 		backpackPart1 = new Resource[8];

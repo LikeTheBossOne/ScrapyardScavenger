@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e355be3db82155498316b1941511a6d, type: 3}
   m_Name: StickyGrenade
   m_EditorClassIdentifier: 
-  id: 0
-  name: 
-  description: 
+  id: 5
+  name: Sticky Grenade
+  description: An experimental version of the classic grenade, sticking to foes upon
+    release to deal maximum damage.
   showInInventory: 1
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: db87746129cc599478e1ae8cecedefd7, type: 3}
   recipe: {fileID: 0}
   prefab: {fileID: 0}
   baseDamage: 100
