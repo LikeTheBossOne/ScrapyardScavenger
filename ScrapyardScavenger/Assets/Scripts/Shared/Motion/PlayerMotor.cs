@@ -29,7 +29,9 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     private bool isEnergized;
     private bool isSprinting;
     private bool isCoolingDown;
+    private float deadZone;
     
+    public Animator animator;
     
     private bool isPaused;
 
@@ -61,7 +63,8 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         isSprinting = false;
         isCoolingDown = false;
         pastSprintPressed = false;
-
+        animator = GetComponentInChildren<Animator>();
+        deadZone = 0.01f;
         // check to see if the player has the Endurance skill?
         SkillLevel enduranceLevel = GetComponent<PlayerControllerLoader>().skillManager.GetSkillByName("Endurance");
         if (enduranceLevel != null)
@@ -71,6 +74,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
             Debug.Log("Player has Endurance, modifier is: " + sprintLimit);
         }
         else Debug.Log("Player does NOT have Endurance");
+
     }
 
     void Update()
@@ -191,6 +195,26 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         normalCam.fieldOfView = isSprinting
             ? Mathf.Lerp(normalCam.fieldOfView, baseFOV * sprintFOVModifier, Time.fixedDeltaTime * 8f)
             : Mathf.Lerp(normalCam.fieldOfView, baseFOV, Time.fixedDeltaTime * 2f);
+
+        if (animator)
+        {
+            if (isSprinting)
+            {
+                animator.SetBool("run", true);
+                animator.SetBool("walk", false);
+            }
+            else if (verticalInput > deadZone || horizontalInput > deadZone)
+            {
+                animator.SetBool("run", false);
+                animator.SetBool("walk", true);
+            }
+            else
+            {
+                animator.SetBool("run", false);
+                animator.SetBool("walk", false);
+            }
+        }
+        
 
         pastSprintPressed = sprintPressed;
     }
