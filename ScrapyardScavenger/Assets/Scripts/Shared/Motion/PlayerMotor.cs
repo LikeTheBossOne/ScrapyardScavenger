@@ -200,18 +200,15 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         {
             if (isSprinting)
             {
-                animator.SetBool("run", true);
-                animator.SetBool("walk", false);
+                gameObject.GetPhotonView().RPC("run", RpcTarget.All);
             }
-            else if (verticalInput > deadZone || horizontalInput > deadZone)
+            else if (Mathf.Abs(verticalInput) > deadZone || Mathf.Abs(horizontalInput) > deadZone)
             {
-                animator.SetBool("run", false);
-                animator.SetBool("walk", true);
+                gameObject.GetPhotonView().RPC("walk", RpcTarget.All);
             }
             else
             {
-                animator.SetBool("run", false);
-                animator.SetBool("walk", false);
+                gameObject.GetPhotonView().RPC("idle", RpcTarget.All);
             }
         }
         
@@ -262,5 +259,26 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(seconds);
         isCoolingDown = false;
         Debug.Log("Done cooling down");
+    }
+
+    [PunRPC]
+    public void walk()
+    {
+        animator.SetBool("walk", true);
+        animator.SetBool("run", false);
+    }
+
+    [PunRPC]
+    public void run()
+    {
+        animator.SetBool("walk", false);
+        animator.SetBool("run", true);
+    }
+
+    [PunRPC]
+    public void idle()
+    {
+        animator.SetBool("walk", false);
+        animator.SetBool("run", false);
     }
 }
