@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   name: Metal Rod
-  description: Metal rod description here
+  description: While its an improvised weapon at best, its damage output is reliable
+    at close-range.
   showInInventory: 1
   icon: {fileID: 21300000, guid: 7f936a4a21f2fb24cb49cf6fd7dc9b33, type: 3}
   recipe: {fileID: 11400000, guid: 97fc51d0d4b1b03499874378daf8a8dd, type: 2}

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   name: Chainmail Armor
-  description: Chainmail Armor desc
+  description: Common during the European Medieval Ages, this armor can withstand
+    even the toughest of bite wounds.
   showInInventory: 1
   icon: {fileID: 21300000, guid: 30208610c388a494996ad610f0edc1fc, type: 3}
   recipe: {fileID: 11400000, guid: 2e3fb59bb942bdb46ade200fd6d35503, type: 2}

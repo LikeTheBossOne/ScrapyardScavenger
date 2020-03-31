@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   name: Assault Rifle
-  description: 
+  description: This automatic firearm can mow down foes in an instant.
   showInInventory: 1
   icon: {fileID: 21300000, guid: fa0abfdb66fc16e4da2799735607de16, type: 3}
   recipe: {fileID: 11400000, guid: f235bc78396b39c48a5f0e6c7592bc6d, type: 2}
