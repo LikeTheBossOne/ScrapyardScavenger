@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
 //note: enemeyController may be useful to look at
-public class ShamblerAI : MonoBehaviour
+public class ShamblerAI : MonoBehaviourPun
 {
     public enum State
     {
@@ -113,7 +113,7 @@ public class ShamblerAI : MonoBehaviour
             SetDestination(senses.detected.position);
             if (animator)
             {
-                gameObject.GetPhotonView().RPC("Walk", RpcTarget.All);
+                photonView.RPC("Walk", RpcTarget.All);
                 //animator.SetBool("walking", true);
             }
         }
@@ -158,20 +158,20 @@ public class ShamblerAI : MonoBehaviour
             SetDestination(moveTo);
             if (animator)
             {
-                gameObject.GetPhotonView().RPC("Walk", RpcTarget.All);
+                photonView.RPC("Walk", RpcTarget.All);
                 //animator.SetBool("walking", true);
             }
         }
         if (currentState == State.spit)
         {
-            SetDestination(GetComponentInParent<Transform>().position);
-            gameObject.transform.LookAt(senses.detected, gameObject.transform.up);
-            weapons.Spit(senses.detected.gameObject);
+            transform.LookAt(senses.detected.position, transform.up);
+            SetDestination(senses.detected.position);
             if (animator)
             {
-                gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
-                //animator.SetBool("walking", false);
+                photonView.RPC("Walk", RpcTarget.All);
+                //animator.SetBool("walking", true);
             }
+            weapons.Spit(senses.detected.gameObject);
         }
         if (currentState == State.bite)
         {
@@ -180,7 +180,7 @@ public class ShamblerAI : MonoBehaviour
             weapons.Bite(senses.detected.gameObject);
             if (animator)
             {
-                gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
+                photonView.RPC("Idle", RpcTarget.All);
                 //animator.SetBool("walking", false);
             }
         }
@@ -189,7 +189,7 @@ public class ShamblerAI : MonoBehaviour
             SetDestination(gameObject.transform.position);
             if (animator)
             {
-                gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
+                photonView.RPC("Idle", RpcTarget.All);
                 //animator.SetBool("walking", false);
             }
         }

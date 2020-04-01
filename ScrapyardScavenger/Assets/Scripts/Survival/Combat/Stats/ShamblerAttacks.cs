@@ -7,10 +7,10 @@ using System.IO;
 
 public class ShamblerAttacks : MonoBehaviour
 {
-    public int meleeRange = 5;
+    public float meleeRange = 5;
     public int meleeRecharge = 2;
     public int meleeDamage = 5;
-    public int spitRange = 10;
+    public float spitRange = 10;
     public int spitRecharge = 10;
     public int spitDamage = 2;
     public float spitSize;
