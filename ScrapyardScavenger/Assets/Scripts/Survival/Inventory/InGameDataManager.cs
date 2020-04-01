@@ -300,4 +300,9 @@ public class InGameDataManager : MonoBehaviourPun, IOnEventCallback
 	int compareObjNames(GameObject first, GameObject second) {
 		return first.transform.name.CompareTo(second.transform.name);
 	}
+
+    public void grenadeThrown()
+    {
+        currentObject = null;
+    }
 }

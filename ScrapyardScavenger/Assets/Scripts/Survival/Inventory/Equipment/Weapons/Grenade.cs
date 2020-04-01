@@ -7,4 +7,5 @@ public class Grenade : Weapon
 {
     public float baseDamage = 100;
     public float baseDetonationTime = 5;
+    public float areaOfEffect = 5;
 }
