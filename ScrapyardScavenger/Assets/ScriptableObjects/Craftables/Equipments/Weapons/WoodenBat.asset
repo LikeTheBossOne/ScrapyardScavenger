@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   name: Baseball Bat
-  description: Baseball bat description here
+  description: Its capability in causing home runs back in the day is just as effective
+    in decapitation.
   showInInventory: 1
   icon: {fileID: 21300000, guid: a94a26f44d9f7654e8bc7acd6dff8b42, type: 3}
   recipe: {fileID: 11400000, guid: 460f2ecc4202fe347b4b605b11b8f1ff, type: 2}

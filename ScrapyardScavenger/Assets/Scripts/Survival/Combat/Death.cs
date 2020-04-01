@@ -33,7 +33,8 @@ public class Death : MonoBehaviourPun
     [PunRPC]
     public void PlayerDied()
     {
-        // Hit all death events
+
+		// Hit all death events
         try
         {
             OnPlayerDeath?.Invoke(gameObject);
@@ -68,7 +69,7 @@ public class Death : MonoBehaviourPun
         GameControllerSingleton.instance.aliveCount--;
         if (GameControllerSingleton.instance.aliveCount <= 0)
         {            
-            PhotonNetwork.LoadLevel(homeBaseSceneIndex);
+			PhotonNetwork.LoadLevel(homeBaseSceneIndex);
         }
 
         if (photonView.IsMine)
