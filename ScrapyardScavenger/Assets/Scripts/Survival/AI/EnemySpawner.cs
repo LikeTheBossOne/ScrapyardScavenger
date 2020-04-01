@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using System.IO;
 
-public class EnemySpawner : MonoBehaviour
+public class EnemySpawner : MonoBehaviourPun
 {
     public ChargerStats chargerPrefab;
     public ShamblerStats shamblerPrefab;
