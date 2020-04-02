@@ -12,7 +12,7 @@ public class ShamblerAttacks : MonoBehaviour
     public int meleeDamage = 5;
     public int spitRange = 10;
     public int spitRecharge = 10;
-    public int spitDamage = 2;
+    private int spitDamage;
     public float spitSize;
     public float meleeCoolDown { get; private set; }
     public float spitCoolDown { get; private set; }
@@ -24,6 +24,7 @@ public class ShamblerAttacks : MonoBehaviour
         meleeCoolDown = 0;
         spitCoolDown = 0;
         spitSize = projectile.GetComponent<SphereCollider>().radius;
+        spitDamage = (int) GetComponent<ShamblerStats>().damage;
     }
 
     // Update is called once per frame

@@ -72,6 +72,7 @@ public class EnemySpawner : MonoBehaviourPun
                     // set the shambler's max health & damage based off of wave number
                     // maybe use RPC's to call these modify functions
                     float waveModifier = 1.0f + (0.2f * (WaveNumber - 1));
+                    Debug.Log("Wave modifier: " + waveModifier);
                     shambler.GetComponent<Stats>().ModifyHealth(waveModifier);
                     shambler.GetComponent<ShamblerStats>().ModifyDamage(waveModifier);
                     Debug.Log("Spawned a Shambler in Zone " + ActiveSpawnPoints[selected].Zone);

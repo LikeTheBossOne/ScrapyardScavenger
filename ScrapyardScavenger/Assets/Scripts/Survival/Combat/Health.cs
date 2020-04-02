@@ -49,6 +49,7 @@ public class Health : MonoBehaviourPunCallbacks
     {
         if (photonView.IsMine)
         {
+            Debug.Log("Base damage taken: " + baseDamage);
             float armorMultiplier = dataManager.currentArmor != null ? dataManager.currentArmor.damageMultiplier : 1f;
             float totalDamage = baseDamage * armorMultiplier;
 

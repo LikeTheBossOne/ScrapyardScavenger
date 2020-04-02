@@ -92,9 +92,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e50051f1e501794468c3ec509f9fe560, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
-  health: 0
+  baseHealth: 30
   status: 0
+  damage: 10
 --- !u!114 &-544632408891006727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,7 +171,6 @@ MonoBehaviour:
   meleeDamage: 5
   spitRange: 10
   spitRecharge: 10
-  spitDamage: 2
   spitSize: 0
   projectile: {fileID: 7758600212226562078, guid: 0ac2452e7ddb1cf42a28cc2c934bf81f,
     type: 3}

@@ -26,6 +26,7 @@ public class ShamblerStats : Stats, IPunObservable
     public void ModifyDamage(float modifier)
     {
         damage = damage * modifier;
+        Debug.Log("Shambler damage is now: " + damage);
     }
 
     [PunRPC]
