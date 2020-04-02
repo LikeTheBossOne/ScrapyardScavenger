@@ -8,7 +8,7 @@ public class EnemySpawner : MonoBehaviourPun
 {
     public ChargerStats chargerPrefab;
     public ShamblerStats shamblerPrefab;
-    public string shambName = "AITester";
+    public string shambName;
     private List<SpawnPoint> AllSpawnPoints;
     private int chargerCount;
     private int shamblerCount;
