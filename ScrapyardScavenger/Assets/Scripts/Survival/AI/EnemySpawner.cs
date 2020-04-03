@@ -136,7 +136,12 @@ public class EnemySpawner : MonoBehaviourPun
         {
             yield return new WaitForSeconds(seconds);
             WaveNumber++;
+            // update the InGameUI somehow
             Debug.Log("Wave number is now " + WaveNumber);
+            foreach (GameObject player in playerManager.players)
+            {
+                player.GetPhotonView().RPC("UpdateWaveInUI", RpcTarget.All, WaveNumber);
+            }
 
             // change the amount of shamblers that will spawn
             currentShamblerMax *= (int)(1.0f + (0.8f * (WaveNumber - 1)));
