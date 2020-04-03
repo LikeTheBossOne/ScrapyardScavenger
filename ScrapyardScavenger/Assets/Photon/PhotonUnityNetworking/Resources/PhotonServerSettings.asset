@@ -57,5 +57,9 @@ MonoBehaviour:
   - RemoveBuyable
   - Idle
   - Walk
+  - SetCurrentZone
+  - UnlockZone
+  - UpdateActiveZones
+  - UnlockNewZone
   DisableAutoOpenWizard: 1
   ShowSettings: 0

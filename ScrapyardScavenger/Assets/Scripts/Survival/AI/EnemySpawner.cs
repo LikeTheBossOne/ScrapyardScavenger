@@ -27,10 +27,11 @@ public class EnemySpawner : MonoBehaviourPun
     public int WaveInterval; // seconds between waves
     public float SkewedSpawnChance;
     private List<Zones> ActiveZones; // list of zones that the players are in
-    private List<Zones> UnlockedZones;
+    //private List<Zones> UnlockedZones;
     private List<SpawnPoint> ActiveSpawnPoints; // list of spawn points that should be used based off of unlocked zones
     private Coroutine WaveCoroutine;
     private InGamePlayerManager playerManager;
+    private bool initialSpawnPointLoad;
 
     // Start is called before the first frame update
     private void OnEnable()
@@ -47,14 +48,16 @@ public class EnemySpawner : MonoBehaviourPun
         shamblerCoolDown = shamblerInterval;
         chargerCoolDown = chargerInterval;
         ActiveZones = new List<Zones>();
-        UnlockedZones = new List<Zones>();
+        //UnlockedZones = new List<Zones>();
         playerManager = GameObject.Find("PlayerList").GetComponent<InGamePlayerManager>();
+        initialSpawnPointLoad = false;
 
         if (PhotonNetwork.IsMasterClient)
         {
-            UnlockedZones.Add(Zones.Zone1); // change this to an RPC?
-            ActivateSpawnPointsForZone(Zones.Zone1);
+            //UnlockedZones.Add(Zones.Zone1); // change this to an RPC?
+            
             ActiveZones.Add(Zones.Zone1);
+            
 
             WaveCoroutine = StartCoroutine(NextWave(WaveInterval));
 
@@ -71,7 +74,15 @@ public class EnemySpawner : MonoBehaviourPun
         {
             // calculate which zones the players are in
             // do this later
-            
+            if (!initialSpawnPointLoad && PersistentZoneManager.Instance != null)
+            {
+                initialSpawnPointLoad = true;
+                foreach (Zones zone in PersistentZoneManager.Instance.UnlockedZones)
+                {
+                    ActivateSpawnPointsForZone(zone);
+                }
+            }
+            else if (!initialSpawnPointLoad) Debug.Log("PersistentZoneManager.Instance is null");
 
             if (shamblerCoolDown <= 0)
             {
@@ -113,12 +124,15 @@ public class EnemySpawner : MonoBehaviourPun
 
     private List<SpawnPoint> GetPossibleSpawnPoints(float randomNumber)
     {
-        if (UnlockedZones.Count == 1)
+        if (PersistentZoneManager.Instance.UnlockedZones.Count == 1)
         {
             Debug.Log("Returning ActiveSpawnPoints, which has count: " + ActiveSpawnPoints.Count);
             return ActiveSpawnPoints;
         }
         List<SpawnPoint> pointsToSpawn = new List<SpawnPoint>();
+        Debug.Log("ActiveZones count: " + ActiveZones.Count);
+        Debug.Log("ActiveSpawnPoints: " + ActiveSpawnPoints.Count);
+        Debug.Log("SkewedSpawnChance: " + SkewedSpawnChance);
 
         foreach (SpawnPoint point in ActiveSpawnPoints)
         {
@@ -170,9 +184,9 @@ public class EnemySpawner : MonoBehaviourPun
         if (PhotonNetwork.IsMasterClient)
         {
             Zones zoneEnum = (Zones)thisZone;
-            if (!UnlockedZones.Contains(zoneEnum))
+            if (!PersistentZoneManager.Instance.UnlockedZones.Contains(zoneEnum))
             {
-                UnlockedZones.Add(zoneEnum);
+                PersistentZoneManager.Instance.gameObject.GetPhotonView().RPC("UnlockNewZone", RpcTarget.All, thisZone);
                 // for each spawn point
                 ActivateSpawnPointsForZone(zoneEnum);
             }
