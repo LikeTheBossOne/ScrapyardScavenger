@@ -29,20 +29,20 @@ public class ZoneChange : MonoBehaviourPun
         {
             float PlayerToRef1Distance = Vector3.Distance(other.transform.parent.gameObject.transform.position, Ref1.transform.position);
             float PlayerToRef2Distance = Vector3.Distance(other.transform.parent.gameObject.transform.position, Ref2.transform.position);
+            int zoneInt;
             if (PlayerToRef1Distance < PlayerToRef2Distance)
             {
                 // the player is closer to ref1
                 // so change zones based off of what Ref1's zone is
-                int zoneInt = (int)Ref1.GetComponent<ZoneReference>().Zone;
-                other.transform.parent.gameObject.GetPhotonView().RPC("SetCurrentZone", RpcTarget.All, zoneInt);
-
+                zoneInt = (int)Ref1.GetComponent<ZoneReference>().Zone;
             }
             else
             {
                 // player is closer to ref2
-                int zoneInt = (int)Ref2.GetComponent<ZoneReference>().Zone;
-                other.transform.parent.gameObject.GetPhotonView().RPC("SetCurrentZone", RpcTarget.All, zoneInt);
+                zoneInt = (int)Ref2.GetComponent<ZoneReference>().Zone;
             }
+            other.transform.parent.gameObject.GetPhotonView().RPC("SetCurrentZone", RpcTarget.All, zoneInt);
+            Spawner.GetPhotonView().RPC("UpdateActiveZones", RpcTarget.All);
         }
     }
 }
