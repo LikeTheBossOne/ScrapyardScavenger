@@ -98,9 +98,11 @@ public class ShamblerAI : MonoBehaviourPun
         {
             currentState = State.idle;
 
+
         }
 
     }
+
     // Update is called once per frame
     public void HandleState()
     {
@@ -113,8 +115,11 @@ public class ShamblerAI : MonoBehaviourPun
             SetDestination(senses.detected.position);
             if (animator)
             {
+
                 photonView.RPC("Walk", RpcTarget.All);
+
                 //animator.SetBool("walking", true);
+
             }
         }
         if (currentState == State.wander)
@@ -158,8 +163,11 @@ public class ShamblerAI : MonoBehaviourPun
             SetDestination(moveTo);
             if (animator)
             {
+
                 photonView.RPC("Walk", RpcTarget.All);
+
                 //animator.SetBool("walking", true);
+
             }
         }
         if (currentState == State.spit)
@@ -168,8 +176,10 @@ public class ShamblerAI : MonoBehaviourPun
             SetDestination(senses.detected.position);
             if (animator)
             {
+
                 photonView.RPC("Walk", RpcTarget.All);
                 //animator.SetBool("walking", true);
+
             }
             weapons.Spit(senses.detected.gameObject);
         }
@@ -180,8 +190,11 @@ public class ShamblerAI : MonoBehaviourPun
             weapons.Bite(senses.detected.gameObject);
             if (animator)
             {
+
                 photonView.RPC("Idle", RpcTarget.All);
+
                 //animator.SetBool("walking", false);
+
             }
         }
         if (currentState == State.idle)
@@ -189,8 +202,11 @@ public class ShamblerAI : MonoBehaviourPun
             SetDestination(gameObject.transform.position);
             if (animator)
             {
+
                 photonView.RPC("Idle", RpcTarget.All);
+
                 //animator.SetBool("walking", false);
+
             }
         }
 

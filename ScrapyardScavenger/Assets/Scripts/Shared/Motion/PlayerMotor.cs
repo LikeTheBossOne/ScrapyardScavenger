@@ -29,7 +29,9 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     private bool isEnergized;
     private bool isSprinting;
     private bool isCoolingDown;
+    private float deadZone;
     
+    public Animator animator;
     
     private bool isPaused;
 
@@ -61,7 +63,8 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         isSprinting = false;
         isCoolingDown = false;
         pastSprintPressed = false;
-
+        animator = GetComponentInChildren<Animator>();
+        deadZone = 0.01f;
         // check to see if the player has the Endurance skill?
         SkillLevel enduranceLevel = GetComponent<PlayerControllerLoader>().skillManager.GetSkillByName("Endurance");
         if (enduranceLevel != null)
@@ -71,6 +74,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
             Debug.Log("Player has Endurance, modifier is: " + sprintLimit);
         }
         else Debug.Log("Player does NOT have Endurance");
+
     }
 
     void Update()
@@ -192,6 +196,23 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
             ? Mathf.Lerp(normalCam.fieldOfView, baseFOV * sprintFOVModifier, Time.fixedDeltaTime * 8f)
             : Mathf.Lerp(normalCam.fieldOfView, baseFOV, Time.fixedDeltaTime * 2f);
 
+        if (animator)
+        {
+            if (isSprinting)
+            {
+                gameObject.GetPhotonView().RPC("run", RpcTarget.All);
+            }
+            else if (Mathf.Abs(verticalInput) > deadZone || Mathf.Abs(horizontalInput) > deadZone)
+            {
+                gameObject.GetPhotonView().RPC("walk", RpcTarget.All);
+            }
+            else
+            {
+                gameObject.GetPhotonView().RPC("idle", RpcTarget.All);
+            }
+        }
+        
+
         pastSprintPressed = sprintPressed;
     }
 
@@ -238,5 +259,26 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(seconds);
         isCoolingDown = false;
         Debug.Log("Done cooling down");
+    }
+
+    [PunRPC]
+    public void walk()
+    {
+        animator.SetBool("walk", true);
+        animator.SetBool("run", false);
+    }
+
+    [PunRPC]
+    public void run()
+    {
+        animator.SetBool("walk", false);
+        animator.SetBool("run", true);
+    }
+
+    [PunRPC]
+    public void idle()
+    {
+        animator.SetBool("walk", false);
+        animator.SetBool("run", false);
     }
 }
