@@ -6,8 +6,8 @@ using System.IO;
 
 public class EnemySpawner : MonoBehaviourPun
 {
-    public ChargerStats chargerPrefab;
-    public ShamblerStats shamblerPrefab;
+    //public ChargerStats chargerPrefab;
+    //public ShamblerStats shamblerPrefab;
     public string shambName;
     private List<SpawnPoint> AllSpawnPoints;
     private int chargerCount;
@@ -18,14 +18,17 @@ public class EnemySpawner : MonoBehaviourPun
     //cool downs are in seconds
     private float shamblerCoolDown;
     private float chargerCoolDown;
-    public int shamblerMax;
+    public int startingShamblerMax;
+    private int currentShamblerMax;
     public int chargerMax;
     private const int startGracePeriod = 60;
 
     public int WaveNumber = 1; // consider changing to 0 and incorporating grace period
+    public int WaveInterval; // seconds between waves
     private List<Zones> ActiveZones; // list of zones that the players are in
     private List<Zones> UnlockedZones;
     private List<SpawnPoint> ActiveSpawnPoints; // list of spawn points that should be used based off of unlocked zones
+    private Coroutine WaveCoroutine;
 
     // Start is called before the first frame update
     private void OnEnable()
@@ -37,20 +40,24 @@ public class EnemySpawner : MonoBehaviourPun
         ActiveSpawnPoints = new List<SpawnPoint>();
         chargerCount = 0;
         shamblerCount = 0;
-        shamblerInterval = 2;
-        chargerInterval = 60;
+        currentShamblerMax = startingShamblerMax;
         //replace intervals with grace period to delay spawning cycle
         shamblerCoolDown = shamblerInterval;
         chargerCoolDown = chargerInterval;
-        shamblerMax = 5;
-        chargerMax = 2;
         ActiveZones = new List<Zones>();
         UnlockedZones = new List<Zones>();
-        UnlockedZones.Add(Zones.Zone1); // change this to an RPC?
-        ActivateSpawnPointsForZone(Zones.Zone1);
 
-        // actually, check to see if the player has unlocked any of the other zones
-        // and add them appropriately
+        if (PhotonNetwork.IsMasterClient)
+        {
+            UnlockedZones.Add(Zones.Zone1); // change this to an RPC?
+            ActivateSpawnPointsForZone(Zones.Zone1);
+
+            WaveCoroutine = StartCoroutine(NextWave(WaveInterval));
+
+            // actually, check to see if the player has unlocked any of the other zones
+            // and add them appropriately, for persistence
+        }
+
     }
 
     // Update is called once per frame
@@ -63,7 +70,8 @@ public class EnemySpawner : MonoBehaviourPun
 
             if (shamblerCoolDown <= 0)
             {
-                if (shamblerCount < shamblerMax)
+                // there is room for more shamblers
+                if (shamblerCount < currentShamblerMax)
                 {
                     // spawn logic
                     int selected = Random.Range(0, ActiveSpawnPoints.Count);
@@ -72,33 +80,35 @@ public class EnemySpawner : MonoBehaviourPun
                     // set the shambler's max health & damage based off of wave number
                     // maybe use RPC's to call these modify functions
                     float waveModifier = 1.0f + (0.2f * (WaveNumber - 1));
-                    Debug.Log("Wave modifier: " + waveModifier);
                     shambler.GetComponent<Stats>().ModifyHealth(waveModifier);
                     shambler.GetComponent<ShamblerStats>().ModifyDamage(waveModifier);
                     Debug.Log("Spawned a Shambler in Zone " + ActiveSpawnPoints[selected].Zone);
                     shamblerCount++;
+                    Debug.Log("There are now " + shamblerCount + " shamblers");
                 }
+                //else Debug.Log("Reached Shambler limit");
                 shamblerCoolDown = shamblerInterval;
             }
             else
             {
                 shamblerCoolDown -= Time.deltaTime;
             }
-
-            // for testing purposes, make 'Z' advance the wave
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                NextWave();
-            }
         }
         
     }
 
-    public void NextWave()
+    private IEnumerator NextWave(int seconds)
     {
-        WaveNumber++;
-        Debug.Log("Wave number is now " + WaveNumber);
-        // change the difficulty of any new enemies who spawn
+        while (true)
+        {
+            yield return new WaitForSeconds(seconds);
+            WaveNumber++;
+            Debug.Log("Wave number is now " + WaveNumber);
+
+            // change the amount of shamblers that will spawn
+            currentShamblerMax *= (int)(1.0f + (0.4f * (WaveNumber - 1)));
+            Debug.Log("New current shambler max: " + currentShamblerMax);
+        }
     }
 
     private void ActivateSpawnPointsForZone(Zones zone)

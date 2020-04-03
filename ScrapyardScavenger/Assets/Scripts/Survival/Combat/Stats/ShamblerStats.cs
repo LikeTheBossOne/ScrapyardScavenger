@@ -26,7 +26,6 @@ public class ShamblerStats : Stats, IPunObservable
     public void ModifyDamage(float modifier)
     {
         damage = damage * modifier;
-        Debug.Log("Shambler damage is now: " + damage);
     }
 
     [PunRPC]
@@ -34,9 +33,7 @@ public class ShamblerStats : Stats, IPunObservable
     {
         //, GameObject damager, int atkStatus
         //note GameObjects can be passed by RPC
-        int previousHealth = health;
-        health = health - damage;
-        Debug.Log("Enemy Damaged, health from " + previousHealth + " to " + health);
+        health -= damage;
 
 
 
