@@ -10,7 +10,7 @@ public class GrenadeState : MonoBehaviour
     public Grenade grenadeType;
     private InGameDataManager igdm;
     public Collider[] c;
-    public GameObject player;
+    private GameObject player;
 
     private float aoe;
     private float detTime;
@@ -24,25 +24,20 @@ public class GrenadeState : MonoBehaviour
         aoe = grenadeType.areaOfEffect;
         damage = grenadeType.baseDamage;
         detTime = grenadeType.baseDetonationTime;
-    //GetComponent<Rigidbody>().Sleep();
-    //GetComponent<Rigidbody>().detectCollisions = false;
-    //GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-}
+        player = GetComponentInParent<Transform>().GetComponentInParent<PlayerControllerLoader>().gameObject;
+        PlayerHUD pHud = GetComponentInParent<Transform>().GetComponentInParent<PlayerHUD>();
+        pHud.AmmoChanged(1, 1);
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if (!thrown)
-        {
-            //GetComponent<Rigidbody>().Sleep();
-        }
         if (gameObject.active && Input.GetMouseButtonUp(0) && !thrown)
         {
             igdm = GetComponentInParent<Transform>().GetComponentInParent<PlayerControllerLoader>().inGameDataManager;
             Rigidbody rb = gameObject.AddComponent<Rigidbody>() as Rigidbody;
+            rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
             thrown = true;
-            //GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-            //GetComponent<Rigidbody>().detectCollisions = true;
             Transform angleLooking = GetComponentInParent<Transform>();
             GetComponent<Rigidbody>().WakeUp();
             GetComponent<Rigidbody>().AddForce(angleLooking.forward *500);
@@ -64,15 +59,16 @@ public class GrenadeState : MonoBehaviour
         {
             if(c[i].gameObject.layer == 11)
             {
-                if (c[i].gameObject.tag == "Shambler")
+                if (c[i].gameObject.tag == "Shambler" && c[i].GetType() == typeof(CharacterController) )
                 {
-                    c[i].gameObject.GetPhotonView().RPC("TakeDamageShambler", RpcTarget.All, (int)damage, 0);
+                    c[i].gameObject.GetPhotonView().RPC("TakeDamageShambler", RpcTarget.All, (int)damage, player.GetComponent<PhotonView>().ViewID);
                 }
-                else
+                else if (c[i].gameObject.tag == "Player")
                 {
-                    c[i].gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (int)damage);
+                    c[i].gameObject.GetComponent<Transform>().parent.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (int)damage);
                 }
             }
         }
+        Destroy(this.gameObject);
     }
 }

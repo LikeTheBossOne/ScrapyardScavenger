@@ -304,5 +304,6 @@ public class InGameDataManager : MonoBehaviourPun, IOnEventCallback
     public void grenadeThrown()
     {
         currentObject = null;
+        EquipWeapon(0);
     }
 }
