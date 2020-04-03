@@ -31,6 +31,7 @@ public class ShamblerAI : MonoBehaviourPun
     public ShamblerDetection senses;
     public ShamblerAttacks weapons;
     public Animator animator;
+    public Transform extractionTruck;
     // Start is called before the first frame update
     private void OnEnable()
     {
@@ -49,6 +50,7 @@ public class ShamblerAI : MonoBehaviourPun
         {
             Debug.Log(animator.parameters);
         }
+        extractionTruck = GameObject.Find("ExtractionTruck").GetComponent<Transform>();
         //playerOffset = 5;
     }
 
@@ -137,7 +139,7 @@ public class ShamblerAI : MonoBehaviourPun
             //project target spot on circle
             Vector3 moveTarg = center + wandRad * dir;
             //correct towards closest player
-            RectTransform close = FindClosestPlayer();
+            Transform close = FindClosestPlayer();
 
             Vector3 toPlayer = close.position - moveTarg;
             toPlayer = toPlayer.normalized;
@@ -196,15 +198,15 @@ public class ShamblerAI : MonoBehaviourPun
 
     }
 
-    RectTransform FindClosestPlayer()
+    Transform FindClosestPlayer()
     {
-        RectTransform closest = null;
+        Transform closest = null;
         double cDist = Mathf.Infinity;
 
         // Find closest player or vehicle
         foreach (GameObject obj in pManager.players)
         {
-            RectTransform player = obj.GetComponent<RectTransform>();
+            Transform player = obj.GetComponent<Transform>();
 
             double dist = DistanceToOther(player);
             if (dist < cDist)
@@ -212,6 +214,10 @@ public class ShamblerAI : MonoBehaviourPun
                 closest = player;
                 cDist = dist;
             }
+        }
+        if (DistanceToOther(extractionTruck) < cDist)
+        {
+            return extractionTruck;
         }
         return closest;
     }
@@ -221,7 +227,7 @@ public class ShamblerAI : MonoBehaviourPun
         nav.SetDestination(destination);
     }
 
-    double DistanceToOther(RectTransform other)
+    double DistanceToOther(Transform other)
     {
         return Mathf.Sqrt(Mathf.Pow(other.position.x - transform.position.x, 2) + Mathf.Pow(other.position.y - transform.position.y, 2) + Mathf.Pow(other.position.z - transform.position.z, 2));
     }
