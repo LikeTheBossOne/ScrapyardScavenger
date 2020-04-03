@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6977751129165940821}
   - component: {fileID: 3431170882718909996}
   - component: {fileID: 6023580454598586948}
-  - component: {fileID: 1744448783056964960}
   m_Layer: 0
   m_Name: TriggerBase
   m_TagString: Untagged
@@ -79,19 +78,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &1744448783056964960
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 31769277805276535}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &283979027098918409
 GameObject:
   m_ObjectHideFlags: 0
@@ -103,7 +89,6 @@ GameObject:
   - component: {fileID: 6301835845174742317}
   - component: {fileID: 876419571873397103}
   - component: {fileID: 8413605737407874503}
-  - component: {fileID: 855103920594378153}
   m_Layer: 0
   m_Name: Trigger
   m_TagString: Untagged
@@ -171,19 +156,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &855103920594378153
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 283979027098918409}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &336538940841782634
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,7 +203,6 @@ GameObject:
   - component: {fileID: 3799913516088301833}
   - component: {fileID: 4053612953393015049}
   - component: {fileID: 6559691218929942609}
-  - component: {fileID: 2233243464862879790}
   m_Layer: 0
   m_Name: Handle
   m_TagString: Untagged
@@ -299,19 +270,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &2233243464862879790
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1462960379625497202}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1766406241958178707
 GameObject:
   m_ObjectHideFlags: 0
@@ -584,7 +542,6 @@ GameObject:
   - component: {fileID: 8780862368023060615}
   - component: {fileID: 8002259004738489527}
   - component: {fileID: 7275726534142987963}
-  - component: {fileID: 8976819417232311523}
   m_Layer: 0
   m_Name: GunBase
   m_TagString: Untagged
@@ -652,19 +609,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &8976819417232311523
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3330207796943525562}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4292184541428924763
 GameObject:
   m_ObjectHideFlags: 0
@@ -676,7 +620,6 @@ GameObject:
   - component: {fileID: 7283413390178541483}
   - component: {fileID: 2125361064703100877}
   - component: {fileID: 5473550258331053351}
-  - component: {fileID: 6008133173645768071}
   m_Layer: 0
   m_Name: SightLeft
   m_TagString: Untagged
@@ -744,19 +687,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &6008133173645768071
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4292184541428924763}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5599746239342254777
 GameObject:
   m_ObjectHideFlags: 0
@@ -768,7 +698,6 @@ GameObject:
   - component: {fileID: 3118962888753311944}
   - component: {fileID: 1464096739462726363}
   - component: {fileID: 6133837703677328575}
-  - component: {fileID: 431654398284196893}
   m_Layer: 0
   m_Name: SightRight
   m_TagString: Untagged
@@ -836,16 +765,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &431654398284196893
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5599746239342254777}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
