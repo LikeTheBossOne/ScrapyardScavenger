@@ -6,71 +6,50 @@ using Photon.Pun;
 [RequireComponent(typeof(Collider))]
 public class AcidSpit : MonoBehaviour
 {
-    public Collider shooter { get; set; }
-    public InGamePlayerManager pManage { get; set; }
-    public int maxExistTime = 10;
-    public int Velocity = 10;
+    public Collider Shooter { get; set; }
+    public int maxExistTime = 5;
+    public int velocity = 10;
     public Vector3 direction;
+
+
+    public LayerMask hardLayers;
 
     private void Update()
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            gameObject.transform.position += direction * Velocity * Time.deltaTime;
+            transform.position += direction * velocity * Time.deltaTime;
         }
 
     }
     private void OnEnable()
     {
-        pManage = FindObjectOfType<InGamePlayerManager>();
         Destroy(gameObject, maxExistTime);
     }
-    [PunRPC]
-    public void Shoot( Vector3 dir)
-    {
-        //, Vector3 dir
-        //shooter = creator;
-        direction = transform.forward.normalized;
-        //direction = dir.normalized;
 
-    }
-    void OnCollisionEnter(Collision collision)
+    public void Shoot(Vector3 dir)
     {
-
-        //may need to change this over to rigidbody at some point
-        //the trick for restoring projectiles is dealing with the collision issue
-        //the same character on the other client technically has a different object
-        if (!shooter || !collision.collider.bounds.Intersects(shooter.bounds))
+        if (PhotonNetwork.IsMasterClient)
         {
-
-            if (PhotonNetwork.IsMasterClient)
-            {
-                foreach (GameObject obj in pManage.players)
-                {
-
-                    RectTransform player = obj.GetComponent<RectTransform>();
-
-                    if (collision.collider.bounds.Contains(player.position))
-                    {
-                        if (collision.collider.bounds.Contains(player.position))
-                        {
-
-                            player.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (int) shooter.GetComponent<ShamblerStats>().damage);
-                        }
-                    }
-                }
-                gameObject.GetPhotonView().RPC("CleanUpProjectiles", RpcTarget.All);
-            }
-            //idea, call rpc destroy on this object to destroy all
-
-            //Destroy(gameObject);
-
+            direction = transform.forward.normalized;
         }
     }
 
-    [PunRPC]
-    public void CleanUpProjectiles()
+    void OnCollisionEnter(Collision collision)
     {
-        Destroy(gameObject);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            GameObject collObj = collision.gameObject;
+            if (collObj.CompareTag("Player"))
+            {
+                //gameObject.GetPhotonView().RPC("CleanUpProjectiles", RpcTarget.All);
+                collObj.GetPhotonView().RPC("TakeDamage", RpcTarget.All, Shooter.GetComponent<ShamblerAttacks>().spitDamage);
+                PhotonNetwork.Destroy(gameObject);
+            }
+            else if (((1 << collObj.layer) & hardLayers.value) != 0)
+            {
+                PhotonNetwork.Destroy(gameObject);
+            }
+        }
     }
 }
