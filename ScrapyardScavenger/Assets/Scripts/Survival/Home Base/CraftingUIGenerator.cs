@@ -1,30 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CraftingUIGenerator : MonoBehaviour
 {
 	private List<CraftableObject> possibleCrafts;
+	private List<CraftableObject> impossibleCrafts;
 	public GameObject controller;
 	public GameObject craftablePrefab;
 	public GameObject container;
 	private List<GameObject> cItems = new List<GameObject>();
 
-	public CraftableObject chainArmor;
-	public CraftableObject leatherArmor;
-	public CraftableObject metalArmor;
-	public CraftableObject energyDrink;
-	public CraftableObject medpack;
-	public CraftableObject arGun;
-	public CraftableObject metalRod;
-	public CraftableObject woodenBat;
-	private CraftableObject[] craftables;
+	[SerializeField]
+	public CraftableObject[] craftables;
 
 	// Start is called before the first frame update
     void Start()
     {
 		possibleCrafts = new List<CraftableObject>();
-		craftables = new CraftableObject[] {chainArmor, leatherArmor, metalArmor, energyDrink, medpack, arGun, metalRod, woodenBat};
+		impossibleCrafts = new List<CraftableObject>();
 		controller = GameObject.FindGameObjectsWithTag("GameController")[0];
     }
 
@@ -49,11 +44,21 @@ public class CraftingUIGenerator : MonoBehaviour
 
 			if (isCraftable) {
 				possibleCrafts.Add(craftable);
+			} else {
+				impossibleCrafts.Add(craftable);
 			}
 		}
 
 		foreach (CraftableObject co in possibleCrafts) {
 			GameObject temp = Instantiate(craftablePrefab) as GameObject;
+			temp.GetComponent<CraftableItemLoader>().setCraftableObject(co);
+			temp.transform.parent = container.transform;
+			temp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+			cItems.Add(temp);
+		}
+		foreach (CraftableObject co in impossibleCrafts) {
+			GameObject temp = Instantiate(craftablePrefab) as GameObject;
+			temp.GetComponent<Button>().interactable = false;
 			temp.GetComponent<CraftableItemLoader>().setCraftableObject(co);
 			temp.transform.parent = container.transform;
 			temp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);

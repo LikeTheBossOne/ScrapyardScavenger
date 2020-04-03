@@ -93,7 +93,7 @@ public class ChargerDetection : MonoBehaviour
     {
         if (Time.time - timeShotAt > aggroTimer)
         {
-            //monster shot, first aggro, zero damage counts and set aggro of shooter
+            //monster shot, first aggro, zero damage counts and set aggro of Shooter
             detected = shooter.transform;
             for (int i = 0; i < damageCounts.Count; i++)
             {
@@ -103,7 +103,7 @@ public class ChargerDetection : MonoBehaviour
         }
         else
         {
-            //aggro maintained, check damage counts, update damage tracker for shooter
+            //aggro maintained, check damage counts, update damage tracker for Shooter
             damageCounts[pManager.players.IndexOf(shooter)] += damage;
         }
         //reset timer, update target to first player with highest damage count
