@@ -32,6 +32,8 @@ public class EnemySpawner : MonoBehaviourPun
     private InGamePlayerManager playerManager;
     private bool initialSpawnPointLoad;
 
+    private bool SpawnEnabled;
+
     // Start is called before the first frame update
     private void OnEnable()
     {
@@ -50,6 +52,7 @@ public class EnemySpawner : MonoBehaviourPun
         playerManager = GameObject.Find("PlayerList").GetComponent<InGamePlayerManager>();
         if (playerManager == null) Debug.Log("Null player list in EnemySpawner");
         initialSpawnPointLoad = false;
+        SpawnEnabled = true;
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -63,40 +66,38 @@ public class EnemySpawner : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            photonView.RPC("ToggleSpawning", RpcTarget.All);
+        }
         if (PhotonNetwork.IsMasterClient)
         {
             // if the zone manager hasn't started yet
             if (PersistentZoneManager.Instance != null
                 && !PersistentZoneManager.Instance.IsInitialized)
             {
-                // zone manager hasn't started for some reason
-                // so just return
                 return;
             }
 
             if (!initialSpawnPointLoad)
             {
-                Debug.Log("Doing an intial Spawn Load, number of UnlockedZones: " + PersistentZoneManager.Instance.UnlockedZones.Count);
                 initialSpawnPointLoad = true;
                 foreach (Zones zone in PersistentZoneManager.Instance.UnlockedZones)
                 {
                     ActivateSpawnPointsForZone(zone);
                 }
             }
-            //else if (!initialSpawnPointLoad) Debug.Log("PersistentZoneManager.Instance is null");
-            //if (PersistentZoneManager.Instance == null) Debug.Log("PersistentZoneManager.Instance is null");
 
-            if (shamblerCoolDown <= 0)
+            
+
+            if (SpawnEnabled && shamblerCoolDown <= 0)
             {
                 // there is room for more shamblers
                 if (shamblerCount < currentShamblerMax)
                 {
                     // spawn logic
                     List<SpawnPoint> pointsToSpawn = GetPossibleSpawnPoints();
-
-                    Debug.Log("Points to spawn count: " + pointsToSpawn.Count);
                     int selected = Random.Range(0, pointsToSpawn.Count);
-                    Debug.Log("Selected Index: " + selected);
 
                     GameObject shambler = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", shambName), pointsToSpawn[selected].location.position, pointsToSpawn[selected].location.rotation);
                     // set the shambler's max health & damage based off of wave number
@@ -119,16 +120,26 @@ public class EnemySpawner : MonoBehaviourPun
         
     }
 
+    [PunRPC]
+    public void ToggleSpawning()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            SpawnEnabled = !SpawnEnabled;
+            if (SpawnEnabled) Debug.Log("Spawning is now enabled");
+            else Debug.Log("Spawning is now disabled");
+        }
+    }
+
     private List<SpawnPoint> GetPossibleSpawnPoints()
     {
-        if (PersistentZoneManager.Instance.UnlockedZones.Count == 1)
+        if (PersistentZoneManager.Instance.UnlockedZones.Count == ActiveZones.Count)
         {
             Debug.Log("Returning full list of active spawn points");
             return ActiveSpawnPoints;
         }
         List<SpawnPoint> pointsToSpawn = new List<SpawnPoint>();
         float randomNumber = Random.value;
-        Debug.Log("Begin going through active spawn points wiht ranodom number " + randomNumber + ", skewed chance: " + SkewedSpawnChance);
         foreach (SpawnPoint point in ActiveSpawnPoints)
         {
             if (randomNumber <= SkewedSpawnChance && ActiveZones.Contains(point.Zone))
@@ -207,8 +218,8 @@ public class EnemySpawner : MonoBehaviourPun
             ActiveZones = new List<Zones>();
             foreach (GameObject player in playerManager.players)
             {
-                ActiveZones.Add(player.GetComponent<ZoneManager>().GetCurrentZone());
-                Debug.Log("Active Zone: " + player.GetComponent<ZoneManager>().GetCurrentZone());
+                if (!ActiveZones.Contains(player.GetComponent<ZoneManager>().GetCurrentZone()))
+                    ActiveZones.Add(player.GetComponent<ZoneManager>().GetCurrentZone());
             }
         }
     }
