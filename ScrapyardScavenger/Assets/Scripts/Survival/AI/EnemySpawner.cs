@@ -48,10 +48,12 @@ public class EnemySpawner : MonoBehaviourPun
         chargerCoolDown = chargerInterval;
         ActiveZones = new List<Zones>();
         playerManager = GameObject.Find("PlayerList").GetComponent<InGamePlayerManager>();
+        if (playerManager == null) Debug.Log("Null player list in EnemySpawner");
         initialSpawnPointLoad = false;
 
         if (PhotonNetwork.IsMasterClient)
-        {            
+        {
+            Debug.Log("I am the Master Client!");
             ActiveZones.Add(Zones.Zone1);
             WaveCoroutine = StartCoroutine(NextWave(WaveInterval));
         }
@@ -63,17 +65,26 @@ public class EnemySpawner : MonoBehaviourPun
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            // calculate which zones the players are in
-            // do this later
-            if (!initialSpawnPointLoad && PersistentZoneManager.Instance != null)
+            // if the zone manager hasn't started yet
+            if (PersistentZoneManager.Instance != null
+                && !PersistentZoneManager.Instance.IsInitialized)
             {
+                // zone manager hasn't started for some reason
+                // so just return
+                return;
+            }
+
+            if (!initialSpawnPointLoad)
+            {
+                Debug.Log("Doing an intial Spawn Load, number of UnlockedZones: " + PersistentZoneManager.Instance.UnlockedZones.Count);
                 initialSpawnPointLoad = true;
                 foreach (Zones zone in PersistentZoneManager.Instance.UnlockedZones)
                 {
                     ActivateSpawnPointsForZone(zone);
                 }
             }
-            else if (!initialSpawnPointLoad) Debug.Log("PersistentZoneManager.Instance is null");
+            //else if (!initialSpawnPointLoad) Debug.Log("PersistentZoneManager.Instance is null");
+            //if (PersistentZoneManager.Instance == null) Debug.Log("PersistentZoneManager.Instance is null");
 
             if (shamblerCoolDown <= 0)
             {
@@ -83,7 +94,9 @@ public class EnemySpawner : MonoBehaviourPun
                     // spawn logic
                     List<SpawnPoint> pointsToSpawn = GetPossibleSpawnPoints();
 
+                    Debug.Log("Points to spawn count: " + pointsToSpawn.Count);
                     int selected = Random.Range(0, pointsToSpawn.Count);
+                    Debug.Log("Selected Index: " + selected);
 
                     GameObject shambler = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", shambName), pointsToSpawn[selected].location.position, pointsToSpawn[selected].location.rotation);
                     // set the shambler's max health & damage based off of wave number
@@ -110,10 +123,12 @@ public class EnemySpawner : MonoBehaviourPun
     {
         if (PersistentZoneManager.Instance.UnlockedZones.Count == 1)
         {
+            Debug.Log("Returning full list of active spawn points");
             return ActiveSpawnPoints;
         }
         List<SpawnPoint> pointsToSpawn = new List<SpawnPoint>();
         float randomNumber = Random.value;
+        Debug.Log("Begin going through active spawn points wiht ranodom number " + randomNumber + ", skewed chance: " + SkewedSpawnChance);
         foreach (SpawnPoint point in ActiveSpawnPoints)
         {
             if (randomNumber <= SkewedSpawnChance && ActiveZones.Contains(point.Zone))

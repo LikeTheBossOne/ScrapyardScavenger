@@ -26,12 +26,16 @@ public class PersistentZoneManager : MonoBehaviourPun
     #endregion
 
     public List<Zones> UnlockedZones;
+    public bool IsInitialized = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("PersistentZoneManger is starting");
         UnlockedZones = new List<Zones>();
         UnlockedZones.Add(Zones.Zone1); // Zone1 should start as active
+        Debug.Log("After PersistentZoneManager has started, UnlockedZones count is " + UnlockedZones.Count);
+        IsInitialized = true;
     }
 
     [PunRPC]
