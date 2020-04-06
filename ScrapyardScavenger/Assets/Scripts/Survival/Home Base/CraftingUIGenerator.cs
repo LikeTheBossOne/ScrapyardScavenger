@@ -10,6 +10,7 @@ public class CraftingUIGenerator : MonoBehaviour
 	public GameObject controller;
 	public GameObject craftablePrefab;
 	public GameObject container;
+	public GameObject padListener;
 	private List<GameObject> cItems = new List<GameObject>();
 
 	[SerializeField]
@@ -64,6 +65,7 @@ public class CraftingUIGenerator : MonoBehaviour
 			temp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 			cItems.Add(temp);
 		}
+		padListener.GetComponent<GamepadListener>().SetValidButtons(cItems, 1);
 	}
 
 	private int getCount(Resource re)
@@ -78,6 +80,15 @@ public class CraftingUIGenerator : MonoBehaviour
 	}
 
 	public void Craft(CraftableObject c) {
+		/*
+		HashSet<Resource> resourceSet = controller.GetComponent<BaseDataManager>().getResourceSet();
+		foreach (ResourceAmount r in c.recipe.resources) {
+			if (!resourceSet.Contains(r.item) || getCount(r.item) < r.amount) {
+				return;
+			}
+		}
+		*/
+
 		foreach (ResourceAmount r in c.recipe.resources) {
 			controller.GetComponent<BaseDataManager>().RemoveResourceFromStorage(r.item, r.amount);
 		}

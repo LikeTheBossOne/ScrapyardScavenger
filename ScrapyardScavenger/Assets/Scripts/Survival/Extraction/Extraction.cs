@@ -91,7 +91,7 @@ public class Extraction : MonoBehaviourPunCallbacks
         }
 
         // if the player pressed the button to leave
-        if (Input.GetKeyDown(KeyCode.B) && isLookingAtTruck && !IsLeaving())
+		if ((Input.GetKeyDown(KeyCode.B) || Input.GetKeyDown("joystick button 0")) && isLookingAtTruck && !IsLeaving())
         {
             photonView.RPC("ReadyToLeave", RpcTarget.All);
         }

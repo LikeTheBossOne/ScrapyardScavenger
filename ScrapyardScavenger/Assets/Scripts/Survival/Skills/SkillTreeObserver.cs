@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 // this observes the skill tree UI and reacts to user input
 public class SkillTreeObserver : MonoBehaviour
@@ -12,6 +13,10 @@ public class SkillTreeObserver : MonoBehaviour
     private int levelIndex;
     public GameObject playerController;
     public Text playerXPText;
+
+	public GameObject backButton;
+
+	private float delay = 0.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -56,13 +61,15 @@ public class SkillTreeObserver : MonoBehaviour
     void Update()
     {
         short changeSkillSlot = 0;
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+		if (Input.GetKeyDown(KeyCode.RightArrow) || (Input.GetAxis("Horizontal") == 1 && Time.time > delay))
         {
             changeSkillSlot = 1;
+			delay = Time.time + 0.3f;
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+		else if (Input.GetKeyDown(KeyCode.LeftArrow) || (Input.GetAxis("Horizontal") == -1 && Time.time > delay))
         {
             changeSkillSlot = -1;
+			delay = Time.time + 0.3f;
         }
 
         if (changeSkillSlot != 0)
@@ -78,13 +85,15 @@ public class SkillTreeObserver : MonoBehaviour
 
         // check to see if they are going up or down
         short changeLevelSlot = 0;
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+		if (Input.GetKeyDown(KeyCode.UpArrow) || (Input.GetAxis("Vertical") == 1 && Time.time > delay) )
         {
             changeLevelSlot = 1;
+			delay = Time.time + 0.3f;
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+		else if (Input.GetKeyDown(KeyCode.DownArrow) || (Input.GetAxis("Vertical") == -1 && Time.time > delay) )
         {
             changeLevelSlot = -1;
+			delay = Time.time + 0.3f;
         }
 
         if (changeLevelSlot != 0)
@@ -100,11 +109,14 @@ public class SkillTreeObserver : MonoBehaviour
 
 
         // Upgrade selected skill
-        if (Input.GetKeyDown(KeyCode.B))
+		if (Input.GetKeyDown(KeyCode.B) || Input.GetKeyDown("joystick button 0") )
         {
             AttemptUnlock();
-        }
-
+		} else if (Input.GetKeyDown("joystick button 0")) {
+			AttemptUnlock();
+		} else if (Input.GetKeyDown("joystick button 1")) {
+			backButton.GetComponent<Button>().onClick.Invoke();
+		}
         
     }
 
