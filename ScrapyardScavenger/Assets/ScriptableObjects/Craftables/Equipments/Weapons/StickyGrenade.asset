@@ -19,6 +19,6 @@ MonoBehaviour:
   icon: {fileID: 0}
   recipe: {fileID: 0}
   prefab: {fileID: 3512742113462337399, guid: 41188d8c4f403ac449509861e7f65aed, type: 3}
-  baseDamage: 100
-  baseDetonationTime: 5
-  areaOfEffect: 5
+  baseDamage: 150
+  baseDetonationTime: 3
+  areaOfEffect: 3
