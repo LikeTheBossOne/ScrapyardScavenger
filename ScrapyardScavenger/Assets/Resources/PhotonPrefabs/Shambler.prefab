@@ -94,7 +94,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseHealth: 30
   status: 0
-  damage: 10
 --- !u!114 &-544632408891006727
 MonoBehaviour:
   m_ObjectHideFlags: 0

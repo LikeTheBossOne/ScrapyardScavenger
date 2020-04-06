@@ -6,7 +6,7 @@ using Photon.Pun;
 public class Stats : MonoBehaviour
 {
     public enum Condition{
-        normal,
+        normal
     }
     public int baseHealth;
     protected int health; // consider making health a float
@@ -28,6 +28,7 @@ public class Stats : MonoBehaviour
         return health;
     }
 
+    [PunRPC]
     public void ModifyHealth(float modifier)
     {
         health = (int) (health * modifier);

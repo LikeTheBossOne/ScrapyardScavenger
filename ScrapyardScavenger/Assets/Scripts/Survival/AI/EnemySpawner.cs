@@ -105,10 +105,14 @@ public class EnemySpawner : MonoBehaviourPun
                     GameObject shambler = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", shambName), pointsToSpawn[selected].location.position, pointsToSpawn[selected].location.rotation);
                     // set the shambler's max health & damage based off of wave number
                     // maybe use RPC's to call these modify functions
-                    float waveModifier = 1.0f + (0.2f * (WaveNumber - 1));
-                    shambler.GetComponent<Stats>().ModifyHealth(HealthModifier);
-                    shambler.GetComponent<ShamblerStats>().ModifyDamage(DamageModifier);
-                    Debug.Log("Spawned a Shambler in Zone " + pointsToSpawn[selected].Zone);
+                    float waveModifier = 0f;
+                    if (WaveNumber == 1) waveModifier = 1.0f; // Call of Duty does: baseHealth ^ (1.1 * waveCount) << consider this in the future
+                    else waveModifier = Mathf.Pow(HealthModifier, WaveNumber);//1.0f + (0.2f * (WaveNumber - 1));
+
+                    // make this an RPC
+                    shambler.GetPhotonView().RPC("ModifyHealth", RpcTarget.All, waveModifier);
+                    //shambler.GetComponent<Stats>().ModifyHealth(waveModifier);
+                    Debug.Log("Spawned a Shambler in Zone " + pointsToSpawn[selected].Zone + " with health: " + shambler.GetComponent<Stats>().GetCurrentHealth());
                     shamblerCount++;
                     Debug.Log("There are now " + shamblerCount + " shamblers");
                 }

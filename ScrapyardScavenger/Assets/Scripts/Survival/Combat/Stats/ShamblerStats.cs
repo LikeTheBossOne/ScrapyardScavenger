@@ -15,12 +15,12 @@ public class ShamblerStats : Stats, IPunObservable
         attackComponent = GetComponent<ShamblerAttacks>();
     }
 
-    public void ModifyDamage(float modifier)
+    /*public void ModifyDamage(float modifier)
     {
         // multiply spit damage and melee damage
         attackComponent.meleeDamage = (int) (modifier * attackComponent.meleeDamage);
         attackComponent.spitDamage = (int) (modifier * attackComponent.spitDamage);
-    }
+    }*/
 
     [PunRPC]
     void TakeDamageShambler(int damage, int shooterID)
@@ -50,8 +50,9 @@ public class ShamblerStats : Stats, IPunObservable
                     }
 
                 }
+                PhotonNetwork.Destroy(gameObject);
             }
-            Destroy(gameObject);
+            
 
         }
     }
