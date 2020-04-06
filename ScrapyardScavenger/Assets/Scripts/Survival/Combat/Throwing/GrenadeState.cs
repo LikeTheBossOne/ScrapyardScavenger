@@ -11,6 +11,7 @@ public class GrenadeState : MonoBehaviour
     private InGameDataManager igdm;
     public Collider[] c;
     private GameObject player;
+    private Rigidbody r;
 
     private float aoe;
     private float detTime;
@@ -46,6 +47,16 @@ public class GrenadeState : MonoBehaviour
             igdm.currentWeapons[3] = null;
             igdm.grenadeThrown();
             StartCoroutine(Explosion());
+            r = rb;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (thrown && grenadeType.name.Equals("Sticky") && collision.gameObject != player)
+        {
+            r.constraints = RigidbodyConstraints.FreezeAll;
+            GetComponentInParent<Transform>().parent = collision.gameObject.GetComponent<Transform>();
         }
     }
 
@@ -69,6 +80,6 @@ public class GrenadeState : MonoBehaviour
                 }
             }
         }
-        Destroy(this.gameObject);
+        //Destroy(this.gameObject);
     }
 }
