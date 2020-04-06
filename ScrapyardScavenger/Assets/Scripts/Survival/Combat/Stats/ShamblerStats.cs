@@ -5,27 +5,21 @@ using Photon.Pun;
 
 public class ShamblerStats : Stats, IPunObservable
 {
+    private ShamblerAttacks attackComponent;
 
-    public float damage; //{ get; private set; }
-    
     // Start is called before the first frame update
     private void OnEnable()
     {
         health = baseHealth;
-        //damage = 10;
         status = 0;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-
+        attackComponent = GetComponent<ShamblerAttacks>();
     }
 
     public void ModifyDamage(float modifier)
     {
-        damage = damage * modifier;
+        // multiply spit damage and melee damage
+        attackComponent.meleeDamage = (int) (modifier * attackComponent.meleeDamage);
+        attackComponent.spitDamage = (int) (modifier * attackComponent.spitDamage);
     }
 
     [PunRPC]
@@ -34,8 +28,6 @@ public class ShamblerStats : Stats, IPunObservable
         //, GameObject damager, int atkStatus
         //note GameObjects can be passed by RPC
         health -= damage;
-
-
 
         if (health <= 0)
         {
@@ -59,8 +51,6 @@ public class ShamblerStats : Stats, IPunObservable
 
                 }
             }
-
-
             Destroy(gameObject);
 
         }
