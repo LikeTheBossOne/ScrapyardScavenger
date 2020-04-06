@@ -26,6 +26,9 @@ public class EnemySpawner : MonoBehaviourPun
     public int WaveNumber = 1; // consider changing to 0 and incorporating grace period
     public int WaveInterval; // seconds between waves
     public float SkewedSpawnChance;
+    public float CountModifier;
+    public float DamageModifier;
+    public float HealthModifier;
     private List<Zones> ActiveZones; // list of zones that the players are in
     private List<SpawnPoint> ActiveSpawnPoints; // list of spawn points that should be used based off of unlocked zones
     private Coroutine WaveCoroutine;
@@ -103,8 +106,8 @@ public class EnemySpawner : MonoBehaviourPun
                     // set the shambler's max health & damage based off of wave number
                     // maybe use RPC's to call these modify functions
                     float waveModifier = 1.0f + (0.2f * (WaveNumber - 1));
-                    shambler.GetComponent<Stats>().ModifyHealth(waveModifier);
-                    shambler.GetComponent<ShamblerStats>().ModifyDamage(waveModifier);
+                    shambler.GetComponent<Stats>().ModifyHealth(HealthModifier);
+                    shambler.GetComponent<ShamblerStats>().ModifyDamage(DamageModifier);
                     Debug.Log("Spawned a Shambler in Zone " + pointsToSpawn[selected].Zone);
                     shamblerCount++;
                     Debug.Log("There are now " + shamblerCount + " shamblers");
@@ -170,7 +173,7 @@ public class EnemySpawner : MonoBehaviourPun
             }
 
             // change the amount of shamblers that will spawn
-            currentShamblerMax *= (int)(1.0f + (0.8f * (WaveNumber - 1)));
+            currentShamblerMax = (int) (CountModifier * currentShamblerMax);
             Debug.Log("New current shambler max: " + currentShamblerMax);
         }
     }
