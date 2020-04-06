@@ -80,6 +80,6 @@ public class GrenadeState : MonoBehaviour
                 }
             }
         }
-        //Destroy(this.gameObject);
+        Destroy(this.gameObject);
     }
 }
