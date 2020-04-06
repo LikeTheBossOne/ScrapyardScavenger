@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a7361f3a02a47848b4d5b281f0a69a3, type: 3}
-  m_Name: AR
+  m_Name: MarksmanRifle
   m_EditorClassIdentifier: 
-  id: 0
-  name: Assault Rifle
-  description: This automatic firearm can mow down foes in an instant.
+  id: 2
+  name: Marksman Rifle
+  description: This long-range weapon has a lot of stopping power but a low fire rate
   showInInventory: 1
-  icon: {fileID: 21300000, guid: 53ef668badc38d24dae5733fb696f6d3, type: 3}
-  recipe: {fileID: 11400000, guid: f235bc78396b39c48a5f0e6c7592bc6d, type: 2}
-  prefab: {fileID: 1000010074829930, guid: a2185de06c434b84e8a36835c77d3ca4, type: 3}
-  baseDamage: 30
+  icon: {fileID: 21300000, guid: fa0abfdb66fc16e4da2799735607de16, type: 3}
+  recipe: {fileID: 11400000, guid: 766024949ab293547ac738b3845c1937, type: 2}
+  prefab: {fileID: 1828804762383484, guid: a2a1e0cb3c7a1954a8c8db5b1d3e8759, type: 3}
+  baseDamage: 50
   headShotMultiplier: 2
-  baseRateOfFire: 600
-  baseClipSize: 25
-  reloadTime: 2.5
+  baseRateOfFire: 300
+  baseClipSize: 12
+  reloadTime: 3
   modifiers: []
-  isAutomatic: 1
+  isAutomatic: 0
   isShotgun: 0
   pelletCount: 0
   range: 0

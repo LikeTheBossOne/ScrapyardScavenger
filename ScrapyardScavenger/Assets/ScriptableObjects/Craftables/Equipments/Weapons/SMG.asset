@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a7361f3a02a47848b4d5b281f0a69a3, type: 3}
-  m_Name: AR
+  m_Name: SMG
   m_EditorClassIdentifier: 
-  id: 0
-  name: Assault Rifle
-  description: This automatic firearm can mow down foes in an instant.
+  id: 5
+  name: Sub-Machine Gun
+  description: This weapons fires quickly but has relatively low power
   showInInventory: 1
-  icon: {fileID: 21300000, guid: 53ef668badc38d24dae5733fb696f6d3, type: 3}
-  recipe: {fileID: 11400000, guid: f235bc78396b39c48a5f0e6c7592bc6d, type: 2}
-  prefab: {fileID: 1000010074829930, guid: a2185de06c434b84e8a36835c77d3ca4, type: 3}
-  baseDamage: 30
+  icon: {fileID: 21300000, guid: 58c00ff8ac5fbbd4fa9b067f29ee42fa, type: 3}
+  recipe: {fileID: 11400000, guid: 7fdf071c5d2bc2d43a942634156362e4, type: 2}
+  prefab: {fileID: 1189847200281728, guid: 45a95a282f15e7d4e8ca8a001336a7f1, type: 3}
+  baseDamage: 25
   headShotMultiplier: 2
-  baseRateOfFire: 600
-  baseClipSize: 25
-  reloadTime: 2.5
+  baseRateOfFire: 800
+  baseClipSize: 30
+  reloadTime: 2
   modifiers: []
   isAutomatic: 1
   isShotgun: 0
