@@ -27,12 +27,7 @@ public class GunState : MonoBehaviour
 
     public void reloadSound()
     {
-        if (gunType.isShotgun)
-        {
-            bullet.Stop();
-        }
         reload.Play();
-        
     }
 
     public void reloadStop()
