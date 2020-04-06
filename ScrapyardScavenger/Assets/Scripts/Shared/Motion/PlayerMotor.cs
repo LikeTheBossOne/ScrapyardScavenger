@@ -198,18 +198,27 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
 
         if (animator)
         {
-            if (isSprinting)
+            //if (isSprinting)
+            //{
+            //    gameObject.GetPhotonView().RPC("Run", RpcTarget.All);
+            //}
+            //else if (Mathf.Abs(verticalInput) > deadZone || Mathf.Abs(horizontalInput) > deadZone)
+            //{
+            //    gameObject.GetPhotonView().RPC("Walk", RpcTarget.All);
+            //}
+            //else
+            //{
+            //    gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
+            //}
+            if (isSprinting || Mathf.Abs(verticalInput) > deadZone || Mathf.Abs(horizontalInput) > deadZone)
             {
-                gameObject.GetPhotonView().RPC("run", RpcTarget.All);
-            }
-            else if (Mathf.Abs(verticalInput) > deadZone || Mathf.Abs(horizontalInput) > deadZone)
-            {
-                gameObject.GetPhotonView().RPC("walk", RpcTarget.All);
+                gameObject.GetPhotonView().RPC("Move", RpcTarget.All, adjustedSpeed);    
             }
             else
             {
-                gameObject.GetPhotonView().RPC("idle", RpcTarget.All);
+                gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
             }
+            
         }
         
 
@@ -262,23 +271,35 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    public void walk()
+    public void Walk()
     {
         animator.SetBool("walk", true);
         animator.SetBool("run", false);
     }
 
     [PunRPC]
-    public void run()
+    public void Run()
     {
         animator.SetBool("walk", false);
         animator.SetBool("run", true);
     }
 
     [PunRPC]
-    public void idle()
+    public void Idle()
     {
         animator.SetBool("walk", false);
         animator.SetBool("run", false);
+    }
+
+    [PunRPC]
+
+    public void OnAnimatorMove( float spd)
+    {
+        float calculated = spd / (speed * sprintModifier);
+        if (calculated > 1)
+        {
+            calculated = 1;
+        }
+        animator.SetFloat("speed", calculated);
     }
 }

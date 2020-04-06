@@ -31,6 +31,7 @@ public class ShamblerAI : MonoBehaviourPun
     public ShamblerDetection senses;
     public ShamblerAttacks weapons;
     public Animator animator;
+    public float maxSpd;
     // Start is called before the first frame update
     private void OnEnable()
     {
@@ -45,6 +46,7 @@ public class ShamblerAI : MonoBehaviourPun
         wandRad = 10;
         weapons = GetComponent<ShamblerAttacks>();
         animator = GetComponentInChildren<Animator>();
+        maxSpd = GetComponent<NavMeshAgent>().speed;
         if (animator)
         {
             Debug.Log(animator.parameters);
@@ -116,7 +118,7 @@ public class ShamblerAI : MonoBehaviourPun
             if (animator)
             {
 
-                photonView.RPC("Walk", RpcTarget.All);
+                photonView.RPC("Walk", RpcTarget.All, maxSpd);
 
                 //animator.SetBool("walking", true);
 
@@ -246,11 +248,12 @@ public class ShamblerAI : MonoBehaviourPun
     public void Walk()
     {
         animator.SetBool("walking", true);
+        //animator.SetFloat("speed", spd);
     }
 
     [PunRPC]
     public void Idle()
     {
-        animator.SetBool("walking", true);
+        animator.SetBool("walking", false);
     }
 }
