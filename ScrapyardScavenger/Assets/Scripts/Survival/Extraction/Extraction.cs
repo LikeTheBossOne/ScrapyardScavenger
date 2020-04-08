@@ -69,7 +69,11 @@ public class Extraction : MonoBehaviourPunCallbacks
             if (isLookingAtTruck)
             {
                 // show button pop up
-                evacuateCanvas.GetComponentInChildren<Text>().text = "Press B to escape!";
+				if (Input.GetJoystickNames().Length > 1) {
+					evacuateCanvas.GetComponentInChildren<Text>().text = "Press X to escape!";
+				} else {
+                	evacuateCanvas.GetComponentInChildren<Text>().text = "Press B to escape!";
+				}
             }
             else
             {
