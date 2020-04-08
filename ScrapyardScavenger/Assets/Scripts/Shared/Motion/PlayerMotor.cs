@@ -212,6 +212,9 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
             //}
             if (isSprinting || Mathf.Abs(verticalInput) > deadZone || Mathf.Abs(horizontalInput) > deadZone)
             {
+                Debug.Log(isSprinting);
+                Debug.Log(Mathf.Abs(verticalInput));
+                Debug.Log(Mathf.Abs(horizontalInput));
                 gameObject.GetPhotonView().RPC("Move", RpcTarget.All, adjustedSpeed);    
             }
             else
@@ -287,14 +290,16 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     [PunRPC]
     public void Idle()
     {
-        animator.SetBool("walk", false);
-        animator.SetBool("run", false);
+        //animator.SetBool("walk", false);
+        //animator.SetBool("run", false);
+        animator.SetBool("Idle", true);
     }
 
     [PunRPC]
 
-    public void OnAnimatorMove( float spd)
+    public void Move( float spd)
     {
+        animator.SetBool("Idle", false);
         float calculated = spd / (speed * sprintModifier);
         if (calculated > 1)
         {

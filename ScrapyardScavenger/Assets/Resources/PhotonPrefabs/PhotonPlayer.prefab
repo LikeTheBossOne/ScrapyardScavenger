@@ -767,7 +767,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 327ec0f76d202ab4bb888cf0bc3dfdb6, type: 2}
+      objectReference: {fileID: 9100000, guid: 1819a62058dd2e649804f51a501f5e0b, type: 2}
+    - target: {fileID: -5420841121406713386, guid: 25061fbab61a53b428795010f4ca1908,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.050810795
+      objectReference: {fileID: 0}
+    - target: {fileID: -5420841121406713386, guid: 25061fbab61a53b428795010f4ca1908,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.062714614
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 25061fbab61a53b428795010f4ca1908,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -827,6 +837,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BanditWalk_Textured
+      objectReference: {fileID: 0}
+    - target: {fileID: 2389377448747264663, guid: 25061fbab61a53b428795010f4ca1908,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.091471985
+      objectReference: {fileID: 0}
+    - target: {fileID: 2389377448747264663, guid: 25061fbab61a53b428795010f4ca1908,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.0052603893
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25061fbab61a53b428795010f4ca1908, type: 3}

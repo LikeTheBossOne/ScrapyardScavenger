@@ -79,4 +79,10 @@ public class ShamblerStats : Stats, IPunObservable
             this.health = (int)stream.ReceiveNext();
         }
     }
+
+    [PunRPC]
+    public void CleanUp()
+    {
+        Destroy(gameObject);
+    }
 }

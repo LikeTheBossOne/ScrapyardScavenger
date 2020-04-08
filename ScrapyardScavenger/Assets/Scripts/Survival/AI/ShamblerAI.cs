@@ -13,6 +13,7 @@ public class ShamblerAI : MonoBehaviourPun
         chase,
         spit,
         bite,
+        dead,
    }
 
     public State currentState;
@@ -56,7 +57,7 @@ public class ShamblerAI : MonoBehaviourPun
 
     private void Update()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient && currentState != State.dead)
         {
             ChangeState();
             HandleState();
@@ -113,12 +114,14 @@ public class ShamblerAI : MonoBehaviourPun
             //set target destination to detected/aggressing player or use follow command if there is one
             //Need to add reorientation/ "lockon camera" for enemy
             //System.Console.WriteLine("Player seen.");
-            transform.LookAt(senses.detected.position, transform.up);
+            Vector3 lookSpot = senses.detected.position;
+            lookSpot.y = gameObject.transform.position.y;
+            transform.LookAt(lookSpot, transform.up);
             SetDestination(senses.detected.position);
             if (animator)
             {
 
-                photonView.RPC("Walk", RpcTarget.All, maxSpd);
+                photonView.RPC("Walk", RpcTarget.All);
 
                 //animator.SetBool("walking", true);
 
@@ -174,7 +177,9 @@ public class ShamblerAI : MonoBehaviourPun
         }
         if (currentState == State.spit)
         {
-            transform.LookAt(senses.detected.position, transform.up);
+            Vector3 lookSpot = senses.detected.position;
+            lookSpot.y = gameObject.transform.position.y;
+            transform.LookAt(lookSpot, transform.up);
             SetDestination(senses.detected.position);
             if (animator)
             {
@@ -188,7 +193,9 @@ public class ShamblerAI : MonoBehaviourPun
         if (currentState == State.bite)
         {
             SetDestination(GetComponentInParent<Transform>().position);
-            gameObject.transform.LookAt(senses.detected, gameObject.transform.up);
+            Vector3 lookSpot = senses.detected.position;
+            lookSpot.y = gameObject.transform.position.y;
+            gameObject.transform.LookAt(lookSpot, gameObject.transform.up);
             weapons.Bite(senses.detected.gameObject);
             if (animator)
             {
@@ -255,5 +262,15 @@ public class ShamblerAI : MonoBehaviourPun
     public void Idle()
     {
         animator.SetBool("walking", false);
+    }
+
+    [PunRPC]
+    public void Die()
+    {
+        currentState = State.dead;
+        if (animator)
+        {
+            animator.SetBool("Dead", true);
+        }
     }
 }
