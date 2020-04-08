@@ -53,7 +53,7 @@ public class GrenadeState : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (thrown && grenadeType.name.Equals("Sticky") && collision.gameObject != player)
+        if (thrown && grenadeType.name.Equals("Sticky Grenade") && collision.gameObject != player)
         {
             r.constraints = RigidbodyConstraints.FreezeAll;
             GetComponentInParent<Transform>().parent = collision.gameObject.GetComponent<Transform>();
