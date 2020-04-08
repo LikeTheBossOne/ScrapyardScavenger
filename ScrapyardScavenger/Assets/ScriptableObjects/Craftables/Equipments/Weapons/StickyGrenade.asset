@@ -21,5 +21,5 @@ MonoBehaviour:
   recipe: {fileID: 11400000, guid: b294be058ba5aac4c997590b294a23b4, type: 2}
   prefab: {fileID: 3512742113462337399, guid: 41188d8c4f403ac449509861e7f65aed, type: 3}
   baseDamage: 150
-  baseDetonationTime: 3
-  areaOfEffect: 3
+  baseDetonationTime: 2
+  areaOfEffect: 2
