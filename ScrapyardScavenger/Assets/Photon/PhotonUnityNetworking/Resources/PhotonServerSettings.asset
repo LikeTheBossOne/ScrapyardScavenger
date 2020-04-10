@@ -55,7 +55,7 @@ MonoBehaviour:
   - SetTeam
   - PlaceBuyables
   - RemoveBuyable
-  - idle
-  - walk
+  - Idle
+  - Walk
   DisableAutoOpenWizard: 1
   ShowSettings: 0

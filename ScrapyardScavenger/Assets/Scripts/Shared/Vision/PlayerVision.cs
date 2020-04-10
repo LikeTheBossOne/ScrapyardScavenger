@@ -8,6 +8,7 @@ public class PlayerVision : MonoBehaviourPunCallbacks
     public Transform player;
     public Transform cams;
     public Transform weapon;
+    public Transform grenade;
     public Death playerDeath;
 
     public float xSensitivity;
@@ -69,6 +70,7 @@ public class PlayerVision : MonoBehaviourPunCallbacks
         }
 
         weapon.rotation = cams.rotation;
+        grenade.rotation = cams.rotation;
     }
 
     void AdjustX()

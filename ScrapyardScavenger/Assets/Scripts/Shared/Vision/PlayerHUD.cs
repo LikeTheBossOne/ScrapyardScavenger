@@ -49,7 +49,7 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 
 	IEnumerator HitMarker()
 	{
-		playerCrosshair.fontSize = 30;
+		playerCrosshair.fontSize = 40;
 		yield return new WaitForSeconds(0.3f); 
 		playerCrosshair.fontSize = 24;
 	}

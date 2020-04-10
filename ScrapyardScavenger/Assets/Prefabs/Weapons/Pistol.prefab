@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2828915198682240800}
   - component: {fileID: 8050020522815948728}
   - component: {fileID: 8385708797170552195}
-  - component: {fileID: 7603068292543540635}
   m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
@@ -79,19 +78,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &7603068292543540635
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3456970757504248873}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4582296837110520907
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,8 +159,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunType: {fileID: 11400000, guid: a0081ac72ad7d334aab85f82dcf1552c, type: 2}
-  ammoCount: 0
-  baseAmmo: 0
+  ammoCount: 15
+  baseAmmo: 15
 --- !u!95 &6890145908421368601
 Animator:
   serializedVersion: 3
@@ -397,7 +383,6 @@ GameObject:
   - component: {fileID: 811624313095335425}
   - component: {fileID: 4145454168539996207}
   - component: {fileID: 6696512637301721465}
-  - component: {fileID: 1238125023763858036}
   m_Layer: 0
   m_Name: Trigger
   m_TagString: Untagged
@@ -465,20 +450,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &1238125023763858036
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7853587893030927537}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9036556592192733798
 GameObject:
   m_ObjectHideFlags: 0
@@ -490,7 +461,6 @@ GameObject:
   - component: {fileID: 5934513265543060601}
   - component: {fileID: 6682337629923694760}
   - component: {fileID: 8324295010941986408}
-  - component: {fileID: 7184950514898075691}
   m_Layer: 0
   m_Name: Handle
   m_TagString: Untagged
@@ -558,16 +528,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &7184950514898075691
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9036556592192733798}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
