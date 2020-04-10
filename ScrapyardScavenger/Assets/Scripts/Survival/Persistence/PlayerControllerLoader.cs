@@ -39,6 +39,8 @@ public class PlayerControllerLoader : MonoBehaviourPun
     {
         baseDataManager.gunParent = gunParent;
 		inGameDataManager.gunParent = gunParent;
+        baseDataManager.grenadeParent = grenadeParent;
+        inGameDataManager.grenadeParent = grenadeParent;
         baseDataManager.SetupInScene();
 		playerController.GetPhotonView().RPC("EquipWeapon", RpcTarget.All, 0);
     }

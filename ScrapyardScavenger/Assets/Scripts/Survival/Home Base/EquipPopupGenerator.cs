@@ -46,11 +46,11 @@ public class EquipPopupGenerator : MonoBehaviour
 					effect1.text = "Power: " + (co as Gun).baseDamage.ToString();
 					effect2.text = "Ammo: " + (co as Gun).baseClipSize.ToString();
 					break;
-					case 2:
-					effect1.text = "Power: " + (co as Grenade).baseDamage.ToString();
-					effect2.text = "Detonation Time: " + (co as Grenade).baseDetonationTime.ToString() + " sec";
-					break;
 					case 3:
+					effect1.text = "Power: " + (co as Grenade).baseDamage.ToString();
+					effect2.text = "Boom Time: " + (co as Grenade).baseDetonationTime.ToString() + " sec";
+					break;
+					case 2:
 					effect1.text = "Power: " + (co as Melee).baseDamage.ToString();
 					effect2.text = "";
 					break;
@@ -138,7 +138,7 @@ public class EquipPopupGenerator : MonoBehaviour
 				noneText.GetComponent<Text>().text = "No guns available";
 			}
 			break;
-			case 2:
+			case 3:
 			List<Grenade> equippableGrenades = new List<Grenade>();
 			counts = pController.GetComponent<BaseDataManager>().weaponCounts;
 			for (int i = 0; i < counts.Length; i++) {
@@ -153,7 +153,7 @@ public class EquipPopupGenerator : MonoBehaviour
 					temp.GetComponent<EquipLoader>().name.text = gre.name;
 					temp.GetComponent<EquipLoader>().desc.text = gre.description;
 					temp.GetComponent<EquipLoader>().effect1Text.text = "Power: " + gre.baseDamage.ToString();
-					temp.GetComponent<EquipLoader>().effect2Text.text = "Detonation Time: " + gre.baseDetonationTime.ToString();
+					temp.GetComponent<EquipLoader>().effect2Text.text = "Boom Time: " + gre.baseDetonationTime.ToString();
 					temp.GetComponent<EquipLoader>().count.text = "x" + counts[gre.id].ToString();
 					temp.GetComponent<Button>().onClick.AddListener(() => EquipToPlayer(gre));
 					temp.transform.parent = container.transform;
@@ -165,7 +165,7 @@ public class EquipPopupGenerator : MonoBehaviour
 				noneText.GetComponent<Text>().text = "No grenades available";
 			}
 			break;
-			case 3:
+			case 2:
 			List<Melee> equippableMelees = new List<Melee>();
 			counts = pController.GetComponent<BaseDataManager>().weaponCounts;
 			for (int i = 0; i < counts.Length; i++) {

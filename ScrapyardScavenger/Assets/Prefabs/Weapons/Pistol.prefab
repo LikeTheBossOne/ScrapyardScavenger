@@ -159,8 +159,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunType: {fileID: 11400000, guid: a0081ac72ad7d334aab85f82dcf1552c, type: 2}
-  ammoCount: 0
-  baseAmmo: 0
+  ammoCount: 15
+  baseAmmo: 15
 --- !u!95 &6890145908421368601
 Animator:
   serializedVersion: 3
