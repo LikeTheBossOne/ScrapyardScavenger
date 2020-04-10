@@ -14,6 +14,9 @@ public class CraftableItemLoader : MonoBehaviour
 	public Text craftReq2Count;
 	public Image craftReq3Image;
 	public Text craftReq3Count;
+	public Image craftReq4Image;
+	public Text craftReq4Count;
+	public Text craftableText;
 
 	private bool loaded;
 
@@ -35,11 +38,21 @@ public class CraftableItemLoader : MonoBehaviour
 			craftItemText.text = craft.name;
 			craftItemImage.sprite = craft.icon;
 
+			if (!GetComponent<Button>().interactable) {
+				craftableText.text = "Not able to craft";
+			} else {
+				craftableText.text = "Able to craft";
+			}
+
 			switch(craft.recipe.resources.Count){
+				case 4:
+					craftReq4Image.sprite = craft.recipe.resources[3].item.icon;
+					craftReq4Count.text = craft.recipe.resources[3].amount.ToString();
+					goto case 3;	// Idk why C# can't allow for cascading cases like in any other language
 				case 3:
 					craftReq3Image.sprite = craft.recipe.resources[2].item.icon;
 					craftReq3Count.text = craft.recipe.resources[2].amount.ToString();
-					goto case 2;	// Idk why C# can't allow for cascading cases like in any other language
+					goto case 2;
 				case 2:
 					craftReq2Image.sprite = craft.recipe.resources[1].item.icon;
 					craftReq2Count.text = craft.recipe.resources[1].amount.ToString();
@@ -53,6 +66,7 @@ public class CraftableItemLoader : MonoBehaviour
 			RenderImage(craftReq1Image);
 			RenderImage(craftReq2Image);
 			RenderImage(craftReq3Image);
+			RenderImage(craftReq4Image);
 
 			loaded = true;
 		}

@@ -9,6 +9,7 @@ public class Extraction : MonoBehaviourPunCallbacks
 {
     public GameObject evacCirclePrefab;
     private GameObject playerController;
+	private GameObject otherPlayerController;
 
     public int homebaseIndex;
     public float leaveRadius;
@@ -26,7 +27,16 @@ public class Extraction : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        playerController = GetComponent<PlayerControllerLoader>().playerController;
+		foreach (GameObject obj in GameObject.FindGameObjectsWithTag("GameController"))
+		{
+			if (obj.GetPhotonView().IsMine)
+			{
+				playerController = obj;
+			} else {
+				otherPlayerController = obj;
+			}
+		}
+		//playerController = GetComponent<PlayerControllerLoader>().playerController;
 
         leaving = false;
         isLookingAtTruck = false;
@@ -219,14 +229,11 @@ public class Extraction : MonoBehaviourPunCallbacks
         leaving = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-       	
-		// First, add any resources the player collected into the home base storage
-		playerController.GetComponent<InGameDataManager>().TransferToStorage();
 
         // Then return to Home Base
         if (GameControllerSingleton.instance.aliveCount == 2)
         {
-            GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetComponent<PlayerControllerLoader>().playerController.GetPhotonView().RPC("MasterClientGoToHomeBase", RpcTarget.All);
+			otherPlayerController.GetPhotonView().RPC("MasterClientGoToHomeBase", RpcTarget.All);
         }
         playerController.GetPhotonView().RPC("MasterClientGoToHomeBase", RpcTarget.All);
 

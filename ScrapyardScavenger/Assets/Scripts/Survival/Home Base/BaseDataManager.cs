@@ -30,7 +30,7 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
 
 	// Crafts and counts are indexed based on the CraftableObject's ID
 	[SerializeField]
-	public List<Armor> armors = null;
+	public Armor[] armors = null;
 	[SerializeField]
 	public int[] armorCounts = null;
 
@@ -62,10 +62,10 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
         inGameManager = GetComponent<InGameDataManager>();
 
         equipment = new Equipment[5];
-        equipment[0] = weapons[(int)WeaponType.AR];
-        equipment[1] = weapons[(int)WeaponType.Pistol];
-
-        armors = new List<Armor>();
+        //equipment[0] = weapons[(int)WeaponType.AR];
+        equipment[0] = weapons[(int)WeaponType.Pistol];
+		//weaponCounts[(int)WeaponType.AR]++;
+		weaponCounts[(int)WeaponType.Pistol]++;
 
         resources = new List<ResourcePersistent>();
 		resourceSet = new HashSet<Resource>();
@@ -128,8 +128,16 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
 	[PunRPC]
     public void ClearEquipmentOnDeath()
     {
-        equipment = new Equipment[5];
+		if (equipment[0] != null) weaponCounts[equipment[0].id]--;
+		if (equipment[1] != null) weaponCounts[equipment[1].id]--;
+		if (equipment[2] != null) weaponCounts[equipment[2].id]--;
+		if (equipment[3] != null) weaponCounts[equipment[3].id]--;
+		if (equippedArmor != null) armorCounts[equippedArmor.id]--;
+		if (equipment[4] != null) itemCounts[equipment[4].id]--;
+
+		equipment = new Equipment[5];
         equipment[0] = weapons[(int)WeaponType.Pistol];
+		weaponCounts[(int)WeaponType.Pistol]++;
 		equippedArmor = null;
     }
 	public Equipment[] getEquipment()
