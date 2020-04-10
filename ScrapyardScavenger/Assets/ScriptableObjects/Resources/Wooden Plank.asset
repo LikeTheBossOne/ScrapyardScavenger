@@ -18,4 +18,4 @@ MonoBehaviour:
   showInInventory: 0
   icon: {fileID: 21300000, guid: b97c352a0d60abf4489782e30580c0b7, type: 3}
   imageSlotName: 
-  type: 0
+  type: 15

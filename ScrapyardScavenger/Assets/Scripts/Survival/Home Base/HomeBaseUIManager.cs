@@ -11,15 +11,19 @@ public class HomeBaseUIManager : MonoBehaviour
 	public GameObject equipmentCanvas;
 	public GameObject craftingCanvas;
 	public GameObject skillCanvas;
+	public GameObject equipPopup;
+	public GameObject generator;
 
 	public int playerCount;
 
 	public void switchToHomeBase() {
-		homeBaseCanvas.SetActive(true);
-		storageCanvas.SetActive(false);
-		equipmentCanvas.SetActive(false);
-		craftingCanvas.SetActive(false);
-		skillCanvas.SetActive(false);
+		if (!equipPopup.activeSelf) {
+			homeBaseCanvas.SetActive(true);
+			storageCanvas.SetActive(false);
+			equipmentCanvas.SetActive(false);
+			craftingCanvas.SetActive(false);
+			skillCanvas.SetActive(false);
+		}
 	}
 
 	public void switchToStorage() {
@@ -59,6 +63,19 @@ public class HomeBaseUIManager : MonoBehaviour
 		equipmentCanvas.SetActive(false);
 		craftingCanvas.SetActive(false);
 		skillCanvas.SetActive(true);
+	}
+
+	public void OpenEquipUI(int slotIdx)
+	{
+		if (!equipPopup.activeSelf) {
+			equipPopup.SetActive(true);
+			generator.GetComponent<EquipPopupGenerator>().GenerateEquipment(slotIdx);
+		}
+	}
+
+	public void CloseEquipUI()
+	{
+		equipPopup.SetActive(false);
 	}
 
 	public void quitGame() {

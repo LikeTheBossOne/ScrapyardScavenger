@@ -111,7 +111,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5000001
-  m_Speed: 3.5
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -216,7 +216,7 @@ MonoBehaviour:
   meleeRecharge: 2
   meleeDamage: 5
   spitRange: 10
-  spitRecharge: 10
+  spitRecharge: 5
   spitDamage: 10
   spitSize: 0
   projectile: {fileID: 7758600212226562078, guid: 0ac2452e7ddb1cf42a28cc2c934bf81f,
