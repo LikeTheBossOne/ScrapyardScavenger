@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed77aae83a824a84aae0e88685864f7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lastState: 0
   currentState: 0
   moveTo: {x: 0, y: 0, z: 0}
   nav: {fileID: -2916611620778920040}
