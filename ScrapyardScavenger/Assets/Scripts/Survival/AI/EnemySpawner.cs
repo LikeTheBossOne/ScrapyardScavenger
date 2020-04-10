@@ -34,6 +34,7 @@ public class EnemySpawner : MonoBehaviourPun
     private Coroutine WaveCoroutine;
     private InGamePlayerManager playerManager;
     private bool initialSpawnPointLoad;
+    public int absoluteShamblerCap;
 
     private bool SpawnEnabled;
 
@@ -177,7 +178,7 @@ public class EnemySpawner : MonoBehaviourPun
             }
 
             // change the amount of shamblers that will spawn
-            currentShamblerMax = (int) (CountModifier * currentShamblerMax);
+            currentShamblerMax = Mathf.Min((int) (CountModifier * currentShamblerMax), absoluteShamblerCap);
             Debug.Log("New current shambler max: " + currentShamblerMax);
         }
     }
