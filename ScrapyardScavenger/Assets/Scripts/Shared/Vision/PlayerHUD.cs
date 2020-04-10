@@ -123,6 +123,7 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 			yield return null;
 		}
 		WaveCounter.text = "" + wave;
+		NotificationSystem.Instance.Notify(new Notification($"Wave {wave} has started!", NotificationType.Neutral));
 		StartCoroutine(FadeInRoutine(originalColor));
 	}
 
