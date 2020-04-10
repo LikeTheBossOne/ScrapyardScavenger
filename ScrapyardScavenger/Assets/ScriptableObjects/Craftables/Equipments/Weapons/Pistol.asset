@@ -12,18 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a7361f3a02a47848b4d5b281f0a69a3, type: 3}
   m_Name: Pistol
   m_EditorClassIdentifier: 
-  id: 2
+  id: 3
   name: Pistol
   description: This classic firearm is provided to any newbie scavenger. While it's
     worn-down, it's your tried and true weapon.
   showInInventory: 1
   icon: {fileID: 21300000, guid: 99b63c4a223085843a45df31a94dc215, type: 3}
   recipe: {fileID: 0}
-  prefab: {fileID: 7589069519001578698, guid: b2b79960e09c15f4a9fa996c4c9699d0, type: 3}
-  baseDamage: 30
+  prefab: {fileID: 1477722391941156, guid: 4b4193be53e751147ac305034c03fe35, type: 3}
+  baseDamage: 20
   headShotMultiplier: 2
-  baseRateOfFire: 300
+  baseRateOfFire: 500
   baseClipSize: 15
   reloadTime: 2
   modifiers: []
   isAutomatic: 0
+  isShotgun: 0
+  pelletCount: 0
+  range: 0

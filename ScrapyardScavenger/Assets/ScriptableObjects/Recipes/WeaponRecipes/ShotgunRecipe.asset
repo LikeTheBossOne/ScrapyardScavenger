@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a96de3144212bbb4c80bdb9b995b5ae2, type: 3}
+  m_Name: ShotgunRecipe
+  m_EditorClassIdentifier: 
+  resources:
+  - item: {fileID: 11400000, guid: 4661296ad2c59464886cd02c9bc06ac6, type: 2}
+    amount: 5
+  - item: {fileID: 11400000, guid: bd15b3686bf93da4282f3307859e9f05, type: 2}
+    amount: 3
+  - item: {fileID: 11400000, guid: 6c1a51b8ac2325446b83a944ddfc4f3a, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: 532d2393d3638a84882e487aaad5888c, type: 2}
+    amount: 6

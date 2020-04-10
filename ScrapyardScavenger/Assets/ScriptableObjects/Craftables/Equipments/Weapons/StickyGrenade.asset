@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e355be3db82155498316b1941511a6d, type: 3}
   m_Name: StickyGrenade
   m_EditorClassIdentifier: 
-  id: 5
+  id: 6
   name: Sticky Grenade
   description: An experimental version of the classic grenade, sticking to foes upon
     release to deal maximum damage.

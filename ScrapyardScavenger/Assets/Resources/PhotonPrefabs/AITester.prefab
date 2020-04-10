@@ -164,6 +164,7 @@ MonoBehaviour:
   wandRad: 0
   senses: {fileID: 0}
   weapons: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!114 &1705941308430962020
 MonoBehaviour:
   m_ObjectHideFlags: 0
