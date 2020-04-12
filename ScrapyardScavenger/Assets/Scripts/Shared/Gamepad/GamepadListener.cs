@@ -30,7 +30,10 @@ public class GamepadListener : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (gameObject.activeSelf) {
+		if (gameObject.activeSelf && Input.GetJoystickNames().Length > 0 && Input.GetJoystickNames()[0] != "") {
+			if (currentButton == null) {
+				ChangeCurrentButton(validButtons[selectIndex]);
+			}
 			if (Input.GetKeyDown("joystick button 0")) {
 				if (currentButton.GetComponent<Button>().interactable) {
 					currentButton.GetComponent<Button>().onClick.Invoke();
@@ -38,7 +41,7 @@ public class GamepadListener : MonoBehaviour
 			} else if (Input.GetKeyDown("joystick button 1")) {
 				backButton.GetComponent<Button>().onClick.Invoke();
 			} 
-			if (Input.GetKeyDown("joystick button 2")) {
+			if (Input.GetKeyDown("joystick button 3")) {
 				specialButton.GetComponent<Button>().onClick.Invoke();
 			}
 			if (Math.Abs(Input.GetAxis("Horizontal")) < 0.1 && Math.Abs(Input.GetAxis("Vertical")) < 0.1) {
@@ -59,10 +62,14 @@ public class GamepadListener : MonoBehaviour
 			}
 			ChangeCurrentButton(validButtons[selectIndex]);
 		}
+		if ((Input.GetJoystickNames().Length == 0 || Input.GetJoystickNames()[0] == "") && currentButton != null) {
+			Destroy(currentButton.GetComponent<UnityEngine.UI.Outline>());
+			currentButton = null;
+		}
     }
 
 	public void ChangeCurrentButton(GameObject newButton) {
-		if (newButton == null || newButton == currentButton) return;
+		if (newButton == null || newButton == currentButton || Input.GetJoystickNames().Length == 0) return;
 		if (currentButton != null) {
 			Destroy(currentButton.GetComponent<UnityEngine.UI.Outline>());
 		}

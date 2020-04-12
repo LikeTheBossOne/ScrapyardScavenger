@@ -89,7 +89,7 @@ public class SkillLevel : ScriptableObject
         
         if (!IsUnlocked) {
             Required_XP_Text.text = XPNeeded + " XP";
-			if (Input.GetJoystickNames().Length > 1) {
+			if (Input.GetJoystickNames().Length > 0 && Input.GetJoystickNames()[0] != "") {
 				Instructions_Text.text = "Press X to unlock!";
 			} else {
             	Instructions_Text.text = "Press B to unlock!";
