@@ -17,11 +17,12 @@ public class GunState : MonoBehaviour
         ammoCount = baseAmmo;
         bullet = audio[0];
         reload = audio[1];
+        reload.pitch /= gunType.reloadTime / reload.clip.length;
     }
 
     public void bulletSound()
     {
-        bullet.Play();
+        bullet.PlayOneShot(bullet.clip);
     }
 
     public void reloadSound()

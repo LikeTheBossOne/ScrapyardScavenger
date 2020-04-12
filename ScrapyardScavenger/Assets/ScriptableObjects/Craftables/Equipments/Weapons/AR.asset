@@ -16,13 +16,16 @@ MonoBehaviour:
   name: Assault Rifle
   description: This automatic firearm can mow down foes in an instant.
   showInInventory: 1
-  icon: {fileID: 21300000, guid: fa0abfdb66fc16e4da2799735607de16, type: 3}
+  icon: {fileID: 21300000, guid: 53ef668badc38d24dae5733fb696f6d3, type: 3}
   recipe: {fileID: 11400000, guid: f235bc78396b39c48a5f0e6c7592bc6d, type: 2}
-  prefab: {fileID: 1766406241958178707, guid: 78b28d2f1639042419884345402801b8, type: 3}
+  prefab: {fileID: 1000010074829930, guid: a2185de06c434b84e8a36835c77d3ca4, type: 3}
   baseDamage: 30
   headShotMultiplier: 2
   baseRateOfFire: 600
   baseClipSize: 25
-  reloadTime: 3
+  reloadTime: 2.5
   modifiers: []
   isAutomatic: 1
+  isShotgun: 0
+  pelletCount: 0
+  range: 0

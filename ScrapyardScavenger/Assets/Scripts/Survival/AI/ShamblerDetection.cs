@@ -7,7 +7,7 @@ using Photon.Pun;
 public class ShamblerDetection : MonoBehaviour
 {
     public float timeShotAt;
-    //in unity distance units
+    // in unity distance units
     public float visionLimit = 20.0F;
     public RectTransform detected;
     public InGamePlayerManager pManager;
@@ -27,9 +27,9 @@ public class ShamblerDetection : MonoBehaviour
         run = false;
         rigid = false;
     }
-    //Handles seeing, capped distance ray cast, currently a detection sphere
-    //try looking for rectangle transform
-    public bool visionCheck()
+    // Handles seeing, capped distance ray cast, currently a detection sphere
+    // try looking for rectangle transform
+    public bool VisionCheck()
     {
         bool success = false;
         //run = true;
@@ -48,10 +48,10 @@ public class ShamblerDetection : MonoBehaviour
                 foreach (var next in seen)
                 {
                     
-                    //will need to change this to rigid body later
+                    // will need to change this to rigid body later
                     if ((!self.Contains(next.collider) || next.rigidbody) && next.distance < closest.distance)
                     {
-                        //player object uses rigid body and doesn't have a collider
+                        // player object uses rigid body and doesn't have a collider
                         closest = next;
                         if (closest.rigidbody)
                         {
@@ -85,18 +85,19 @@ public class ShamblerDetection : MonoBehaviour
         }
         return success;
     }
-    //Handles being shot, probably an event handler in the future
-    public void gotShot(GameObject shooter)
+
+    public void GotShot(GameObject shooter)
     {
         timeShotAt = Time.time;
         detected = shooter.GetComponent<RectTransform>();
     }
+
     private double distance(Transform other)
     {
         return Mathf.Sqrt(Mathf.Pow(transform.position.x - other.position.x, 2) + Mathf.Pow(transform.position.y - other.position.y, 2) + Mathf.Pow(transform.position.z - other.position.z, 2));
     }
 
-    public bool playersExist()
+    public bool PlayersExist()
     {
         return pManager.players.Count > 0;
     }
