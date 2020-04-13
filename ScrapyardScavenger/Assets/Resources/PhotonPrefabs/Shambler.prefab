@@ -92,8 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e50051f1e501794468c3ec509f9fe560, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
-  health: 0
+  baseHealth: 65
   status: 0
 --- !u!114 &-544632408891006727
 MonoBehaviour:
@@ -128,6 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed77aae83a824a84aae0e88685864f7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lastState: 0
   currentState: 0
   moveTo: {x: 0, y: 0, z: 0}
   nav: {fileID: -2916611620778920040}
@@ -172,7 +172,6 @@ MonoBehaviour:
   spitRange: 10
   spitRecharge: 5
   spitDamage: 5
-  spitSize: 0
   projectile: {fileID: 7758600212226562078, guid: 0ac2452e7ddb1cf42a28cc2c934bf81f,
     type: 3}
   projectileName: AcidBall
