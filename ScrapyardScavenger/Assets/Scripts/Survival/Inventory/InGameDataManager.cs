@@ -103,6 +103,7 @@ public class InGameDataManager : MonoBehaviourPun, IOnEventCallback
 
 		if (Input.GetKeyDown(KeyCode.L) || Input.GetKeyDown("joystick button 1")) {
 			currentItem.Use(this);
+			GetComponent<BaseDataManager>().itemCounts[equipment[4].id]--;
 			GetComponent<BaseDataManager>().equipment[4] = null;
 		}
     }
