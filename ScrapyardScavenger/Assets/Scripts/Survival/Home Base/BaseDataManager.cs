@@ -83,19 +83,7 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
 
     public void SetupInScene()
     {
-        PlayerJoin();
         SetupEquipment();
-    }
-
-    private void PlayerJoin()
-    {
-        if (!photonView.IsMine)
-        {
-            object[] content = new object[] { };
-            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
-            SendOptions sendOptions = new SendOptions { Reliability = true };
-            PhotonNetwork.RaiseEvent((byte)NetworkCodes.PlayerJoined, content, raiseEventOptions, sendOptions);
-        }
     }
 
     private void SetupEquipment()
@@ -196,9 +184,29 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
 	}
 
 	[PunRPC]
-	public void TransferToInGame() {
-		Array.Copy(equipment, 0, inGameManager.currentWeapons, 0, 4);
-		inGameManager.currentItem = equipment[4] as Item;
-		inGameManager.currentArmor = equippedArmor;
-	}
+	public void TransferToInGame(int[] equipEnums, int armorEnum) {
+        foreach (int enu in equipEnums)
+        {
+            Debug.Log(photonView.ViewID + ": " + enu);
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            if (equipEnums[i] == -1)
+            {
+                equipment[i] = null;
+                inGameManager.currentWeapons[i] = null;
+            }
+            else
+            {
+                equipment[i] = weapons[equipEnums[i]];
+                inGameManager.currentWeapons[i] = weapons[equipEnums[i]];
+            }
+        }
+        // Array.Copy(equipment, 0, inGameManager.currentWeapons, 0, 4);
+        equipment[4] = equipEnums[4] == -1 ? null : items[equipEnums[4]];
+        inGameManager.currentItem = equipEnums[4] == -1 ? null : items[equipEnums[4]];
+
+        equippedArmor = armorEnum == -1 ? null : armors[armorEnum];
+        inGameManager.currentArmor = armorEnum == -1 ? null : armors[armorEnum];
+    }
 }

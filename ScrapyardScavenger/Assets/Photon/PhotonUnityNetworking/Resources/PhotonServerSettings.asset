@@ -57,5 +57,7 @@ MonoBehaviour:
   - RemoveBuyable
   - Idle
   - Walk
+  - Explosion
+  - SyncEquipment
   DisableAutoOpenWizard: 1
   ShowSettings: 0

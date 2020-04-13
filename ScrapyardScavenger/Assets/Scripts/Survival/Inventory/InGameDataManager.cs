@@ -7,7 +7,7 @@ using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InGameDataManager : MonoBehaviourPun, IOnEventCallback
+public class InGameDataManager : MonoBehaviourPun
 {
     public PlayerSceneManager sceneManager;
 
@@ -160,29 +160,7 @@ public class InGameDataManager : MonoBehaviourPun, IOnEventCallback
 		OnEquipmentSwitched?.Invoke();
 	}
 
-	public void OnEvent(EventData photonEvent)
-	{
-		byte eventCode = photonEvent.Code;
-		if (eventCode == (byte) NetworkCodes.PlayerJoined)
-		{
-			if (photonView.IsMine)
-			{
-				object[] content = new object[] { currentWeaponIndex, photonView.ViewID };
-				RaiseEventOptions raiseEventOptions = new RaiseEventOptions {Receivers = ReceiverGroup.Others};
-				SendOptions sendOptions = new SendOptions { Reliability = true };
-				PhotonNetwork.RaiseEvent((byte) NetworkCodes.PlayerJoinedResponse, content, raiseEventOptions, sendOptions);
-			}
-		}
-
-		else if (eventCode == (byte) NetworkCodes.PlayerJoinedResponse)
-		{
-			object[] data = (object[])photonEvent.CustomData;
-			if (photonView.ViewID == (int)data[1])
-				EquipWeapon((int)data[0]);
-		}
-	}
-
-	public Equipment getCurrentEquipment() {
+    public Equipment getCurrentEquipment() {
 		if (currentWeaponIndex == -1) return null;
 		return currentWeapons[currentWeaponIndex];
 	}
