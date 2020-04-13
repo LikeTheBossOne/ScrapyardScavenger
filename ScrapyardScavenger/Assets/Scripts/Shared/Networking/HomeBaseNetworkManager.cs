@@ -74,7 +74,6 @@ public class HomeBaseNetworkManager : MonoBehaviourPunCallbacks
                 StartCoroutine(StartGame());
             }
 
-            Debug.Log(playerController.GetPhotonView().IsMine);
             BaseDataManager bData = playerController.GetComponent<BaseDataManager>();
             int[] equipmentEnums = new int[5];
             for (int i = 0; i < bData.equipment.Length; i++)
@@ -98,7 +97,6 @@ public class HomeBaseNetworkManager : MonoBehaviourPunCallbacks
             {
                 armorEnum = bData.equippedArmor.id;
             }
-            Debug.Log(playerController.GetPhotonView().ViewID);
             playerController.GetPhotonView().RPC("TransferToInGame", RpcTarget.All, equipmentEnums, armorEnum);
             
         }

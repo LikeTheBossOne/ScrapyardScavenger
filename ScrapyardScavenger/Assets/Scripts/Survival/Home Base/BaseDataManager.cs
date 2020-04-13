@@ -100,10 +100,26 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
                 else if (i == 3) parent = grenadeParent;
                 else parent = medShotParent;
 
-                GameObject newObject = Instantiate(equip.prefab, parent.position, parent.rotation, parent);
-                newObject.transform.localPosition = Vector3.zero;
-                newObject.transform.localEulerAngles = Vector3.zero;
-                newObject.SetActive(false);
+                if (equip.id == (int) WeaponType.Frag)
+                {
+                    if (!photonView.IsMine) continue;
+                    GameObject obj = PhotonNetwork.Instantiate("PhotonPrefabs/Grenade", grenadeParent.position, Quaternion.identity);
+                    photonView.RPC("InstantiateGrenade", RpcTarget.All, obj.GetPhotonView().ViewID);
+                } 
+                else if (equip.id == (int) WeaponType.Sticky)
+                {
+                    if (!photonView.IsMine) continue;
+                    GameObject obj = PhotonNetwork.Instantiate("PhotonPrefabs/Sticky", grenadeParent.position, Quaternion.identity);
+                    photonView.RPC("InstantiateGrenade", RpcTarget.All, obj.GetPhotonView().ViewID);
+                }
+                else
+                {
+                    GameObject newObject = Instantiate(equip.prefab, parent.position, parent.rotation, parent);
+                    newObject.transform.localPosition = Vector3.zero;
+                    newObject.transform.localEulerAngles = Vector3.zero;
+                    newObject.SetActive(false);
+                }
+                
             }
         }
 
@@ -112,6 +128,17 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
     }
 
     #endregion Setup
+
+    [PunRPC]
+    public void InstantiateGrenade(int photonId)
+    {
+        GameObject grenade = PhotonView.Find(photonId).gameObject;
+        grenade.transform.SetParent(grenadeParent);
+        grenade.transform.localPosition = Vector3.zero;
+        grenade.transform.localEulerAngles = Vector3.zero;
+        grenade.SetActive(false);
+    }
+
 
 	[PunRPC]
     public void ClearEquipmentOnDeath()
@@ -185,10 +212,6 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
 
 	[PunRPC]
 	public void TransferToInGame(int[] equipEnums, int armorEnum) {
-        foreach (int enu in equipEnums)
-        {
-            Debug.Log(photonView.ViewID + ": " + enu);
-        }
         for (int i = 0; i < 4; i++)
         {
             if (equipEnums[i] == -1)
