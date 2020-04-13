@@ -116,7 +116,7 @@ MonoBehaviour:
   gunParent: {fileID: 2210166939918232469}
   meleeParent: {fileID: 0}
   grenadeParent: {fileID: 7547109781367294326}
-  medParent: {fileID: 0}
+  medParent: {fileID: 7547109781367294326}
 --- !u!114 &8629931284778483427
 MonoBehaviour:
   m_ObjectHideFlags: 0

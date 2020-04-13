@@ -104,7 +104,7 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
         {
             var equip = equipment[i];
 
-            if (equip != null)
+            if (equip != null && !(equip is Item))
             {
                 Transform parent;
                 if (i == 0 || i == 1) parent = gunParent;
