@@ -38,10 +38,10 @@ public class DisplayWeaponInfo : MonoBehaviour
 					weaponText.text = "Weapon 2";
 					break;
 				case 2:
-					weaponText.text = "Throwable";
+					weaponText.text = "Melee";
 					break;
 				case 3:
-					weaponText.text = "Melee";
+					weaponText.text = "Throwable";
 					break;
 				}
 				weaponImage.sprite = null;

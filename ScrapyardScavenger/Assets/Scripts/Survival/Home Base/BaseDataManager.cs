@@ -137,7 +137,7 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
 
 		equipment = new Equipment[5];
         equipment[0] = weapons[(int)WeaponType.Pistol];
-		weaponCounts[(int)WeaponType.Pistol]++;
+		weaponCounts[(int)WeaponType.Pistol] = 1;
 		equippedArmor = null;
     }
 	public Equipment[] getEquipment()

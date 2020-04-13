@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a7361f3a02a47848b4d5b281f0a69a3, type: 3}
+  m_Name: SMG
+  m_EditorClassIdentifier: 
+  id: 5
+  name: SMG
+  description: This weapons fires quickly but has relatively low power
+  showInInventory: 1
+  icon: {fileID: 21300000, guid: 58c00ff8ac5fbbd4fa9b067f29ee42fa, type: 3}
+  recipe: {fileID: 11400000, guid: 7fdf071c5d2bc2d43a942634156362e4, type: 2}
+  prefab: {fileID: 1189847200281728, guid: 45a95a282f15e7d4e8ca8a001336a7f1, type: 3}
+  baseDamage: 25
+  headShotMultiplier: 2
+  baseRateOfFire: 800
+  baseClipSize: 30
+  reloadTime: 2
+  modifiers: []
+  isAutomatic: 1
+  isShotgun: 0
+  pelletCount: 0
+  range: 0

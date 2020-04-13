@@ -17,6 +17,6 @@ MonoBehaviour:
   description: A long metal tube that is believed to have been part of a worn-out
     gun.
   showInInventory: 0
-  icon: {fileID: 21300000, guid: 1bcfbc6b95a2af94aa21aeb5a22ad9f7, type: 3}
+  icon: {fileID: 21300000, guid: ceded72ed9264584b9daeb003a181738, type: 3}
   imageSlotName: 
   type: 4

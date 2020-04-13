@@ -21,6 +21,9 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 	[Tooltip("UI Text to display Crosshair")]
 	[SerializeField]
 	private Text playerCrosshair;
+
+	private Text WaveCounter;
+
 	private Coroutine hitMarkerCoroutine;
 
     #endregion
@@ -29,6 +32,7 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 		playerHealthSlider = GameObject.FindWithTag("Health").GetComponent<Slider>();
         playerAmmoCount = GameObject.FindWithTag("AmmoCount").GetComponent<Text>();
 		playerCrosshair = GameObject.FindWithTag("crosshair").GetComponent<Text>();
+		WaveCounter = GameObject.Find("WaveCounter").GetComponent<Text>();
 
 		// The photon view is mine check is necessary here, otherwise everyone's health bar will be reset
 		if (!photonView.IsMine) return;
@@ -49,7 +53,7 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 
 	IEnumerator HitMarker()
 	{
-		playerCrosshair.fontSize = 30;
+		playerCrosshair.fontSize = 40;
 		yield return new WaitForSeconds(0.3f); 
 		playerCrosshair.fontSize = 24;
 	}
@@ -96,6 +100,43 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 	{
 		if (photonView.IsMine)
 			hitMarkerCoroutine = StartCoroutine(HitMarker());
+	}
+
+	[PunRPC]
+	public void UpdateWaveInUI(int wave)
+    {
+		if (photonView.IsMine)
+        {
+			StartCoroutine(FadeOutRoutine(wave));
+			//WaveCounter.text = "" + wave;
+        }
+    }
+
+	private IEnumerator FadeOutRoutine(int wave)
+	{
+		//Text text = GetComponent<Text>();
+		Color originalColor = WaveCounter.color;
+		float fadeOutTime = 1.5f;
+		for (float t = 0.01f; t < fadeOutTime; t += Time.deltaTime)
+		{
+			WaveCounter.color = Color.Lerp(originalColor, Color.clear, Mathf.Min(1, t / fadeOutTime));
+			yield return null;
+		}
+		WaveCounter.text = "" + wave;
+		NotificationSystem.Instance.Notify(new Notification($"Wave {wave} has started!", NotificationType.Neutral));
+		StartCoroutine(FadeInRoutine(originalColor));
+	}
+
+	private IEnumerator FadeInRoutine(Color visibleColor)
+	{
+		//Text text = GetComponent<Text>();
+		Color clearColor = WaveCounter.color;
+		float fadeInTime = 1.5f;
+		for (float t = 0.01f; t < fadeInTime; t += Time.deltaTime)
+		{
+			WaveCounter.color = Color.Lerp(clearColor, visibleColor, Mathf.Min(1, t / fadeInTime));
+			yield return null;
+		}
 	}
 
 	#endregion
