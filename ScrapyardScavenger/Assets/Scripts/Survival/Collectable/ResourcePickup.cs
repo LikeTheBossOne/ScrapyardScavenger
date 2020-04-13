@@ -4,14 +4,17 @@ using Photon.Pun;
 using UnityEngine;
 
 
-public class ResourcePickup : MonoBehaviour, IPunObservable
+public class ResourcePickup : MonoBehaviourPun
 {
     public ResourceType type;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("OnStart", RpcTarget.All, (int)type);
+        }
     }
 
     // Update is called once per frame
@@ -63,17 +66,10 @@ public class ResourcePickup : MonoBehaviour, IPunObservable
         }
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    [PunRPC]
+    public void OnStart(int rType)
     {
-        if (stream.IsWriting)
-        {
-            // We own this player; we are sending data to others
-            stream.SendNext((int)type);
-        }
-        else
-        {
-            // Other player; receiving data
-            this.type = (ResourceType)stream.ReceiveNext();
-        }
+        this.type = (ResourceType)rType;
     }
+
 }
