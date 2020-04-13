@@ -39,6 +39,8 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     
     private AudioSource source;
 
+    private bool justFell;
+
     void Start()
     {
         if (photonView.IsMine)
@@ -146,6 +148,11 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
 
         // States
         bool isGrounded = Physics.Raycast(groundDetector.position, Vector3.down, 0.1f, ground);
+        if (isGrounded && !justFell)
+        {
+            justFell = true;
+            animator.SetBool("Grounded", true);
+        }
         bool isJumping = jumpPressed && isGrounded;
         if (!isSprinting && sprintPressed && (verticalInput > 0) && !isJumping && isGrounded && !isCoolingDown)
         {
@@ -169,6 +176,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         if (isJumping)
         {
             myRigidbody.AddForce(Vector3.up * jumpForce);
+            
         }
 
 
@@ -198,28 +206,42 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
 
         if (animator)
         {
-            //if (isSprinting)
-            //{
-            //    gameObject.GetPhotonView().RPC("Run", RpcTarget.All);
-            //}
-            //else if (Mathf.Abs(verticalInput) > deadZone || Mathf.Abs(horizontalInput) > deadZone)
-            //{
-            //    gameObject.GetPhotonView().RPC("Walk", RpcTarget.All);
-            //}
-            //else
-            //{
-            //    gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
-            //}
-            if (isSprinting || Mathf.Abs(verticalInput) > deadZone || Mathf.Abs(horizontalInput) > deadZone)
+            if (isGrounded && !isJumping)
             {
-                Debug.Log(isSprinting);
-                Debug.Log(Mathf.Abs(verticalInput));
-                Debug.Log(Mathf.Abs(horizontalInput));
-                gameObject.GetPhotonView().RPC("Move", RpcTarget.All, adjustedSpeed);    
+                //if (isSprinting)
+                //{
+                //    gameObject.GetPhotonView().RPC("Run", RpcTarget.All);
+                //}
+                //else if (Mathf.Abs(verticalInput) > deadZone || Mathf.Abs(horizontalInput) > deadZone)
+                //{
+                //    gameObject.GetPhotonView().RPC("Walk", RpcTarget.All);
+                //}
+                //else
+                //{
+                //    gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
+                //}
+                if (isSprinting || Mathf.Abs(verticalInput) > deadZone || Mathf.Abs(horizontalInput) > deadZone)
+                {
+                    Debug.Log(isSprinting);
+                    Debug.Log(Mathf.Abs(verticalInput));
+                    Debug.Log(Mathf.Abs(horizontalInput));
+                    gameObject.GetPhotonView().RPC("Move", RpcTarget.All, adjustedSpeed);
+                }
+                else
+                {
+                    gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
+                }
             }
-            else
+            else if (isJumping)
             {
-                gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
+                //animator.SetBool("Jump", true);
+                gameObject.GetPhotonView().RPC("Jump", RpcTarget.All);
+            }
+            else if(justFell)
+            {
+                //animator.SetBool("Grounded", false);
+                gameObject.GetPhotonView().RPC("Fall", RpcTarget.All);
+                justFell = false;
             }
             
         }
@@ -273,6 +295,11 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         Debug.Log("Done cooling down");
     }
 
+    public void JumpEnd()
+    {
+        animator.SetBool("Jump", false);
+    }
+
     [PunRPC]
     public void Walk()
     {
@@ -306,5 +333,23 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
             calculated = 1;
         }
         animator.SetFloat("speed", calculated);
+    }
+
+    [PunRPC]
+    public void Jump()
+    {
+        animator.SetBool("Jump", true);
+    }
+
+    [PunRPC]
+    public void Land()
+    {
+        animator.SetBool("Grounded", true);
+    }
+
+    [PunRPC]
+    public void Fall()
+    {
+        animator.SetBool("Grounded", false);
     }
 }
