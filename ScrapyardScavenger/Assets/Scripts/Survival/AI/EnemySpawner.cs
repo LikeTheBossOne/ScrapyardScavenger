@@ -70,10 +70,6 @@ public class EnemySpawner : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            photonView.RPC("ToggleSpawning", RpcTarget.All);
-        }
         if (PhotonNetwork.IsMasterClient)
         {
             // if the zone manager hasn't started yet
