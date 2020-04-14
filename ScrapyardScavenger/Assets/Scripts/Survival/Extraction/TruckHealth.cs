@@ -46,7 +46,7 @@ public class TruckHealth : MonoBehaviourPunCallbacks
                 }
                 else
                 {
-                    player.GetComponent<Health>().pHud.truckTakeDamage(damage);
+                    player.GetPhotonView().RPC("TruckTakeDamage", RpcTarget.All, (float) damage);
                 }
             }
 

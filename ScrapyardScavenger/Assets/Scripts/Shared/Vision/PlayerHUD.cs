@@ -82,7 +82,8 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 	}
 
 	//The truck health bar updates
-	public void truckTakeDamage(float dmg)
+	[PunRPC]
+	public void TruckTakeDamage(float dmg)
 	{
 		if (getTruckHealthSlider().value > 0)
 			truckHealthSlider.value -= dmg;
