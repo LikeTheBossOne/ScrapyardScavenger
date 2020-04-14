@@ -22,6 +22,8 @@ public class EquipPopupGenerator : MonoBehaviour
 	public GameObject unEqButton;
 	public GameObject noneText;
 
+	public GameObject padListener;
+
 	// Start is called before the first frame update
     void Start()
     {
@@ -247,6 +249,7 @@ public class EquipPopupGenerator : MonoBehaviour
 			}
 			break;
 		}
+		padListener.GetComponent<GamepadListener>().SetValidButtons(generated, 1);
 	}
 
 	public void Unequip()

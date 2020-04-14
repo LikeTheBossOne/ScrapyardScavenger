@@ -13,6 +13,7 @@ public class HomeBaseUIManager : MonoBehaviour
 	public GameObject skillCanvas;
 	public GameObject equipPopup;
 	public GameObject generator;
+	public GameObject eqScreenListener;
 
 	public int playerCount;
 
@@ -69,6 +70,7 @@ public class HomeBaseUIManager : MonoBehaviour
 	{
 		if (!equipPopup.activeSelf) {
 			equipPopup.SetActive(true);
+			eqScreenListener.SetActive(false);
 			generator.GetComponent<EquipPopupGenerator>().GenerateEquipment(slotIdx);
 		}
 	}
@@ -76,6 +78,7 @@ public class HomeBaseUIManager : MonoBehaviour
 	public void CloseEquipUI()
 	{
 		equipPopup.SetActive(false);
+		eqScreenListener.SetActive(true);
 	}
 
 	public void quitGame() {
