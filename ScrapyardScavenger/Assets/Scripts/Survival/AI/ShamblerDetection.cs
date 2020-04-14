@@ -9,7 +9,7 @@ public class ShamblerDetection : MonoBehaviour
     public float timeShotAt;
     // in unity distance units
     public float visionLimit = 20.0F;
-    public RectTransform detected;
+    public Transform detected;
     public InGamePlayerManager pManager;
     public bool success;
     public bool run;
@@ -17,7 +17,8 @@ public class ShamblerDetection : MonoBehaviour
     public Transform position;
     public Collider[] hitBox;
     private bool rigid;
-    
+    public Transform extractionTruck;
+
     // Start is called before the first frame update
     private void OnEnable()
     {
@@ -26,6 +27,7 @@ public class ShamblerDetection : MonoBehaviour
         success = false;
         run = false;
         rigid = false;
+        extractionTruck = GameObject.Find("ExtractionTruck").GetComponent<Transform>();
     }
     // Handles seeing, capped distance ray cast, currently a detection sphere
     // try looking for rectangle transform
@@ -41,7 +43,7 @@ public class ShamblerDetection : MonoBehaviour
         closest.distance = Mathf.Infinity;
         foreach (GameObject obj in pManager.players)
         {
-            RectTransform p = obj.GetComponent<RectTransform>();
+            Transform p = obj.GetComponent<Transform>();
 
             if (distance(p) < visionLimit) {
                 RaycastHit[] seen = Physics.RaycastAll(transform.position, p.position-transform.position, visionLimit);
@@ -71,7 +73,7 @@ public class ShamblerDetection : MonoBehaviour
             if (closest.rigidbody && closest.rigidbody.detectCollisions && pManager.players.Contains(closest.rigidbody.gameObject))
             {
                 success = true;
-                detected = closest.rigidbody.GetComponentInParent<RectTransform>();
+                detected = closest.rigidbody.GetComponentInParent<Transform>();
             }
         }
         else
@@ -80,16 +82,58 @@ public class ShamblerDetection : MonoBehaviour
             {
                 success = true;
                 //detected = the playerObject that hit belongs to
-                detected = closest.collider.GetComponentInParent<RectTransform>();
+                detected = closest.collider.GetComponentInParent<Transform>();
             }
         }
+
+        if (distance(extractionTruck) < visionLimit)
+        {
+            RaycastHit[] seen = Physics.RaycastAll(transform.position, extractionTruck.position - transform.position, visionLimit);
+            foreach (var next in seen)
+            {
+                // will need to change this to rigid body later
+                if ((!self.Contains(next.collider) || next.rigidbody) && next.distance < closest.distance)
+                {
+                    // player object uses rigid body and doesn't have a collider
+                    closest = next;
+                    if (closest.rigidbody)
+                    {
+                        rigid = true;
+                    }
+                    else
+                    {
+                        rigid = false;
+                    }
+                }
+            }
+
+            if (rigid)
+            {
+                if (closest.rigidbody && closest.rigidbody.detectCollisions && GameObject.Find("ExtractionTruck").transform == (closest.rigidbody.gameObject.transform))
+                {
+                    success = true;
+                    detected = closest.rigidbody.GetComponentInParent<Transform>();
+                }
+            }
+            else
+            {
+                if (closest.collider && GameObject.Find("ExtractionTruck").transform == (closest.collider.gameObject.transform))
+                {
+                    success = true;
+                    //detected = the playerObject that hit belongs to
+                    detected = closest.collider.GetComponentInParent<Transform>();
+                }
+            }
+        }
+
+       
         return success;
     }
 
     public void GotShot(GameObject shooter)
     {
         timeShotAt = Time.time;
-        detected = shooter.GetComponent<RectTransform>();
+        detected = shooter.GetComponent<Transform>();
     }
 
     private double distance(Transform other)
