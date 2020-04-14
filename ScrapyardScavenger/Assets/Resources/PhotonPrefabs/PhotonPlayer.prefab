@@ -293,6 +293,7 @@ MonoBehaviour:
   playerHealthSlider: {fileID: 0}
   playerAmmoCount: {fileID: 0}
   playerCrosshair: {fileID: 0}
+  truckHealthSlider: {fileID: 0}
 --- !u!114 &1889014333739709194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -763,7 +764,7 @@ GameObject:
   - component: {fileID: 8198342462965292699}
   m_Layer: 11
   m_Name: Collision
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
