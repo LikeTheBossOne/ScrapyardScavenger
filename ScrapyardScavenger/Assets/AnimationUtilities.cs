@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class JumpAnimation : MonoBehaviour
+public class AnimationUtilities : MonoBehaviour
 {
     private Animator animator;
     // Start is called before the first frame update

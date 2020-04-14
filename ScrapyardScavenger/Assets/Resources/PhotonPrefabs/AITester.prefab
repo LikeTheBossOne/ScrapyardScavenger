@@ -164,6 +164,7 @@ MonoBehaviour:
   wandRad: 0
   senses: {fileID: 0}
   weapons: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!114 &1705941308430962020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,9 +198,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e50051f1e501794468c3ec509f9fe560, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
-  health: 0
+  baseHealth: 30
   status: 0
+  damage: 10
 --- !u!114 &1705941308430962026
 MonoBehaviour:
   m_ObjectHideFlags: 0
