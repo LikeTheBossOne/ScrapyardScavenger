@@ -69,7 +69,11 @@ public class Extraction : MonoBehaviourPunCallbacks
             if (isLookingAtTruck)
             {
                 // show button pop up
-                evacuateCanvas.GetComponentInChildren<Text>().text = "Press B to escape!";
+				if (Input.GetJoystickNames().Length > 0 && Input.GetJoystickNames()[0] != "") {
+					evacuateCanvas.GetComponentInChildren<Text>().text = "Press X to escape!";
+				} else {
+                	evacuateCanvas.GetComponentInChildren<Text>().text = "Press B to escape!";
+				}
             }
             else
             {
@@ -91,7 +95,7 @@ public class Extraction : MonoBehaviourPunCallbacks
         }
 
         // if the player pressed the button to leave
-        if (Input.GetKeyDown(KeyCode.B) && isLookingAtTruck && !IsLeaving())
+		if ((Input.GetKeyDown(KeyCode.B) || Input.GetKeyDown("joystick button 0")) && isLookingAtTruck && !IsLeaving())
         {
             photonView.RPC("ReadyToLeave", RpcTarget.All);
         }
@@ -137,8 +141,21 @@ public class Extraction : MonoBehaviourPunCallbacks
 
     public void OnDeath(GameObject deadPlayer)
     {
-        if (isLeader) photonView.RPC("CancelLeave", RpcTarget.All);
-        else deadPlayer.GetPhotonView().RPC("CancelLeave", RpcTarget.All);
+        // if this is the dead player, call the RPC on normal
+        deadPlayer.GetPhotonView().RPC("CancelLeave", RpcTarget.All);
+        if (GameControllerSingleton.instance.aliveCount == 2)
+        {
+            if (gameObject == deadPlayer)
+            {
+                // then just get your other player and call it on that photon view
+                GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetPhotonView().RPC("CancelLeave", RpcTarget.All);
+            }
+            else
+            {
+                // call it on yourself
+                photonView.RPC("CancelLeave", RpcTarget.All);
+            }
+        }
     }
 
     #endregion
@@ -196,6 +213,9 @@ public class Extraction : MonoBehaviourPunCallbacks
         isLeader = false;
         if (GameControllerSingleton.instance.aliveCount == 2)
             GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetComponent<Extraction>().SetLeaving(false);
+
+        // reset the UI's text since the dead player's UI won't update after this
+        evacuateCanvas.GetComponentInChildren<Text>().text = "";
     }
 
     public bool IsOtherPlayerLeaving()

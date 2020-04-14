@@ -37,14 +37,40 @@ public class BuyDebris : MonoBehaviourPun
 
             if (skillManager.CanBuyWithTemp(cost))
             {
-                buyText.text = $"Press B to clear Debris\n[Cost: {cost} XP]";
+				if (Input.GetJoystickNames().Length > 0 && Input.GetJoystickNames()[0] != "") {
+					buyText.text = $"Press X to clear Debris\n[Cost: {cost} XP]";
+				} else {
+					buyText.text = $"Press B to clear Debris\n[Cost: {cost} XP]";
+				}
 
-                if (Input.GetKeyDown(KeyCode.B))
+				if (Input.GetKeyDown(KeyCode.B) || Input.GetKeyDown("joystick button 0"))
                 {
                     if (skillManager.BuyWithTemp(cost))
                     {
                         int index = buyableObj.parent.GetSiblingIndex();
                         PersistentBuyableManager.Instance.gameObject.GetPhotonView().RPC("RemoveBuyable", RpcTarget.All, index);
+                        // notify the EnemySpawner as well
+                        // but FIRST determine which zone this should unlock
+                        Zones thisZone;
+                        Zones[] possibleZones = buyableObj.parent.GetComponent<Buyable>().ZonesToUnlock;
+                        if (possibleZones.Length == 1)
+                        {
+                            thisZone = possibleZones[0];
+                        }
+                        else // Length == 2 then
+                        {
+                            // see which zone this player is in!
+                            if (GetComponent<ZoneManager>().GetCurrentZone() == possibleZones[0])
+                            {
+                                // then do the other one
+                                thisZone = possibleZones[1];
+                            }
+                            else thisZone = possibleZones[0];
+                        }
+
+
+                        GameObject.Find("EnemySpawner").GetPhotonView().RPC("UnlockZone", 
+                            RpcTarget.All, (int) thisZone);
                     }
                 }
             }

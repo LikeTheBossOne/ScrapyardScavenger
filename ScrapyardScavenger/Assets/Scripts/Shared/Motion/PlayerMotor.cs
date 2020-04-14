@@ -37,6 +37,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     
     private AudioSource source;
 
+
     void Start()
     {
         if (photonView.IsMine)
@@ -45,7 +46,6 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         }
 
         Camera.main.enabled = false;
-
         myRigidbody = GetComponent<Rigidbody>();
         source = GetComponent<AudioSource>();
         Debug.Log(source);
@@ -136,8 +136,8 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         // Inputs
         float verticalInput = Input.GetAxisRaw("Vertical");
         float horizontalInput = Input.GetAxisRaw("Horizontal");
-        bool sprintPressed = Input.GetKey(KeyCode.LeftShift);
-        bool jumpPressed = Input.GetKey(KeyCode.Space);
+		bool sprintPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKeyDown("joystick button 8");
+		bool jumpPressed = Input.GetKey(KeyCode.Space) || Input.GetKeyDown("joystick button 3");
         
 
         // States

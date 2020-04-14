@@ -13,8 +13,10 @@ public class ShamblerAI : MonoBehaviourPun
         chase,
         spit,
         bite,
+        Invalid
    }
 
+    public State lastState;
     public State currentState;
     public Vector3 moveTo;
     public NavMeshAgent nav;
@@ -31,6 +33,7 @@ public class ShamblerAI : MonoBehaviourPun
     public ShamblerDetection senses;
     public ShamblerAttacks weapons;
     public Animator animator;
+    public Transform extractionTruck;
     // Start is called before the first frame update
     private void OnEnable()
     {
@@ -49,6 +52,7 @@ public class ShamblerAI : MonoBehaviourPun
         {
             Debug.Log(animator.parameters);
         }
+        extractionTruck = GameObject.Find("ExtractionTruck").GetComponent<Transform>();
         //playerOffset = 5;
     }
 
@@ -63,6 +67,7 @@ public class ShamblerAI : MonoBehaviourPun
 
     public void ChangeState()
     {
+        lastState = currentState;
         if (senses.PlayersExist())
         {
             if (senses.VisionCheck())
@@ -111,7 +116,7 @@ public class ShamblerAI : MonoBehaviourPun
             //System.Console.WriteLine("Player seen.");
             transform.LookAt(senses.detected.position, transform.up);
             SetDestination(senses.detected.position);
-            if (animator)
+            if (animator && currentState != lastState)
             {
                 photonView.RPC("Walk", RpcTarget.All);
                 //animator.SetBool("walking", true);
@@ -137,7 +142,7 @@ public class ShamblerAI : MonoBehaviourPun
             //project target spot on circle
             Vector3 moveTarg = center + wandRad * dir;
             //correct towards closest player
-            RectTransform close = FindClosestPlayer();
+            Transform close = FindClosestPlayer();
 
             Vector3 toPlayer = close.position - moveTarg;
             toPlayer = toPlayer.normalized;
@@ -156,7 +161,7 @@ public class ShamblerAI : MonoBehaviourPun
             //transform.LookAt(moveTarg, transform.up);
             moveTo = moveTarg;
             SetDestination(moveTo);
-            if (animator)
+            if (animator && currentState != lastState)
             {
                 photonView.RPC("Walk", RpcTarget.All);
                 //animator.SetBool("walking", true);
@@ -166,7 +171,7 @@ public class ShamblerAI : MonoBehaviourPun
         {
             transform.LookAt(senses.detected.position, transform.up);
             SetDestination(senses.detected.position);
-            if (animator)
+            if (animator && currentState != lastState)
             {
                 photonView.RPC("Walk", RpcTarget.All);
                 //animator.SetBool("walking", true);
@@ -178,7 +183,7 @@ public class ShamblerAI : MonoBehaviourPun
             SetDestination(GetComponentInParent<Transform>().position);
             gameObject.transform.LookAt(senses.detected, gameObject.transform.up);
             weapons.Bite(senses.detected.gameObject);
-            if (animator)
+            if (animator && currentState != lastState)
             {
                 photonView.RPC("Idle", RpcTarget.All);
                 //animator.SetBool("walking", false);
@@ -187,7 +192,7 @@ public class ShamblerAI : MonoBehaviourPun
         if (currentState == State.idle)
         {
             SetDestination(gameObject.transform.position);
-            if (animator)
+            if (animator && currentState != lastState)
             {
                 photonView.RPC("Idle", RpcTarget.All);
                 //animator.SetBool("walking", false);
@@ -196,15 +201,15 @@ public class ShamblerAI : MonoBehaviourPun
 
     }
 
-    RectTransform FindClosestPlayer()
+    Transform FindClosestPlayer()
     {
-        RectTransform closest = null;
+        Transform closest = null;
         double cDist = Mathf.Infinity;
 
         // Find closest player or vehicle
         foreach (GameObject obj in pManager.players)
         {
-            RectTransform player = obj.GetComponent<RectTransform>();
+            Transform player = obj.GetComponent<Transform>();
 
             double dist = DistanceToOther(player);
             if (dist < cDist)
@@ -212,6 +217,10 @@ public class ShamblerAI : MonoBehaviourPun
                 closest = player;
                 cDist = dist;
             }
+        }
+        if (DistanceToOther(extractionTruck) < cDist)
+        {
+            return extractionTruck;
         }
         return closest;
     }
@@ -221,7 +230,7 @@ public class ShamblerAI : MonoBehaviourPun
         nav.SetDestination(destination);
     }
 
-    double DistanceToOther(RectTransform other)
+    double DistanceToOther(Transform other)
     {
         return Mathf.Sqrt(Mathf.Pow(other.position.x - transform.position.x, 2) + Mathf.Pow(other.position.y - transform.position.y, 2) + Mathf.Pow(other.position.z - transform.position.z, 2));
     }
