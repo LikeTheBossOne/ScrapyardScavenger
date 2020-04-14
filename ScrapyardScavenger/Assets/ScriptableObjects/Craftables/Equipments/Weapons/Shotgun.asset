@@ -28,4 +28,4 @@ MonoBehaviour:
   isAutomatic: 0
   isShotgun: 1
   pelletCount: 8
-  range: 30
+  range: 20

@@ -148,12 +148,15 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
 
             for (int i = 0; i < gun.pelletCount; i++)
             {
-                Vector3 direction = Random.insideUnitCircle;
-                direction.z = 30;
-                direction = transform.TransformDirection(direction.normalized);
-                Debug.DrawRay(eyeCam.position, direction * 30, Color.blue, 5);
+                var rad = Random.Range(0, 360f) * Mathf.Deg2Rad;
+                var spreadX = Random.Range(0.0f, 0.1f) * Mathf.Cos(rad);
+                var spreadY = Random.Range(0.0f, 0.1f) * Mathf.Sin(rad);
+                var deviation = new Vector3(spreadX, spreadY, 0);
+                var dir = deviation + eyeCam.forward;
+
+                Debug.DrawRay(eyeCam.position, dir * gun.range, Color.blue, 5);
                 RaycastHit hit = new RaycastHit();
-                if (Physics.Raycast(eyeCam.position, direction, out hit, gun.range, enemyLayer))
+                if (Physics.Raycast(eyeCam.position, dir, out hit, gun.range, enemyLayer))
                 {
                     Debug.Log("hit");
                     GameObject newHole = Instantiate(bulletHolePrefab, hit.point + hit.normal * 0.001f, Quaternion.identity);

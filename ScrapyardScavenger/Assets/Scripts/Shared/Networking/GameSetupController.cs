@@ -21,6 +21,7 @@ public class GameSetupController : MonoBehaviour
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PhotonPlayer"), player1StartPosition, Quaternion.Euler(0, 90, 0));
 
             PhotonNetwork.Instantiate("PhotonPrefabs/BuyableManager", Vector3.zero, Quaternion.identity);
+            PhotonNetwork.Instantiate("PhotonPrefabs/ZoneManagerPref", Vector3.zero, Quaternion.identity);
         }
         else
         {

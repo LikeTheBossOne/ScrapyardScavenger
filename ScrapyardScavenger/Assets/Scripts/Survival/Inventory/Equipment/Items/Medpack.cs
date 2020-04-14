@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 /**
  * Used by the player to recover health
@@ -11,13 +12,23 @@ public class Medpack : Item
     public override void Use(InGameDataManager manager)
     {
         // use medpack
-        float difference = manager.GetComponent<Health>().maxHealth - manager.GetComponent<Health>().currentHealth;
-        manager.GetComponent<Health>().Heal((int) difference);
+		InGamePlayerManager pManager = FindObjectOfType<InGamePlayerManager>();
+		GameObject myPlayer = null;
+		foreach (var player in pManager.players)
+		{
+			if (player.GetPhotonView().IsMine)
+			{
+				myPlayer = player;
+			}
+		}
+
+        float difference = myPlayer.GetComponent<Health>().maxHealth - myPlayer.GetComponent<Health>().currentHealth;
+        myPlayer.GetComponent<Health>().Heal((int) difference);
 
         // change the health in the UI as well
-        manager.GetComponent<PlayerHUD>().heal(difference);
+        myPlayer.GetComponent<PlayerHUD>().heal(difference);
 
-        // remove this from the manager?
+        // remove this from the manager
 		manager.currentItem = null;
     }
 }

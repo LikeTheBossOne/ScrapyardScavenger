@@ -49,6 +49,28 @@ public class BuyDebris : MonoBehaviourPun
                     {
                         int index = buyableObj.parent.GetSiblingIndex();
                         PersistentBuyableManager.Instance.gameObject.GetPhotonView().RPC("RemoveBuyable", RpcTarget.All, index);
+                        // notify the EnemySpawner as well
+                        // but FIRST determine which zone this should unlock
+                        Zones thisZone;
+                        Zones[] possibleZones = buyableObj.parent.GetComponent<Buyable>().ZonesToUnlock;
+                        if (possibleZones.Length == 1)
+                        {
+                            thisZone = possibleZones[0];
+                        }
+                        else // Length == 2 then
+                        {
+                            // see which zone this player is in!
+                            if (GetComponent<ZoneManager>().GetCurrentZone() == possibleZones[0])
+                            {
+                                // then do the other one
+                                thisZone = possibleZones[1];
+                            }
+                            else thisZone = possibleZones[0];
+                        }
+
+
+                        GameObject.Find("EnemySpawner").GetPhotonView().RPC("UnlockZone", 
+                            RpcTarget.All, (int) thisZone);
                     }
                 }
             }
