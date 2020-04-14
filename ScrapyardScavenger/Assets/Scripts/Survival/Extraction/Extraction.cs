@@ -137,8 +137,21 @@ public class Extraction : MonoBehaviourPunCallbacks
 
     public void OnDeath(GameObject deadPlayer)
     {
-        if (isLeader) photonView.RPC("CancelLeave", RpcTarget.All);
-        else deadPlayer.GetPhotonView().RPC("CancelLeave", RpcTarget.All);
+        // if this is the dead player, call the RPC on normal
+        deadPlayer.GetPhotonView().RPC("CancelLeave", RpcTarget.All);
+        if (GameControllerSingleton.instance.aliveCount == 2)
+        {
+            if (gameObject == deadPlayer)
+            {
+                // then just get your other player and call it on that photon view
+                GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetPhotonView().RPC("CancelLeave", RpcTarget.All);
+            }
+            else
+            {
+                // call it on yourself
+                photonView.RPC("CancelLeave", RpcTarget.All);
+            }
+        }
     }
 
     #endregion
@@ -196,6 +209,9 @@ public class Extraction : MonoBehaviourPunCallbacks
         isLeader = false;
         if (GameControllerSingleton.instance.aliveCount == 2)
             GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetComponent<Extraction>().SetLeaving(false);
+
+        // reset the UI's text since the dead player's UI won't update after this
+        evacuateCanvas.GetComponentInChildren<Text>().text = "";
     }
 
     public bool IsOtherPlayerLeaving()

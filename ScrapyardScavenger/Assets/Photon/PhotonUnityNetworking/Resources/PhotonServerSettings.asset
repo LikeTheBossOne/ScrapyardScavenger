@@ -57,5 +57,21 @@ MonoBehaviour:
   - RemoveBuyable
   - Idle
   - Walk
+  - SetCurrentZone
+  - UnlockZone
+  - UpdateActiveZones
+  - UnlockNewZone
+  - ModifyHealth
+  - ToggleSpawning
+  - UpdateWaveInUI
+  - OnStart
+  - CleanUp
+  - Die
+  - Explosion
+  - Fall
+  - Jump
+  - Land
+  - Move
+  - Run
   DisableAutoOpenWizard: 1
   ShowSettings: 0

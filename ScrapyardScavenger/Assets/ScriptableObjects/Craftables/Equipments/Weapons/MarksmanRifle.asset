@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a7361f3a02a47848b4d5b281f0a69a3, type: 3}
+  m_Name: MarksmanRifle
+  m_EditorClassIdentifier: 
+  id: 2
+  name: Marksman Rifle
+  description: This long-range weapon has a lot of stopping power but a low fire rate
+  showInInventory: 1
+  icon: {fileID: 21300000, guid: fa0abfdb66fc16e4da2799735607de16, type: 3}
+  recipe: {fileID: 11400000, guid: 766024949ab293547ac738b3845c1937, type: 2}
+  prefab: {fileID: 1828804762383484, guid: a2a1e0cb3c7a1954a8c8db5b1d3e8759, type: 3}
+  baseDamage: 50
+  headShotMultiplier: 2
+  baseRateOfFire: 300
+  baseClipSize: 12
+  reloadTime: 3
+  modifiers: []
+  isAutomatic: 0
+  isShotgun: 0
+  pelletCount: 0
+  range: 0

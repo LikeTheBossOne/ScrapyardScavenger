@@ -5,50 +5,43 @@ using Photon.Pun;
 
 public class ShamblerStats : Stats, IPunObservable
 {
-    
-    public float damage { get; private set; }
-    
+    private ShamblerAttacks attackComponent;
+
     // Start is called before the first frame update
     private void OnEnable()
     {
-        health = 10;
-        damage = 10;
+        health = baseHealth;
         status = 0;
+        attackComponent = GetComponent<ShamblerAttacks>();
     }
 
-    // Update is called once per frame
-    void Update()
+    /*public void ModifyDamage(float modifier)
     {
-        
-
-    }
+        // multiply spit damage and melee damage
+        attackComponent.meleeDamage = (int) (modifier * attackComponent.meleeDamage);
+        attackComponent.spitDamage = (int) (modifier * attackComponent.spitDamage);
+    }*/
 
     [PunRPC]
     void TakeDamageShambler(int damage, int shooterID)
     {
         //, GameObject damager, int atkStatus
         //note GameObjects can be passed by RPC
-        health = health - damage;
-        Debug.Log("Enemy Damaged");
-
-
+        health -= damage;
 
         if (health <= 0)
         {
             if (PhotonNetwork.IsMasterClient)
             {
                 GameObject spawner = FindObjectOfType<EnemySpawner>().gameObject;
-                Debug.Log("Spawner: " + spawner);
                 spawner.GetPhotonView().RPC("onShamblerKill", RpcTarget.All);
                 // notify the player so he can change his XP
                 // find the player first
                 GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-                Debug.Log("Player obj length: " + players.Length);
                 foreach (GameObject player in players)
                 {
                     if (player.name == "Body")
                     {
-                        Debug.Log("Ignoring body");
                         continue;
                     }
                     if (player.name == "Collision")
@@ -61,10 +54,9 @@ public class ShamblerStats : Stats, IPunObservable
                     }
 
                 }
+                PhotonNetwork.Destroy(gameObject);
             }
-
-
-            Destroy(gameObject);
+            
 
         }
     }

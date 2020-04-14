@@ -108,8 +108,20 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(wait);
 
         Gun gun = inGameManager.getCurrentEquipment() as Gun;
-        gunParent.GetChild(inGameManager.currentWeaponIndex).GetComponent<GunState>().ammoCount = gun.baseClipSize;
-        pHud.AmmoChanged(gun.baseClipSize, gun.baseClipSize);
+
+        if (gun.isShotgun)
+        {
+            gunParent.GetChild(inGameManager.currentWeaponIndex).GetComponent<GunState>().ammoCount++;
+        }
+        else
+        {
+            gunParent.GetChild(inGameManager.currentWeaponIndex).GetComponent<GunState>().ammoCount = gun.baseClipSize;
+        }
+        
+
+        
+        pHud.AmmoChanged(gunState.ammoCount, gun.baseClipSize);
+        
 
         inGameManager.isReloading = false;
 		this.GetComponent<PlayerHUD>().crossHairReloaded();
@@ -119,55 +131,104 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
     [PunRPC]
     void Shoot()
     {
+        Gun gun = inGameManager.getCurrentEquipment() as Gun;
+        if (gun == null)
+        {
+            Debug.Log("BAD");
+            return;
+        }
+
         GunState gunState = gunParent.GetChild(inGameManager.currentWeaponIndex).GetComponent<GunState>();
         gunState.bulletSound();
         Transform eyeCam = transform.Find("Cameras/Main Player Cam");
-        RaycastHit hit = new RaycastHit();
-        if (Physics.Raycast(eyeCam.position, eyeCam.forward, out hit, 1000f, enemyLayer))
+        
+
+        if (gun.isShotgun)
         {
-            GameObject newHole = Instantiate(bulletHolePrefab, hit.point + hit.normal * 0.001f, Quaternion.identity);
-            newHole.transform.LookAt(hit.point + hit.normal);
-            Destroy(newHole, 5f);
 
-            if (photonView.IsMine && hit.collider.gameObject.layer == 11)
+            for (int i = 0; i < gun.pelletCount; i++)
             {
-                Gun gun = inGameManager.getCurrentEquipment() as Gun;
-                if (gun == null)
-                {
-                    Debug.Log("BAD");
-                    return;
-                }
-               // Debug.Log("Collider: " + hit.collider);
-               // Debug.Log("GameObject: " + hit.collider.gameObject);
-               // Debug.Log("Transform: " + hit.collider.gameObject.transform);
-                //Debug.Log("Parent: " + hit.collider.gameObject.transform.parent);
-                //Debug.Log("Parent's GameObject: " + hit.collider.gameObject.transform.parent.gameObject);
-                GameObject enemy;
-                if (hit.collider.gameObject.transform.parent)
-                {
-                    enemy = hit.collider.gameObject.transform.parent.gameObject;
-                    
-                }
-                else
-                {
-                    enemy = hit.collider.gameObject;
-                    
-                }
+                var rad = Random.Range(0, 360f) * Mathf.Deg2Rad;
+                var spreadX = Random.Range(0.0f, 0.1f) * Mathf.Cos(rad);
+                var spreadY = Random.Range(0.0f, 0.1f) * Mathf.Sin(rad);
+                var deviation = new Vector3(spreadX, spreadY, 0);
+                var dir = deviation + eyeCam.forward;
 
-				this.GetComponent<PlayerHUD>().hitCrossHair();
-                if (enemy.tag == "Shambler")
+                Debug.DrawRay(eyeCam.position, dir * gun.range, Color.blue, 5);
+                RaycastHit hit = new RaycastHit();
+                if (Physics.Raycast(eyeCam.position, dir, out hit, gun.range, enemyLayer))
                 {
-					enemy.GetPhotonView().RPC("TakeDamageShambler", RpcTarget.All, (int)gun.baseDamage, photonView.ViewID);
+                    Debug.Log("hit");
+                    GameObject newHole = Instantiate(bulletHolePrefab, hit.point + hit.normal * 0.001f, Quaternion.identity);
+                    newHole.transform.LookAt(hit.point + hit.normal);
+                    Destroy(newHole, 5f);
+
+                    if (photonView.IsMine && hit.collider.gameObject.layer == 11)
+                    {
+                        GameObject enemy;
+                        if (hit.collider.gameObject.transform.parent)
+                        {
+                            enemy = hit.collider.gameObject.transform.parent.gameObject;
+
+                        }
+                        else
+                        {
+                            enemy = hit.collider.gameObject;
+
+                        }
+
+                        this.GetComponent<PlayerHUD>().hitCrossHair();
+                        if (enemy.tag == "Shambler")
+                        {
+                            enemy.GetPhotonView().RPC("TakeDamageShambler", RpcTarget.All, (int)gun.baseDamage, photonView.ViewID);
+                        }
+                        else
+                        {
+                            enemy.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (int)gun.baseDamage);
+                        }
+
+                    }
                 }
-                else
-                {
-                    enemy.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (int)gun.baseDamage);
-                }
-                
             }
-
         }
+        else
+        {
+            RaycastHit hit = new RaycastHit();
+            if (Physics.Raycast(eyeCam.position, eyeCam.forward, out hit, 1000f, enemyLayer))
+            {
+                GameObject newHole = Instantiate(bulletHolePrefab, hit.point + hit.normal * 0.001f, Quaternion.identity);
+                newHole.transform.LookAt(hit.point + hit.normal);
+                Destroy(newHole, 5f);
 
+                if (photonView.IsMine && hit.collider.gameObject.layer == 11)
+                {
+                    GameObject enemy;
+                    if (hit.collider.gameObject.transform.parent)
+                    {
+                        enemy = hit.collider.gameObject.transform.parent.gameObject;
+
+                    }
+                    else
+                    {
+                        enemy = hit.collider.gameObject;
+
+                    }
+
+                    this.GetComponent<PlayerHUD>().hitCrossHair();
+                    if (enemy.tag == "Shambler")
+                    {
+                        enemy.GetPhotonView().RPC("TakeDamageShambler", RpcTarget.All, (int)gun.baseDamage, photonView.ViewID);
+                    }
+                    else
+                    {
+                        enemy.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (int)gun.baseDamage);
+                    }
+
+                }
+
+            }
+        }
+        
         if (photonView.IsMine)
         {
             gunState = gunParent.GetChild(inGameManager.currentWeaponIndex).GetComponent<GunState>();

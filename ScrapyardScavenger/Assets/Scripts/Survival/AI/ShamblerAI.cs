@@ -14,8 +14,10 @@ public class ShamblerAI : MonoBehaviourPun
         spit,
         bite,
         dead,
+        Invalid,
    }
 
+    public State lastState;
     public State currentState;
     public Vector3 moveTo;
     public NavMeshAgent nav;
@@ -66,6 +68,7 @@ public class ShamblerAI : MonoBehaviourPun
 
     public void ChangeState()
     {
+        lastState = currentState;
         if (senses.PlayersExist())
         {
             if (senses.VisionCheck())
@@ -118,7 +121,7 @@ public class ShamblerAI : MonoBehaviourPun
             lookSpot.y = gameObject.transform.position.y;
             transform.LookAt(lookSpot, transform.up);
             SetDestination(senses.detected.position);
-            if (animator)
+            if (animator && currentState != lastState)
             {
 
                 photonView.RPC("Walk", RpcTarget.All);
@@ -166,7 +169,7 @@ public class ShamblerAI : MonoBehaviourPun
             //transform.LookAt(moveTarg, transform.up);
             moveTo = moveTarg;
             SetDestination(moveTo);
-            if (animator)
+            if (animator && currentState != lastState)
             {
 
                 photonView.RPC("Walk", RpcTarget.All);
@@ -181,7 +184,7 @@ public class ShamblerAI : MonoBehaviourPun
             lookSpot.y = gameObject.transform.position.y;
             transform.LookAt(lookSpot, transform.up);
             SetDestination(senses.detected.position);
-            if (animator)
+            if (animator && currentState != lastState)
             {
 
                 photonView.RPC("Walk", RpcTarget.All);
@@ -197,7 +200,7 @@ public class ShamblerAI : MonoBehaviourPun
             lookSpot.y = gameObject.transform.position.y;
             gameObject.transform.LookAt(lookSpot, gameObject.transform.up);
             weapons.Bite(senses.detected.gameObject);
-            if (animator)
+            if (animator && currentState != lastState)
             {
 
                 photonView.RPC("Idle", RpcTarget.All);
@@ -209,7 +212,7 @@ public class ShamblerAI : MonoBehaviourPun
         if (currentState == State.idle)
         {
             SetDestination(gameObject.transform.position);
-            if (animator)
+            if (animator && currentState != lastState)
             {
 
                 photonView.RPC("Idle", RpcTarget.All);
