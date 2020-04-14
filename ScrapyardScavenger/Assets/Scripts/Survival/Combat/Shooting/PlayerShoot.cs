@@ -54,7 +54,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
             && gunState.ammoCount > 0)
         {
             // Semi-Auto
-            if (Input.GetMouseButtonDown((int)MouseButton.LeftMouse)
+			if ((Input.GetMouseButtonDown((int)MouseButton.LeftMouse)) || (Input.GetKeyDown("joystick button 5"))
                 && !gun.isAutomatic
                 && Time.time >= nextFireTime)
             {
@@ -72,7 +72,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
             }
 
             // Reload
-            if (Input.GetKeyDown(KeyCode.R)
+			if ((Input.GetKeyDown(KeyCode.R) || (Input.GetKeyDown("joystick button 4")))
                 && gunState.ammoCount < gunState.baseAmmo)
             {
                 reloadCoroutine = StartCoroutine(Reload(gun.reloadTime));
@@ -158,11 +158,6 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
                 RaycastHit hit = new RaycastHit();
                 if (Physics.Raycast(eyeCam.position, dir, out hit, gun.range, enemyLayer))
                 {
-                    Debug.Log("hit");
-                    GameObject newHole = Instantiate(bulletHolePrefab, hit.point + hit.normal * 0.001f, Quaternion.identity);
-                    newHole.transform.LookAt(hit.point + hit.normal);
-                    Destroy(newHole, 5f);
-
                     if (photonView.IsMine && hit.collider.gameObject.layer == 11)
                     {
                         GameObject enemy;
@@ -196,10 +191,6 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
             RaycastHit hit = new RaycastHit();
             if (Physics.Raycast(eyeCam.position, eyeCam.forward, out hit, 1000f, enemyLayer))
             {
-                GameObject newHole = Instantiate(bulletHolePrefab, hit.point + hit.normal * 0.001f, Quaternion.identity);
-                newHole.transform.LookAt(hit.point + hit.normal);
-                Destroy(newHole, 5f);
-
                 if (photonView.IsMine && hit.collider.gameObject.layer == 11)
                 {
                     GameObject enemy;

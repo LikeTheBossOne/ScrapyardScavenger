@@ -21,7 +21,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     public GameObject cameraParent;
     public Transform groundDetector;
     public LayerMask ground;
-    
+
 
     private Rigidbody myRigidbody;
     private float baseFOV;
@@ -30,13 +30,13 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     private bool isSprinting;
     private bool isCoolingDown;
     private float deadZone;
-    
+
     public Animator animator;
-    
+
     private bool isPaused;
 
     private Coroutine sprintCoroutine;
-    
+
     private AudioSource source;
 
     private bool justFell;
@@ -49,11 +49,10 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         }
 
         Camera.main.enabled = false;
-
         myRigidbody = GetComponent<Rigidbody>();
         source = GetComponent<AudioSource>();
         Debug.Log(source);
-        
+
         normalCam.gameObject.SetActive(true);
         baseFOV = normalCam.fieldOfView;
         sprintFOVModifier = 1.2f;
@@ -142,9 +141,9 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         // Inputs
         float verticalInput = Input.GetAxisRaw("Vertical");
         float horizontalInput = Input.GetAxisRaw("Horizontal");
-        bool sprintPressed = Input.GetKey(KeyCode.LeftShift);
-        bool jumpPressed = Input.GetKey(KeyCode.Space);
-        
+		bool sprintPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKeyDown("joystick button 8");
+		bool jumpPressed = Input.GetKey(KeyCode.Space) || Input.GetKeyDown("joystick button 3");
+
 
         // States
         bool isGrounded = Physics.Raycast(groundDetector.position, Vector3.down, 0.1f, ground);
@@ -152,7 +151,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         if (!isSprinting && sprintPressed && (verticalInput > 0) && !isJumping && isGrounded && !isCoolingDown)
         {
             sprintCoroutine = StartCoroutine(SprintRoutine(sprintLimit));
-            
+
         }
         else
         {
@@ -171,7 +170,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         if (isJumping)
         {
             myRigidbody.AddForce(Vector3.up * jumpForce);
-            
+
         }
 
 
@@ -192,7 +191,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         Vector3 targetVelocity = transform.TransformDirection(direction) * adjustedSpeed * Time.fixedDeltaTime;
         targetVelocity.y = myRigidbody.velocity.y;
         myRigidbody.velocity = targetVelocity;
-        
+
 
         // Sprinting FOV
         normalCam.fieldOfView = isSprinting
@@ -232,7 +231,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
                         gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
                     }
                 }
-                
+
             }
             else if (isJumping)
             {
@@ -245,9 +244,9 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
                 gameObject.GetPhotonView().RPC("Fall", RpcTarget.All);
                 justFell = false;
             }
-            
+
         }
-        
+
 
         pastSprintPressed = sprintPressed;
     }

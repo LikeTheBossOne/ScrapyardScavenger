@@ -4,9 +4,9 @@ using UnityEngine;
 
 public enum XPRewards
 {
-    KillShambler = 30,
-    KillCharger = 75,
+    KillShambler = 70,
+    KillCharger = 200,
     TwoMinutes = 100,
     FiveMinutes = 500,
-    CollectResource = 10
+    CollectResource = 20
 }

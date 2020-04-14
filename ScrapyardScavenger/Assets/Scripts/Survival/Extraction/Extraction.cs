@@ -69,7 +69,11 @@ public class Extraction : MonoBehaviourPunCallbacks
             if (isLookingAtTruck)
             {
                 // show button pop up
-                evacuateCanvas.GetComponentInChildren<Text>().text = "Press B to escape!";
+				if (Input.GetJoystickNames().Length > 0 && Input.GetJoystickNames()[0] != "") {
+					evacuateCanvas.GetComponentInChildren<Text>().text = "Press X to escape!";
+				} else {
+                	evacuateCanvas.GetComponentInChildren<Text>().text = "Press B to escape!";
+				}
             }
             else
             {
@@ -91,7 +95,7 @@ public class Extraction : MonoBehaviourPunCallbacks
         }
 
         // if the player pressed the button to leave
-        if (Input.GetKeyDown(KeyCode.B) && isLookingAtTruck && !IsLeaving())
+		if ((Input.GetKeyDown(KeyCode.B) || Input.GetKeyDown("joystick button 0")) && isLookingAtTruck && !IsLeaving())
         {
             photonView.RPC("ReadyToLeave", RpcTarget.All);
         }
