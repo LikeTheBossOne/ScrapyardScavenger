@@ -46,6 +46,11 @@ public class AcidSpit : MonoBehaviour
                 collObj.GetPhotonView().RPC("TakeDamage", RpcTarget.All, Shooter.GetComponent<ShamblerAttacks>().spitDamage);
                 PhotonNetwork.Destroy(gameObject);
             }
+            else if (collObj.CompareTag("Truck")) 
+            {
+                collObj.GetPhotonView().RPC("TakeDamage", RpcTarget.All, Shooter.GetComponent<ShamblerAttacks>().spitDamage);
+                PhotonNetwork.Destroy(gameObject);
+            }
             else if (((1 << collObj.layer) & hardLayers.value) != 0)
             {
                 PhotonNetwork.Destroy(gameObject);
