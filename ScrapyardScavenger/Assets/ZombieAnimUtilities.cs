@@ -19,6 +19,11 @@ public class ZombieAnimUtilities : MonoBehaviour
 
     public void Die()
     {
-        gameObject.GetComponentInParent<Transform>().gameObject.GetPhotonView().RPC("CleanUp", RpcTarget.All);
+        gameObject.GetComponentInParent<PhotonView>().RPC("CleanUp", RpcTarget.All);
+    }
+
+    public void EndAttack()
+    {
+        gameObject.GetComponentInParent<PhotonView>().RPC("EndSpit", RpcTarget.All);
     }
 }

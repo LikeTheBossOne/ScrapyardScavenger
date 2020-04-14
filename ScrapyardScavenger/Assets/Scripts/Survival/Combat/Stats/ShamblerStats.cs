@@ -54,7 +54,8 @@ public class ShamblerStats : Stats, IPunObservable
                     }
 
                 }
-                PhotonNetwork.Destroy(gameObject);
+                gameObject.GetPhotonView().RPC("Die", RpcTarget.All);
+                
             }
             
 
@@ -75,6 +76,7 @@ public class ShamblerStats : Stats, IPunObservable
     [PunRPC]
     public void CleanUp()
     {
-        Destroy(gameObject);
+        Debug.Log("Shambler Cleaned Up.");
+        PhotonNetwork.Destroy(gameObject);
     }
 }

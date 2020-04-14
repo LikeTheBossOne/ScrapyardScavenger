@@ -148,11 +148,6 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
 
         // States
         bool isGrounded = Physics.Raycast(groundDetector.position, Vector3.down, 0.1f, ground);
-        if (isGrounded && !justFell)
-        {
-            justFell = true;
-            animator.SetBool("Grounded", true);
-        }
         bool isJumping = jumpPressed && isGrounded;
         if (!isSprinting && sprintPressed && (verticalInput > 0) && !isJumping && isGrounded && !isCoolingDown)
         {
@@ -206,31 +201,38 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
 
         if (animator)
         {
-            if (isGrounded && !isJumping)
+            if (isGrounded)
             {
-                //if (isSprinting)
-                //{
-                //    gameObject.GetPhotonView().RPC("Run", RpcTarget.All);
-                //}
-                //else if (Mathf.Abs(verticalInput) > deadZone || Mathf.Abs(horizontalInput) > deadZone)
-                //{
-                //    gameObject.GetPhotonView().RPC("Walk", RpcTarget.All);
-                //}
-                //else
-                //{
-                //    gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
-                //}
-                if (isSprinting || Mathf.Abs(verticalInput) > deadZone || Mathf.Abs(horizontalInput) > deadZone)
+                if (!justFell)
                 {
-                    Debug.Log(isSprinting);
-                    Debug.Log(Mathf.Abs(verticalInput));
-                    Debug.Log(Mathf.Abs(horizontalInput));
-                    gameObject.GetPhotonView().RPC("Move", RpcTarget.All, adjustedSpeed);
+                    justFell = true;
+                    gameObject.GetPhotonView().RPC("Land", RpcTarget.All);
+                    //animator.SetBool("Grounded", true);
                 }
-                else
+                else if (!isJumping)
                 {
-                    gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
+                    //if (isSprinting)
+                    //{
+                    //    gameObject.GetPhotonView().RPC("Run", RpcTarget.All);
+                    //}
+                    //else if (Mathf.Abs(verticalInput) > deadZone || Mathf.Abs(horizontalInput) > deadZone)
+                    //{
+                    //    gameObject.GetPhotonView().RPC("Walk", RpcTarget.All);
+                    //}
+                    //else
+                    //{
+                    //    gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
+                    //}
+                    if (isSprinting || Mathf.Abs(verticalInput) > deadZone || Mathf.Abs(horizontalInput) > deadZone)
+                    {
+                        gameObject.GetPhotonView().RPC("Move", RpcTarget.All, adjustedSpeed);
+                    }
+                    else
+                    {
+                        gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
+                    }
                 }
+                
             }
             else if (isJumping)
             {
@@ -345,6 +347,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     public void Land()
     {
         animator.SetBool("Grounded", true);
+        animator.SetBool("Jump", false);
     }
 
     [PunRPC]

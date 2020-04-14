@@ -187,7 +187,7 @@ public class ShamblerAI : MonoBehaviourPun
             if (animator && currentState != lastState)
             {
 
-                photonView.RPC("Walk", RpcTarget.All);
+                photonView.RPC("Spit", RpcTarget.All);
                 //animator.SetBool("walking", true);
 
             }
@@ -203,7 +203,7 @@ public class ShamblerAI : MonoBehaviourPun
             if (animator && currentState != lastState)
             {
 
-                photonView.RPC("Idle", RpcTarget.All);
+                photonView.RPC("Spit", RpcTarget.All);
 
                 //animator.SetBool("walking", false);
 
@@ -270,10 +270,24 @@ public class ShamblerAI : MonoBehaviourPun
     [PunRPC]
     public void Die()
     {
+        SetDestination(GetComponentInParent<Transform>().position);
         currentState = State.dead;
         if (animator)
         {
             animator.SetBool("Dead", true);
         }
     }
+
+    [PunRPC]
+    public void Spit()
+    {
+        animator.SetBool("Spit", true);
+    }
+
+    [PunRPC]
+    public void EndSpit()
+    {
+        animator.SetBool("Spit", false);
+    }
+
 }
