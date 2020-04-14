@@ -85,8 +85,12 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 	[PunRPC]
 	public void TruckTakeDamage(float dmg)
 	{
-		if (getTruckHealthSlider().value > 0)
-			truckHealthSlider.value -= dmg;
+		if (photonView.IsMine)
+        {
+			if (getTruckHealthSlider().value > 0)
+				truckHealthSlider.value -= dmg;
+		}
+		
 	}
 
 	public void heal(float healAmt) {
