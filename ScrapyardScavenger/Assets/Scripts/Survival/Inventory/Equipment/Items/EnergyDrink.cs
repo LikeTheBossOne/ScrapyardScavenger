@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 /**
  * Used by the player to increase defense temporarily
@@ -12,8 +13,17 @@ public class EnergyDrink : Item
 
     public override void Use(InGameDataManager manager)
     {
-        // use energy drink
-        manager.GetComponent<PlayerMotor>().Energize(seconds);
+		InGamePlayerManager pManager = FindObjectOfType<InGamePlayerManager>();
+		GameObject myPlayer = null;
+		foreach (var player in pManager.players)
+		{
+			if (player.GetPhotonView().IsMine)
+			{
+				myPlayer = player;
+			}
+		}
+		// use energy drink
+        myPlayer.GetComponent<PlayerMotor>().Energize(seconds);
 
         // remove this from the manager?
 		manager.currentItem = null;

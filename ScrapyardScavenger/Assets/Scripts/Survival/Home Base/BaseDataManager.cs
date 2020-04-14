@@ -38,8 +38,8 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
      * The equipment array is structured like the following:
      *   [0]: Weapon 1
      *   [1]: Weapon 2
-     *   [2]: Throwable
-     *   [3]: Melee
+     *   [2]: Free slot (Melee is now deprecated)
+     *   [3]: Throwable
      *   [4]: Item
      */
     public Equipment[] equipment = null;
@@ -104,7 +104,7 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
         {
             var equip = equipment[i];
 
-            if (equip != null)
+            if (equip != null && !(equip is Item))
             {
                 Transform parent;
                 if (i == 0 || i == 1) parent = gunParent;
@@ -130,7 +130,7 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
     {
 		if (equipment[0] != null) weaponCounts[equipment[0].id]--;
 		if (equipment[1] != null) weaponCounts[equipment[1].id]--;
-		if (equipment[2] != null) weaponCounts[equipment[2].id]--;
+		if (equipment[2] != null) weaponCounts[equipment[2].id]--;  // Not really needed but sure why not.
 		if (equipment[3] != null) weaponCounts[equipment[3].id]--;
 		if (equippedArmor != null) armorCounts[equippedArmor.id]--;
 		if (equipment[4] != null) itemCounts[equipment[4].id]--;
