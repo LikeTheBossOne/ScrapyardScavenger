@@ -35,6 +35,21 @@ public class TruckHealth : MonoBehaviourPunCallbacks
             currentHealth -= damage;
             Debug.Log("Truck took " + damage + " damage! Truck has " + currentHealth + " left!!");
             
+            GameObject[] playersArray = GameObject.FindGameObjectsWithTag("Player");
+            Debug.Log("Player obj length: " + playersArray.Length);
+            foreach (GameObject player in playersArray)
+            {
+                if (player.name == "Body")
+                {
+                    Debug.Log("Ignoring body");
+                    continue;
+                }
+                else
+                {
+                    player.GetComponent<Health>().pHud.truckTakeDamage(damage);
+                }
+            }
+
             if (currentHealth <= 0)
             {
                 GameObject[] players = GameObject.FindGameObjectsWithTag("Player");

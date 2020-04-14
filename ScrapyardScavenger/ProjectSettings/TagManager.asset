@@ -28,6 +28,7 @@ TagManager:
   - slot4Text
   - Buyables
   - Truck
+  - TruckHealth
   layers:
   - Default
   - TransparentFX
