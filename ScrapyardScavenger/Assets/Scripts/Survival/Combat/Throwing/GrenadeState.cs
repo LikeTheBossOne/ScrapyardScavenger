@@ -4,7 +4,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class GrenadeState : MonoBehaviour
+public class GrenadeState : MonoBehaviourPun
 {
     private bool thrown = false;
     public Grenade grenadeType;
@@ -33,7 +33,9 @@ public class GrenadeState : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameObject.active && Input.GetMouseButtonUp(0) && !thrown)
+        if (!photonView.IsMine) return;
+
+        if (gameObject.activeSelf && Input.GetMouseButtonUp(0) && !thrown)
         {
             igdm = GetComponentInParent<Transform>().GetComponentInParent<PlayerControllerLoader>().inGameDataManager;
             Rigidbody rb = gameObject.AddComponent<Rigidbody>() as Rigidbody;
@@ -50,6 +52,7 @@ public class GrenadeState : MonoBehaviour
             r = rb;
         }
     }
+
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -80,6 +83,6 @@ public class GrenadeState : MonoBehaviour
                 }
             }
         }
-        Destroy(this.gameObject);
+        PhotonNetwork.Destroy(this.gameObject);
     }
 }

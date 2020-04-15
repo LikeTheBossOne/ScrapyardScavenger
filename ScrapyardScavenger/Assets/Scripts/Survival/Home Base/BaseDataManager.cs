@@ -83,19 +83,7 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
 
     public void SetupInScene()
     {
-        PlayerJoin();
         SetupEquipment();
-    }
-
-    private void PlayerJoin()
-    {
-        if (!photonView.IsMine)
-        {
-            object[] content = new object[] { };
-            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
-            SendOptions sendOptions = new SendOptions { Reliability = true };
-            PhotonNetwork.RaiseEvent((byte)NetworkCodes.PlayerJoined, content, raiseEventOptions, sendOptions);
-        }
     }
 
     private void SetupEquipment()
@@ -112,10 +100,26 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
                 else if (i == 3) parent = grenadeParent;
                 else parent = medShotParent;
 
-                GameObject newObject = Instantiate(equip.prefab, parent.position, parent.rotation, parent);
-                newObject.transform.localPosition = Vector3.zero;
-                newObject.transform.localEulerAngles = Vector3.zero;
-                newObject.SetActive(false);
+                if (equip.id == (int) WeaponType.Frag)
+                {
+                    if (!photonView.IsMine) continue;
+                    GameObject obj = PhotonNetwork.Instantiate("PhotonPrefabs/Grenade", grenadeParent.position, Quaternion.identity);
+                    photonView.RPC("InstantiateGrenade", RpcTarget.All, obj.GetPhotonView().ViewID);
+                } 
+                else if (equip.id == (int) WeaponType.Sticky)
+                {
+                    if (!photonView.IsMine) continue;
+                    GameObject obj = PhotonNetwork.Instantiate("PhotonPrefabs/Sticky", grenadeParent.position, Quaternion.identity);
+                    photonView.RPC("InstantiateGrenade", RpcTarget.All, obj.GetPhotonView().ViewID);
+                }
+                else
+                {
+                    GameObject newObject = Instantiate(equip.prefab, parent.position, parent.rotation, parent);
+                    newObject.transform.localPosition = Vector3.zero;
+                    newObject.transform.localEulerAngles = Vector3.zero;
+                    newObject.SetActive(false);
+                }
+                
             }
         }
 
@@ -124,6 +128,17 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
     }
 
     #endregion Setup
+
+    [PunRPC]
+    public void InstantiateGrenade(int photonId)
+    {
+        GameObject grenade = PhotonView.Find(photonId).gameObject;
+        grenade.transform.SetParent(grenadeParent);
+        grenade.transform.localPosition = Vector3.zero;
+        grenade.transform.localEulerAngles = Vector3.zero;
+        grenade.SetActive(false);
+    }
+
 
 	[PunRPC]
     public void ClearEquipmentOnDeath()
@@ -196,9 +211,25 @@ public class BaseDataManager : MonoBehaviourPunCallbacks
 	}
 
 	[PunRPC]
-	public void TransferToInGame() {
-		Array.Copy(equipment, 0, inGameManager.currentWeapons, 0, 4);
-		inGameManager.currentItem = equipment[4] as Item;
-		inGameManager.currentArmor = equippedArmor;
-	}
+	public void TransferToInGame(int[] equipEnums, int armorEnum) {
+        for (int i = 0; i < 4; i++)
+        {
+            if (equipEnums[i] == -1)
+            {
+                equipment[i] = null;
+                inGameManager.currentWeapons[i] = null;
+            }
+            else
+            {
+                equipment[i] = weapons[equipEnums[i]];
+                inGameManager.currentWeapons[i] = weapons[equipEnums[i]];
+            }
+        }
+        // Array.Copy(equipment, 0, inGameManager.currentWeapons, 0, 4);
+        equipment[4] = equipEnums[4] == -1 ? null : items[equipEnums[4]];
+        inGameManager.currentItem = equipEnums[4] == -1 ? null : items[equipEnums[4]];
+
+        equippedArmor = armorEnum == -1 ? null : armors[armorEnum];
+        inGameManager.currentArmor = armorEnum == -1 ? null : armors[armorEnum];
+    }
 }

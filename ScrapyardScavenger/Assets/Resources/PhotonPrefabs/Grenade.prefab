@@ -599,6 +599,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3072453071526701978}
   - component: {fileID: 4869742580903834787}
+  - component: {fileID: -8945923036312276266}
+  - component: {fileID: 3359149581192647775}
   m_Layer: 0
   m_Name: Grenade
   m_TagString: Untagged
@@ -634,3 +636,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grenadeType: {fileID: 11400000, guid: be1e568827325594ba3dd28cc9f823dd, type: 2}
+  c: []
+--- !u!114 &-8945923036312276266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8522743113488895210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 3359149581192647775}
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &3359149581192647775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8522743113488895210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 0
+  m_SynchronizeScale: 0
