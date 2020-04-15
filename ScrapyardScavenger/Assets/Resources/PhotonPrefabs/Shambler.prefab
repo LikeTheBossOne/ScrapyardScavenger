@@ -191,7 +191,7 @@ MonoBehaviour:
   spitDamage: 5
   projectile: {fileID: 7758600212226562078, guid: 0ac2452e7ddb1cf42a28cc2c934bf81f,
     type: 3}
-  projectileName: AcidBall
+  projectileName: Magic fire 0
 --- !u!114 &1718154227718052486
 MonoBehaviour:
   m_ObjectHideFlags: 0

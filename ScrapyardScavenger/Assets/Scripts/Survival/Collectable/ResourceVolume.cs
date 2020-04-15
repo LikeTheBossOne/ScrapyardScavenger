@@ -84,7 +84,7 @@ public class ResourceVolume : MonoBehaviourPun
                 {
                     // Set collectable
                     GameObject objToSpawn = PhotonNetwork.Instantiate(
-                        Path.Combine("PhotonPrefabs", "Collectable"),
+                        Path.Combine("PhotonPrefabs", "First_aid_kit_1_Mat"),
                         hit.point + new Vector3(0, collectable.transform.localScale.y / 2, 0),
                         Quaternion.identity
                     );
