@@ -66,6 +66,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         pastSprintPressed = false;
         animator = GetComponentInChildren<Animator>();
         deadZone = 0.01f;
+        justFell = false;
         // check to see if the player has the Endurance skill?
         SkillLevel enduranceLevel = GetComponent<PlayerControllerLoader>().skillManager.GetSkillByName("Endurance");
         if (enduranceLevel != null)
