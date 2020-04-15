@@ -7,12 +7,15 @@ public class ShamblerStats : Stats, IPunObservable
 {
     private ShamblerAttacks attackComponent;
 
+    private bool isDead;
+
     // Start is called before the first frame update
     private void OnEnable()
     {
         health = baseHealth;
         status = 0;
         attackComponent = GetComponent<ShamblerAttacks>();
+        isDead = false;
     }
 
     /*public void ModifyDamage(float modifier)
@@ -29,8 +32,9 @@ public class ShamblerStats : Stats, IPunObservable
         //note GameObjects can be passed by RPC
         health -= damage;
 
-        if (health <= 0)
+        if (health <= 0 && !isDead)
         {
+            isDead = true;
             if (PhotonNetwork.IsMasterClient)
             {
                 GameObject spawner = FindObjectOfType<EnemySpawner>().gameObject;

@@ -764,7 +764,7 @@ GameObject:
   - component: {fileID: 8198342462965292699}
   m_Layer: 11
   m_Name: Collision
-  m_TagString: Untagged
+  m_TagString: PlayerCollider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -822,6 +822,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1260225194326574506}
     m_Modifications:
+    - target: {fileID: -8936748002689186597, guid: 10e98683550ccfa4a94e6a60ffbff865,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b473d2dbc3df47f4180f1e7647543b91, type: 2}
     - target: {fileID: -6057140222963153312, guid: 10e98683550ccfa4a94e6a60ffbff865,
         type: 3}
       propertyPath: m_Controller
@@ -882,11 +887,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2442353587255427133, guid: 10e98683550ccfa4a94e6a60ffbff865,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: af7ee246303972a4e970cde0512e99f9, type: 2}
     - target: {fileID: -927199367670048503, guid: 10e98683550ccfa4a94e6a60ffbff865,
         type: 3}
       propertyPath: m_Name
       value: BAKE_TEST_Pistol_Idle
       objectReference: {fileID: 0}
+    - target: {fileID: 6867800236663408212, guid: 10e98683550ccfa4a94e6a60ffbff865,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 194a8e2f6b2c9474ca67d01b0cd1f5cd, type: 2}
+    - target: {fileID: 9012142986414347593, guid: 10e98683550ccfa4a94e6a60ffbff865,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a5aaee4111611af43b5abbff184fe5fa, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10e98683550ccfa4a94e6a60ffbff865, type: 3}
 --- !u!1 &8185187282074017218 stripped
