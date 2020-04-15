@@ -27,7 +27,7 @@ public class ResourcePickup : MonoBehaviourPun
     void OnTriggerEnter(Collider other)
     {
 
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("PlayerCollider"))
         {
             int count = 1;
             // before adding to the count, check the player's Scavenger skill
