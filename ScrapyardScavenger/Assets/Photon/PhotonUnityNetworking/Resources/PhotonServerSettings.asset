@@ -57,6 +57,8 @@ MonoBehaviour:
   - RemoveBuyable
   - Idle
   - Walk
+  - Explosion
+  - SyncEquipment
   - SetCurrentZone
   - UnlockZone
   - UpdateActiveZones
@@ -76,5 +78,7 @@ MonoBehaviour:
   - EndSpit
   - Spit
   - TruckTakeDamage
+  - ThrowGrenade
+  - InstantiateGrenade
   DisableAutoOpenWizard: 1
   ShowSettings: 0

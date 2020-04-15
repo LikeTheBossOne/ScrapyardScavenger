@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
@@ -72,7 +73,32 @@ public class HomeBaseNetworkManager : MonoBehaviourPunCallbacks
                 PhotonNetwork.CurrentRoom.IsVisible = false;
                 StartCoroutine(StartGame());
             }
-			playerController.GetPhotonView().RPC("TransferToInGame", RpcTarget.All);
+
+            BaseDataManager bData = playerController.GetComponent<BaseDataManager>();
+            int[] equipmentEnums = new int[5];
+            for (int i = 0; i < bData.equipment.Length; i++)
+            {
+                if (bData.equipment[i] == null)
+                {
+                    equipmentEnums[i] = -1;
+                }
+                else
+                {
+                    equipmentEnums[i] = bData.equipment[i].id;
+                }
+            }
+
+            int armorEnum;
+            if (bData.equippedArmor == null)
+            {
+                armorEnum = -1;
+            }
+            else
+            {
+                armorEnum = bData.equippedArmor.id;
+            }
+            playerController.GetPhotonView().RPC("TransferToInGame", RpcTarget.All, equipmentEnums, armorEnum);
+            
         }
     }
 
