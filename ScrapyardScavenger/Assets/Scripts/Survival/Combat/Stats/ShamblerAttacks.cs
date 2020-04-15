@@ -17,7 +17,9 @@ public class ShamblerAttacks : MonoBehaviour
     public float meleeCoolDown { get; private set; }
     public float spitCoolDown { get; private set; }
     public AcidSpit projectile;
-    public string projectileName = "AcidBall";
+    public string projectileName = "Magic fire 0";
+
+    public Transform mouth;
     // Start is called before the first frame update
     private void OnEnable()
     {
@@ -46,15 +48,15 @@ public class ShamblerAttacks : MonoBehaviour
         if (spitCoolDown <= 0)
         {
             
-            Vector3 toTarg = gameObject.transform.position - target.transform.position;
+            Vector3 toTarg = mouth.position - target.transform.position;
             if (toTarg.magnitude <= spitRange)
             {
                 spitCoolDown = spitRecharge;
-                Vector3 offset = new Vector3(spitSize + 0.1F,spitSize + 0.1F,spitSize + 0.1F);
+                Vector3 offset = new Vector3(0,spitSize + 5.1F,0);
                 offset += GetComponent<Collider>().bounds.size;
                 offset.Scale(toTarg.normalized);
 
-                GameObject shot = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", projectileName), gameObject.transform.position - offset, gameObject.transform.rotation);
+                GameObject shot = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", projectileName), mouth.position, gameObject.transform.rotation);
                 AcidSpit spit = shot.GetComponent<AcidSpit>();
                 spit.Shooter = gameObject.GetComponent<Collider>();
                 spit.Shoot(-toTarg);

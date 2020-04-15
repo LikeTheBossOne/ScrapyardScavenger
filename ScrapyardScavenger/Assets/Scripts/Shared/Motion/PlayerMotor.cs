@@ -21,7 +21,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     public GameObject cameraParent;
     public Transform groundDetector;
     public LayerMask ground;
-    
+
 
     private Rigidbody myRigidbody;
     private float baseFOV;
@@ -29,14 +29,17 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     private bool isEnergized;
     private bool isSprinting;
     private bool isCoolingDown;
-    
-    
+    private float deadZone;
+
+    public Animator animator;
+
     private bool isPaused;
 
     private Coroutine sprintCoroutine;
-    
+
     private AudioSource source;
 
+    private bool justFell;
 
     void Start()
     {
@@ -49,7 +52,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         myRigidbody = GetComponent<Rigidbody>();
         source = GetComponent<AudioSource>();
         Debug.Log(source);
-        
+
         normalCam.gameObject.SetActive(true);
         baseFOV = normalCam.fieldOfView;
         sprintFOVModifier = 1.2f;
@@ -61,7 +64,9 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         isSprinting = false;
         isCoolingDown = false;
         pastSprintPressed = false;
-
+        animator = GetComponentInChildren<Animator>();
+        deadZone = 0.01f;
+        justFell = false;
         // check to see if the player has the Endurance skill?
         SkillLevel enduranceLevel = GetComponent<PlayerControllerLoader>().skillManager.GetSkillByName("Endurance");
         if (enduranceLevel != null)
@@ -71,6 +76,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
             Debug.Log("Player has Endurance, modifier is: " + sprintLimit);
         }
         else Debug.Log("Player does NOT have Endurance");
+
     }
 
     void Update()
@@ -138,7 +144,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         float horizontalInput = Input.GetAxisRaw("Horizontal");
 		bool sprintPressed = Input.GetKey(KeyCode.LeftShift) || Input.GetKeyDown("joystick button 8");
 		bool jumpPressed = Input.GetKey(KeyCode.Space) || Input.GetKeyDown("joystick button 3");
-        
+
 
         // States
         bool isGrounded = Physics.Raycast(groundDetector.position, Vector3.down, 0.1f, ground);
@@ -146,7 +152,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         if (!isSprinting && sprintPressed && (verticalInput > 0) && !isJumping && isGrounded && !isCoolingDown)
         {
             sprintCoroutine = StartCoroutine(SprintRoutine(sprintLimit));
-            
+
         }
         else
         {
@@ -165,6 +171,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         if (isJumping)
         {
             myRigidbody.AddForce(Vector3.up * jumpForce);
+
         }
 
 
@@ -185,12 +192,62 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         Vector3 targetVelocity = transform.TransformDirection(direction) * adjustedSpeed * Time.fixedDeltaTime;
         targetVelocity.y = myRigidbody.velocity.y;
         myRigidbody.velocity = targetVelocity;
-        
+
 
         // Sprinting FOV
         normalCam.fieldOfView = isSprinting
             ? Mathf.Lerp(normalCam.fieldOfView, baseFOV * sprintFOVModifier, Time.fixedDeltaTime * 8f)
             : Mathf.Lerp(normalCam.fieldOfView, baseFOV, Time.fixedDeltaTime * 2f);
+
+        if (animator)
+        {
+            if (isGrounded)
+            {
+                if (!justFell)
+                {
+                    justFell = true;
+                    gameObject.GetPhotonView().RPC("Land", RpcTarget.All);
+                    //animator.SetBool("Grounded", true);
+                }
+                else if (!isJumping)
+                {
+                    //if (isSprinting)
+                    //{
+                    //    gameObject.GetPhotonView().RPC("Run", RpcTarget.All);
+                    //}
+                    //else if (Mathf.Abs(verticalInput) > deadZone || Mathf.Abs(horizontalInput) > deadZone)
+                    //{
+                    //    gameObject.GetPhotonView().RPC("Walk", RpcTarget.All);
+                    //}
+                    //else
+                    //{
+                    //    gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
+                    //}
+                    if (isSprinting || Mathf.Abs(verticalInput) > deadZone || Mathf.Abs(horizontalInput) > deadZone)
+                    {
+                        gameObject.GetPhotonView().RPC("Move", RpcTarget.All, adjustedSpeed);
+                    }
+                    else
+                    {
+                        gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
+                    }
+                }
+
+            }
+            else if (isJumping)
+            {
+                //animator.SetBool("Jump", true);
+                gameObject.GetPhotonView().RPC("Jump", RpcTarget.All);
+            }
+            else if(justFell)
+            {
+                //animator.SetBool("Grounded", false);
+                gameObject.GetPhotonView().RPC("Fall", RpcTarget.All);
+                justFell = false;
+            }
+
+        }
+
 
         pastSprintPressed = sprintPressed;
     }
@@ -238,5 +295,64 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(seconds);
         isCoolingDown = false;
         Debug.Log("Done cooling down");
+    }
+
+    public void JumpEnd()
+    {
+        animator.SetBool("Jump", false);
+    }
+
+    [PunRPC]
+    public void Walk()
+    {
+        animator.SetBool("walk", true);
+        animator.SetBool("run", false);
+    }
+
+    [PunRPC]
+    public void Run()
+    {
+        animator.SetBool("walk", false);
+        animator.SetBool("run", true);
+    }
+
+    [PunRPC]
+    public void Idle()
+    {
+        //animator.SetBool("walk", false);
+        //animator.SetBool("run", false);
+        animator.SetBool("Idle", true);
+    }
+
+    [PunRPC]
+
+    public void Move( float spd)
+    {
+        animator.SetBool("Idle", false);
+        float calculated = spd / (speed * sprintModifier);
+        if (calculated > 1)
+        {
+            calculated = 1;
+        }
+        animator.SetFloat("speed", calculated);
+    }
+
+    [PunRPC]
+    public void Jump()
+    {
+        animator.SetBool("Jump", true);
+    }
+
+    [PunRPC]
+    public void Land()
+    {
+        animator.SetBool("Grounded", true);
+        animator.SetBool("Jump", false);
+    }
+
+    [PunRPC]
+    public void Fall()
+    {
+        animator.SetBool("Grounded", false);
     }
 }

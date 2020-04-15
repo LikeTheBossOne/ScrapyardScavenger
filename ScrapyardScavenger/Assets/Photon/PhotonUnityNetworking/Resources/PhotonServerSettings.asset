@@ -67,6 +67,17 @@ MonoBehaviour:
   - ToggleSpawning
   - UpdateWaveInUI
   - OnStart
+  - CleanUp
+  - Die
+  - Explosion
+  - Fall
+  - Jump
+  - Land
+  - Move
+  - Run
+  - EndSpit
+  - Spit
+  - TruckTakeDamage
   - ThrowGrenade
   - InstantiateGrenade
   DisableAutoOpenWizard: 1

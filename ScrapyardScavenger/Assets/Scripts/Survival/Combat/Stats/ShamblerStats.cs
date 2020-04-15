@@ -7,12 +7,15 @@ public class ShamblerStats : Stats, IPunObservable
 {
     private ShamblerAttacks attackComponent;
 
+    private bool isDead;
+
     // Start is called before the first frame update
     private void OnEnable()
     {
         health = baseHealth;
         status = 0;
         attackComponent = GetComponent<ShamblerAttacks>();
+        isDead = false;
     }
 
     /*public void ModifyDamage(float modifier)
@@ -29,8 +32,9 @@ public class ShamblerStats : Stats, IPunObservable
         //note GameObjects can be passed by RPC
         health -= damage;
 
-        if (health <= 0)
+        if (health <= 0 && !isDead)
         {
+            isDead = true;
             if (PhotonNetwork.IsMasterClient)
             {
                 GameObject spawner = FindObjectOfType<EnemySpawner>().gameObject;
@@ -44,13 +48,18 @@ public class ShamblerStats : Stats, IPunObservable
                     {
                         continue;
                     }
+                    if (player.name == "Collision")
+                    {
+                        continue;
+                    }
                     if (player.GetPhotonView().ViewID == shooterID)
                     {
                         player.GetPhotonView().RPC("KilledEnemy", RpcTarget.All, (int)EnemyType.Shambler);
                     }
 
                 }
-                PhotonNetwork.Destroy(gameObject);
+                gameObject.GetPhotonView().RPC("Die", RpcTarget.All);
+                
             }
             
 
@@ -66,5 +75,12 @@ public class ShamblerStats : Stats, IPunObservable
         {
             this.health = (int)stream.ReceiveNext();
         }
+    }
+
+    [PunRPC]
+    public void CleanUp()
+    {
+        Debug.Log("Shambler Cleaned Up.");
+        PhotonNetwork.Destroy(gameObject);
     }
 }

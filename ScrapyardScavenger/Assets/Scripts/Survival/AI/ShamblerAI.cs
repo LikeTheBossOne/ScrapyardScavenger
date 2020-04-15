@@ -13,7 +13,8 @@ public class ShamblerAI : MonoBehaviourPun
         chase,
         spit,
         bite,
-        Invalid
+        dead,
+        Invalid,
    }
 
     public State lastState;
@@ -33,6 +34,7 @@ public class ShamblerAI : MonoBehaviourPun
     public ShamblerDetection senses;
     public ShamblerAttacks weapons;
     public Animator animator;
+    public float maxSpd;
     public Transform extractionTruck;
     // Start is called before the first frame update
     private void OnEnable()
@@ -48,6 +50,7 @@ public class ShamblerAI : MonoBehaviourPun
         wandRad = 10;
         weapons = GetComponent<ShamblerAttacks>();
         animator = GetComponentInChildren<Animator>();
+        maxSpd = GetComponent<NavMeshAgent>().speed;
         if (animator)
         {
             Debug.Log(animator.parameters);
@@ -58,7 +61,7 @@ public class ShamblerAI : MonoBehaviourPun
 
     private void Update()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient && currentState != State.dead)
         {
             ChangeState();
             HandleState();
@@ -103,9 +106,11 @@ public class ShamblerAI : MonoBehaviourPun
         {
             currentState = State.idle;
 
+
         }
 
     }
+
     // Update is called once per frame
     public void HandleState()
     {
@@ -114,12 +119,17 @@ public class ShamblerAI : MonoBehaviourPun
             //set target destination to detected/aggressing player or use follow command if there is one
             //Need to add reorientation/ "lockon camera" for enemy
             //System.Console.WriteLine("Player seen.");
-            transform.LookAt(senses.detected.position, transform.up);
+            Vector3 lookSpot = senses.detected.position;
+            lookSpot.y = gameObject.transform.position.y;
+            transform.LookAt(lookSpot, transform.up);
             SetDestination(senses.detected.position);
             if (animator && currentState != lastState)
             {
+
                 photonView.RPC("Walk", RpcTarget.All);
+
                 //animator.SetBool("walking", true);
+
             }
         }
         if (currentState == State.wander)
@@ -163,30 +173,42 @@ public class ShamblerAI : MonoBehaviourPun
             SetDestination(moveTo);
             if (animator && currentState != lastState)
             {
+
                 photonView.RPC("Walk", RpcTarget.All);
+
                 //animator.SetBool("walking", true);
+
             }
         }
         if (currentState == State.spit)
         {
-            transform.LookAt(senses.detected.position, transform.up);
+            Vector3 lookSpot = senses.detected.position;
+            lookSpot.y = gameObject.transform.position.y;
+            transform.LookAt(lookSpot, transform.up);
             SetDestination(senses.detected.position);
             if (animator && currentState != lastState)
             {
-                photonView.RPC("Walk", RpcTarget.All);
+
+                photonView.RPC("Spit", RpcTarget.All);
                 //animator.SetBool("walking", true);
+
             }
             weapons.Spit(senses.detected.gameObject);
         }
         if (currentState == State.bite)
         {
             SetDestination(GetComponentInParent<Transform>().position);
-            gameObject.transform.LookAt(senses.detected, gameObject.transform.up);
+            Vector3 lookSpot = senses.detected.position;
+            lookSpot.y = gameObject.transform.position.y;
+            gameObject.transform.LookAt(lookSpot, gameObject.transform.up);
             weapons.Bite(senses.detected.gameObject);
             if (animator && currentState != lastState)
             {
-                photonView.RPC("Idle", RpcTarget.All);
+
+                photonView.RPC("Spit", RpcTarget.All);
+
                 //animator.SetBool("walking", false);
+
             }
         }
         if (currentState == State.idle)
@@ -194,8 +216,11 @@ public class ShamblerAI : MonoBehaviourPun
             SetDestination(gameObject.transform.position);
             if (animator && currentState != lastState)
             {
+
                 photonView.RPC("Idle", RpcTarget.All);
+
                 //animator.SetBool("walking", false);
+
             }
         }
 
@@ -239,11 +264,36 @@ public class ShamblerAI : MonoBehaviourPun
     public void Walk()
     {
         animator.SetBool("walking", true);
+        //animator.SetFloat("speed", spd);
     }
 
     [PunRPC]
     public void Idle()
     {
-        animator.SetBool("walking", true);
+        animator.SetBool("walking", false);
     }
+
+    [PunRPC]
+    public void Die()
+    {
+        SetDestination(GetComponentInParent<Transform>().position);
+        currentState = State.dead;
+        if (animator)
+        {
+            animator.SetBool("Dead", true);
+        }
+    }
+
+    [PunRPC]
+    public void Spit()
+    {
+        animator.SetBool("Spit", true);
+    }
+
+    [PunRPC]
+    public void EndSpit()
+    {
+        animator.SetBool("Spit", false);
+    }
+
 }
