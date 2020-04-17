@@ -282,6 +282,12 @@ public class ShamblerAI : MonoBehaviourPun
         {
             animator.SetBool("Dead", true);
         }
+
+        GetComponent<CapsuleCollider>().enabled = false;
+        foreach (var collider in GetComponentsInChildren<Collider>())
+        {
+            collider.enabled = false;
+        }
     }
 
     [PunRPC]
