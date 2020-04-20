@@ -44,39 +44,30 @@ public class ShamblerAttacks : MonoBehaviour
 
     public void Spit(GameObject target)
     {
-        
-        if (spitCoolDown <= 0)
+        Vector3 toTarg = mouth.position - target.transform.position;
+        if (toTarg.magnitude <= spitRange)
         {
-            
-            Vector3 toTarg = mouth.position - target.transform.position;
-            if (toTarg.magnitude <= spitRange)
-            {
-                spitCoolDown = spitRecharge;
-                Vector3 offset = new Vector3(0,spitSize + 5.1F,0);
-                offset += GetComponent<Collider>().bounds.size;
-                offset.Scale(toTarg.normalized);
+            spitCoolDown = spitRecharge;
+            Vector3 offset = new Vector3(0,spitSize + 5.1F,0);
+            offset += GetComponent<Collider>().bounds.size;
+            offset.Scale(toTarg.normalized);
 
-                GameObject shot = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", projectileName), mouth.position, gameObject.transform.rotation);
-                AcidSpit spit = shot.GetComponent<AcidSpit>();
-                spit.Shooter = gameObject.GetComponent<Collider>();
-                spit.Shoot(-toTarg);
-            }
-            
+            GameObject shot = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", projectileName), mouth.position, gameObject.transform.rotation);
+            AcidSpit spit = shot.GetComponent<AcidSpit>();
+            spit.Shooter = gameObject.GetComponent<Collider>();
+            spit.Shoot(-toTarg);
         }
     } 
 
     public void Bite(GameObject target)
     {
-        if (meleeCoolDown <= 0)
+        Vector3 toTarg = gameObject.transform.position - target.transform.position;
+        if (toTarg.magnitude <= meleeRange)
         {
-            Vector3 toTarg = gameObject.transform.position - target.transform.position;
-            if (toTarg.magnitude <= meleeRange)
-            {
-                meleeCoolDown = meleeRecharge;
+            meleeCoolDown = meleeRecharge;
 
-                target.GetPhotonView().RPC("TakeDamage", RpcTarget.All, meleeDamage);
-                // Insert Animation
-            }
+            target.GetPhotonView().RPC("TakeDamage", RpcTarget.All, meleeDamage);
+            // Insert Animation
         }
     }
     public bool MeleeOnCoolDown()

@@ -75,22 +75,32 @@ public class ShamblerAI : MonoBehaviourPun
         {
             if (senses.VisionCheck())
             {
-                if (DistanceToOther(senses.detected) <= weapons.meleeRange)
+                double distanceToDetected = DistanceToOther(senses.detected);
+                if (distanceToDetected <= weapons.meleeRange && !weapons.MeleeOnCoolDown())
                 {
                     //&& !weapons.meleeOnCoolDown()
+                    if (lastState != State.bite) Debug.Log("Switching to Bite state");
                     currentState = State.bite;
 
                 }
-                else if (DistanceToOther(senses.detected) <= weapons.spitRange)
+                else if (distanceToDetected <= weapons.spitRange && !weapons.SpitOnCoolDown())
                 {
                     // target in attack range/
                     //currentState = State.attack;
-                    //&& !weapons.spitOnCoolDown()
+                    //
+                    if (lastState != State.spit) Debug.Log("Switching to Spit state");
                     currentState = State.spit;
 
                 }
+                else if (distanceToDetected <= weapons.meleeRange)
+                {
+                    // just go idle then
+                    if (lastState != State.idle) Debug.Log("Switching to Idle state");
+                    currentState = State.idle;
+                }
                 else
                 {
+                    if (lastState != State.chase) Debug.Log("Switching to Chase state");
                     currentState = State.chase;
 
                 }
@@ -98,12 +108,14 @@ public class ShamblerAI : MonoBehaviourPun
             }
             else
             {
+                if (lastState != State.wander) Debug.Log("Switching to Wander state");
                 currentState = State.wander;
 
             }
         }
         else
         {
+            if (lastState != State.idle) Debug.Log("Switching to Idle state");
             currentState = State.idle;
 
 
@@ -122,7 +134,16 @@ public class ShamblerAI : MonoBehaviourPun
             Vector3 lookSpot = senses.detected.position;
             lookSpot.y = gameObject.transform.position.y;
             transform.LookAt(lookSpot, transform.up);
-            SetDestination(senses.detected.position);
+            //Debug.Log("Chasing to: " + senses.detected.position);
+            moveTo = senses.detected.position;
+            if (moveTo.y < 0)
+            {
+                Vector3 temp = moveTo;
+                temp.y = 0f;
+                moveTo = temp;
+            }
+            SetDestination(moveTo);
+            //SetDestination(senses.detected.position);
             if (animator && currentState != lastState)
             {
 
@@ -170,6 +191,15 @@ public class ShamblerAI : MonoBehaviourPun
             //close.position = moveTarg;
             //transform.LookAt(moveTarg, transform.up);
             moveTo = moveTarg;
+
+            // check if moveTo's y is less than 0, if so set to 0 or like 0.05
+            if (moveTo.y < 0)
+            {
+                Vector3 temp = moveTo;
+                temp.y = 0f;
+                moveTo = temp;
+            }
+
             SetDestination(moveTo);
             if (animator && currentState != lastState)
             {
@@ -186,7 +216,7 @@ public class ShamblerAI : MonoBehaviourPun
             lookSpot.y = gameObject.transform.position.y;
             transform.LookAt(lookSpot, transform.up);
             SetDestination(senses.detected.position);
-            if (animator && currentState != lastState)
+            if (animator && currentState != lastState && !animator.GetBool("Spit"))
             {
 
                 photonView.RPC("Spit", RpcTarget.All);
@@ -197,19 +227,20 @@ public class ShamblerAI : MonoBehaviourPun
         }
         if (currentState == State.bite)
         {
+            //Debug.Log("Biting");
             SetDestination(GetComponentInParent<Transform>().position);
             Vector3 lookSpot = senses.detected.position;
             lookSpot.y = gameObject.transform.position.y;
             gameObject.transform.LookAt(lookSpot, gameObject.transform.up);
-            weapons.Bite(senses.detected.gameObject);
-            if (animator && currentState != lastState)
+            
+            if (animator && currentState != lastState && !animator.GetBool("Spit"))
             {
-
                 photonView.RPC("Spit", RpcTarget.All);
 
                 //animator.SetBool("walking", false);
 
             }
+            weapons.Bite(senses.detected.gameObject);
         }
         if (currentState == State.idle)
         {
@@ -245,8 +276,10 @@ public class ShamblerAI : MonoBehaviourPun
         }
         if (DistanceToOther(extractionTruck) < cDist)
         {
+            //Debug.Log("Returning extraction truck");
             return extractionTruck;
         }
+        //Debug.Log("Returning player's transform at " + closest.position);
         return closest;
     }
 
