@@ -140,7 +140,7 @@ MonoBehaviour:
   ground:
     serializedVersion: 2
     m_Bits: 512
-  animator: {fileID: 0}
+  animator: {fileID: 2974339954573001387}
 --- !u!114 &2724544771462636879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -917,6 +917,12 @@ GameObject:
 --- !u!4 &5173784605169807313 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 10e98683550ccfa4a94e6a60ffbff865,
+    type: 3}
+  m_PrefabInstance: {fileID: 195428713886532811}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &2974339954573001387 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: -6057140222963153312, guid: 10e98683550ccfa4a94e6a60ffbff865,
     type: 3}
   m_PrefabInstance: {fileID: 195428713886532811}
   m_PrefabAsset: {fileID: 0}
