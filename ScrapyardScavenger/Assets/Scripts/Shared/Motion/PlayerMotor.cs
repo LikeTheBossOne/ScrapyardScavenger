@@ -102,12 +102,12 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         }
         if ((myRigidbody.velocity.magnitude > .1) && (myRigidbody.velocity.y < .1 && myRigidbody.velocity.y > -.1) && !source.isPlaying)
         {
-            source.volume = 1.0f;
+            source.volume = .03f;
             source.Play();
         }
         if (((myRigidbody.velocity.magnitude < .1) || (myRigidbody.velocity.y > .1 || myRigidbody.velocity.y < -.1)) && source.isPlaying)
         {
-            source.volume -= .05f;
+            source.volume -= .005f;
             if (source.volume == 0)
             {
                 source.Stop();
