@@ -48,6 +48,8 @@ public class ShamblerAttacks : MonoBehaviour
         if (toTarg.magnitude <= spitRange)
         {
             spitCoolDown = spitRecharge;
+
+            // this needs to be changed to make the spit actually spawn in the right place
             Vector3 offset = new Vector3(0,spitSize + 5.1F,0);
             offset += GetComponent<Collider>().bounds.size;
             offset.Scale(toTarg.normalized);
@@ -61,14 +63,9 @@ public class ShamblerAttacks : MonoBehaviour
 
     public void Bite(GameObject target)
     {
-        Vector3 toTarg = gameObject.transform.position - target.transform.position;
-        if (toTarg.magnitude <= meleeRange)
-        {
-            meleeCoolDown = meleeRecharge;
-
-            target.GetPhotonView().RPC("TakeDamage", RpcTarget.All, meleeDamage);
-            // Insert Animation
-        }
+        meleeCoolDown = meleeRecharge;
+        target.GetPhotonView().RPC("TakeDamage", RpcTarget.All, meleeDamage);
+        // Insert Animation
     }
     public bool MeleeOnCoolDown()
     {

@@ -56,6 +56,9 @@ public class ShamblerAI : MonoBehaviourPun
             Debug.Log(animator.parameters);
         }
         extractionTruck = GameObject.Find("ExtractionTruck").GetComponent<Transform>();
+
+        // delete this after figuring out why the shambler won't move to the truck sometimes
+        moveTo = gameObject.transform.position;
         //playerOffset = 5;
     }
 
@@ -79,7 +82,7 @@ public class ShamblerAI : MonoBehaviourPun
                 if (distanceToDetected <= weapons.meleeRange && !weapons.MeleeOnCoolDown())
                 {
                     //&& !weapons.meleeOnCoolDown()
-                    if (lastState != State.bite) Debug.Log("Switching to Bite state");
+                    //if (lastState != State.bite) Debug.Log("Switching to Bite state");
                     currentState = State.bite;
 
                 }
@@ -88,19 +91,19 @@ public class ShamblerAI : MonoBehaviourPun
                     // target in attack range/
                     //currentState = State.attack;
                     //
-                    if (lastState != State.spit) Debug.Log("Switching to Spit state");
+                    //if (lastState != State.spit) Debug.Log("Switching to Spit state");
                     currentState = State.spit;
 
                 }
                 else if (distanceToDetected <= weapons.meleeRange)
                 {
                     // just go idle then
-                    if (lastState != State.idle) Debug.Log("Switching to Idle state");
+                    //if (lastState != State.idle) Debug.Log("Switching to Idle state");
                     currentState = State.idle;
                 }
                 else
                 {
-                    if (lastState != State.chase) Debug.Log("Switching to Chase state");
+                    //if (lastState != State.chase) Debug.Log("Switching to Chase state");
                     currentState = State.chase;
 
                 }
@@ -108,14 +111,14 @@ public class ShamblerAI : MonoBehaviourPun
             }
             else
             {
-                if (lastState != State.wander) Debug.Log("Switching to Wander state");
+                //if (lastState != State.wander) Debug.Log("Switching to Wander state");
                 currentState = State.wander;
 
             }
         }
         else
         {
-            if (lastState != State.idle) Debug.Log("Switching to Idle state");
+            //if (lastState != State.idle) Debug.Log("Switching to Idle state");
             currentState = State.idle;
 
 
@@ -216,7 +219,7 @@ public class ShamblerAI : MonoBehaviourPun
             lookSpot.y = gameObject.transform.position.y;
             transform.LookAt(lookSpot, transform.up);
             SetDestination(senses.detected.position);
-            if (animator && currentState != lastState && !animator.GetBool("Spit"))
+            if (animator && currentState != lastState)// && !animator.GetBool("Spit"))
             {
 
                 photonView.RPC("Spit", RpcTarget.All);
@@ -233,14 +236,20 @@ public class ShamblerAI : MonoBehaviourPun
             lookSpot.y = gameObject.transform.position.y;
             gameObject.transform.LookAt(lookSpot, gameObject.transform.up);
             
-            if (animator && currentState != lastState && !animator.GetBool("Spit"))
+            if (animator && currentState != lastState) //&& !animator.GetBool("Spit"))
             {
                 photonView.RPC("Spit", RpcTarget.All);
 
                 //animator.SetBool("walking", false);
 
             }
-            weapons.Bite(senses.detected.gameObject);
+            if (senses.detected.gameObject.name == "PhotonPlayer")
+                weapons.Bite(senses.detected.gameObject);
+            else
+            {
+                // this is a point on the truck, so pass in the truck's gameObject
+                weapons.Bite(extractionTruck.gameObject);
+            }
         }
         if (currentState == State.idle)
         {
@@ -276,10 +285,8 @@ public class ShamblerAI : MonoBehaviourPun
         }
         if (DistanceToOther(extractionTruck) < cDist)
         {
-            //Debug.Log("Returning extraction truck");
             return extractionTruck;
         }
-        //Debug.Log("Returning player's transform at " + closest.position);
         return closest;
     }
 
