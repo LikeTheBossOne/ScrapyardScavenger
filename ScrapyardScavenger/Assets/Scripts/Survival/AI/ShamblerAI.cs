@@ -213,13 +213,20 @@ public class ShamblerAI : MonoBehaviourPun
             transform.LookAt(lookSpot, transform.up);
             //SetDestination(senses.detected.position);
             SetDestination(gameObject.transform.position);
-            if (animator && !animator.GetBool("Spit"))
+            if (animator)
             {
-                Debug.Log("Doing spitting animation");
-                photonView.RPC("Spit", RpcTarget.All);
+                if (!animator.GetBool("Spit"))
+                {
+                    Debug.Log("Doing spitting animation");
+                    photonView.RPC("Spit", RpcTarget.All);
+                }
             }
-                
-            weapons.Spit(senses.detected.gameObject);
+            else
+            {
+                weapons.Spit(senses.detected.gameObject);
+            }
+
+
         }
         if (currentState == State.bite && currentState != lastState)
         {
