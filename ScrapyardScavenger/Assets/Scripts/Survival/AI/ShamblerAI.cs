@@ -68,8 +68,10 @@ public class ShamblerAI : MonoBehaviourPun
     {
         if (PhotonNetwork.IsMasterClient && currentState != State.dead)
         {
-            if (animator && animator.GetBool("Spit")) return;
-            //Debug.Log("Animator.GetBool(Spit): " + animator.GetBool("Spit"));
+            if (animator && animator.GetBool("Spit"))
+            {
+                return;
+            }
             ChangeState();
             HandleState();
         }
@@ -77,8 +79,6 @@ public class ShamblerAI : MonoBehaviourPun
 
     public void ChangeState()
     {
-        
-
         lastState = currentState;
         if (senses.PlayersExist())
         {
@@ -87,49 +87,41 @@ public class ShamblerAI : MonoBehaviourPun
                 double distanceToDetected = DistanceToOther(senses.detected);
                 if (distanceToDetected <= weapons.meleeRange && !weapons.MeleeOnCoolDown())
                 {
-                    //&& !weapons.meleeOnCoolDown()
-                    if (lastState != State.bite) Debug.Log("Switching to Bite state");
+                    //if (lastState != State.bite) Debug.Log("Switching to Bite state");
                     currentState = State.bite;
 
                 }
                 else if (distanceToDetected <= weapons.spitRange && !weapons.SpitOnCoolDown())
                 {
-                    // target in attack range/
-                    //currentState = State.attack;
-                    //
-                    if (lastState != State.spit) Debug.Log("Switching to Spit state");
+                    //if (lastState != State.spit) Debug.Log("Switching to Spit state");
                     currentState = State.spit;
 
                 }
                 else if (distanceToDetected <= weapons.meleeRange)
                 {
                     // just go idle then
-                    if (lastState != State.idle) Debug.Log("Switching to Idle state");
+                    //if (lastState != State.idle) Debug.Log("Switching to Idle state");
                     currentState = State.idle;
                 }
                 else
                 {
-                    if (lastState != State.chase) Debug.Log("Switching to Chase state");
+                    //if (lastState != State.chase) Debug.Log("Switching to Chase state");
                     currentState = State.chase;
 
                 }
-                //currentState = State.chase;
             }
             else
             {
-                if (lastState != State.wander) Debug.Log("Switching to Wander state");
+                //if (lastState != State.wander) Debug.Log("Switching to Wander state");
                 currentState = State.wander;
 
             }
         }
         else
         {
-            if (lastState != State.idle) Debug.Log("Switching to Idle state");
+            //if (lastState != State.idle) Debug.Log("Switching to Idle state");
             currentState = State.idle;
-
-
         }
-
     }
 
     // Update is called once per frame
@@ -205,32 +197,34 @@ public class ShamblerAI : MonoBehaviourPun
             if (animator)
                 photonView.RPC("Walk", RpcTarget.All);
         }
-        if (currentState == State.spit && currentState != lastState)
+        if (currentState == State.spit)
         {
-            Debug.Log("Spitting");
+            
             Vector3 lookSpot = senses.detected.position;
             lookSpot.y = gameObject.transform.position.y;
             transform.LookAt(lookSpot, transform.up);
-            //SetDestination(senses.detected.position);
-            SetDestination(gameObject.transform.position);
-            if (animator)
+
+            if (currentState != lastState)
             {
-                if (!animator.GetBool("Spit"))
+                //SetDestination(senses.detected.position); << this happens in the Spit method
+
+                if (animator)
                 {
-                    Debug.Log("Doing spitting animation");
-                    photonView.RPC("Spit", RpcTarget.All);
+                    if (!animator.GetBool("Spit"))
+                    {
+                        photonView.RPC("Spit", RpcTarget.All);
+                    }
                 }
-            }
-            else
-            {
-                weapons.Spit(senses.detected.gameObject);
+                else
+                {
+                    weapons.Spit(senses.detected.gameObject);
+                }
             }
 
 
         }
         if (currentState == State.bite && currentState != lastState)
         {
-            Debug.Log("Biting");
             SetDestination(GetComponentInParent<Transform>().position);
             Vector3 lookSpot = senses.detected.position;
             lookSpot.y = gameObject.transform.position.y;
@@ -248,7 +242,9 @@ public class ShamblerAI : MonoBehaviourPun
         {
             SetDestination(gameObject.transform.position);
             if (animator && !animator.GetBool("Spit"))
+            {
                 photonView.RPC("Idle", RpcTarget.All);
+            }
         }
 
     }
@@ -277,7 +273,7 @@ public class ShamblerAI : MonoBehaviourPun
         return closest;
     }
 
-    void SetDestination(Vector3 destination)
+    public void SetDestination(Vector3 destination)
     {
         nav.SetDestination(destination);
     }
@@ -320,7 +316,6 @@ public class ShamblerAI : MonoBehaviourPun
     [PunRPC]
     public void EndSpit()
     {
-        Debug.Log("Ending spit");
         animator.SetBool("Spit", false);
     }
 

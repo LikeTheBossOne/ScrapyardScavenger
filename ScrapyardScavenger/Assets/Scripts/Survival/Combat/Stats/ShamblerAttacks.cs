@@ -20,6 +20,7 @@ public class ShamblerAttacks : MonoBehaviour
     public string projectileName = "Magic fire 0";
 
     public Transform mouth;
+    public Transform head;
     // Start is called before the first frame update
     private void OnEnable()
     {
@@ -44,20 +45,16 @@ public class ShamblerAttacks : MonoBehaviour
 
     public void Spit(GameObject target)
     {
-        Vector3 toTarg = mouth.position - target.transform.position;
-        if (toTarg.magnitude <= spitRange)
+        if (PhotonNetwork.IsMasterClient)
         {
+            GetComponent<ShamblerAI>().SetDestination(gameObject.transform.position);
+
+            Vector3 toTarg = target.transform.position - head.position;
             spitCoolDown = spitRecharge;
 
-            // this needs to be changed to make the spit actually spawn in the right place
-            Vector3 offset = new Vector3(0,spitSize + 5.1F,0);
-            offset += GetComponent<Collider>().bounds.size;
-            offset.Scale(toTarg.normalized);
-
-            GameObject shot = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", projectileName), mouth.position, gameObject.transform.rotation);
+            GameObject shot = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", projectileName), head.position, gameObject.transform.rotation);
             AcidSpit spit = shot.GetComponent<AcidSpit>();
-            spit.Shooter = gameObject.GetComponent<Collider>();
-            spit.Shoot(-toTarg);
+            spit.Shooter = gameObject.GetComponent<Collider>();            
         }
     } 
 
