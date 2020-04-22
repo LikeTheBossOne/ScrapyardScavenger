@@ -11,6 +11,9 @@ public class HomeBaseUIManager : MonoBehaviour
 	public GameObject equipmentCanvas;
 	public GameObject craftingCanvas;
 	public GameObject skillCanvas;
+	public GameObject controlsCanvas;
+	public GameObject controlScreenCanvas;
+	public GameObject tutorialScreenCanvas;
 	public GameObject equipPopup;
 	public GameObject generator;
 	public GameObject eqScreenListener;
@@ -24,6 +27,7 @@ public class HomeBaseUIManager : MonoBehaviour
 			equipmentCanvas.SetActive(false);
 			craftingCanvas.SetActive(false);
 			skillCanvas.SetActive(false);
+			controlsCanvas.SetActive(false);
 		}
 	}
 
@@ -33,6 +37,7 @@ public class HomeBaseUIManager : MonoBehaviour
 		equipmentCanvas.SetActive(false);
 		craftingCanvas.SetActive(false);
 		skillCanvas.SetActive(false);
+		controlsCanvas.SetActive(false);
     
 		GameObject img = GameObject.FindGameObjectWithTag("StorageItemImg");
 		GameObject name = GameObject.FindGameObjectWithTag("StorageItemName");
@@ -48,6 +53,7 @@ public class HomeBaseUIManager : MonoBehaviour
 		equipmentCanvas.SetActive(false);
 		craftingCanvas.SetActive(true);
 		skillCanvas.SetActive(false);
+		controlsCanvas.SetActive(false);
 	}
 
 	public void switchToEquipment() {
@@ -56,6 +62,7 @@ public class HomeBaseUIManager : MonoBehaviour
 		equipmentCanvas.SetActive(true);
 		craftingCanvas.SetActive(false);
 		skillCanvas.SetActive(false);
+		controlsCanvas.SetActive(false);
 	}
 
 	public void switchToSkills() {
@@ -64,6 +71,17 @@ public class HomeBaseUIManager : MonoBehaviour
 		equipmentCanvas.SetActive(false);
 		craftingCanvas.SetActive(false);
 		skillCanvas.SetActive(true);
+		controlsCanvas.SetActive(false);
+	}
+
+	public void switchToTutorial() {
+		homeBaseCanvas.SetActive(false);
+		storageCanvas.SetActive(false);
+		equipmentCanvas.SetActive(false);
+		craftingCanvas.SetActive(false);
+		skillCanvas.SetActive(false);
+		controlsCanvas.SetActive(true);
+		SwitchToControlScreen();
 	}
 
 	public void OpenEquipUI(int slotIdx)
@@ -79,6 +97,16 @@ public class HomeBaseUIManager : MonoBehaviour
 	{
 		equipPopup.SetActive(false);
 		eqScreenListener.SetActive(true);
+	}
+
+	public void SwitchToControlScreen() {
+		controlScreenCanvas.SetActive(true);
+		tutorialScreenCanvas.SetActive(false);
+	}
+
+	public void SwitchToTutorialScreen() {
+		controlScreenCanvas.SetActive(false);
+		tutorialScreenCanvas.SetActive(true);
 	}
 
 	public void quitGame() {
