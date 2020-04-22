@@ -483,7 +483,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 647147794768695746}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.212, y: 1.749, z: 0.341}
+  m_LocalPosition: {x: -0.212, y: 1.749, z: 0.067}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1260225194326574506}
@@ -750,6 +750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18dc7475ca3d73f4d9728200c1ef968e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Guns: {fileID: 2210166939918232469}
 --- !u!114 &3208884340483378852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -763,7 +764,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IkActive: 1
-  LeftTarget: {fileID: 0}
   Guns: {fileID: 2210166939918232469}
 --- !u!1 &8490948758121710019
 GameObject:
@@ -846,6 +846,21 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: c3a774678bf8a6c4b991c83b80e7e4b0, type: 2}
+    - target: {fileID: -6057140222963153312, guid: 10e98683550ccfa4a94e6a60ffbff865,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: 10e98683550ccfa4a94e6a60ffbff865,
+        type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed by
+        Humanoid clips.\n\tTransform 'Armature'\n\tTransform 'UpperLeg.L'\n\tTransform
+        'Foot.R'\n\tTransform 'Armature'\n\tTransform 'Foot.L'\n\tTransform 'UpperLeg.R'\n\tTransform
+        'Toe.L'\n\tTransform 'LowerLeg.R'\n\tTransform 'LowerLeg.L'\n\tTransform 'Toe.R'\n\tand
+        more ...\n\tFrom animation clip 'Take 001'"
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 10e98683550ccfa4a94e6a60ffbff865,
         type: 3}
       propertyPath: m_LocalPosition.x
