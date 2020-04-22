@@ -94,20 +94,17 @@ public class ShamblerAI : MonoBehaviourPun
                 {
                     //if (lastState != State.bite) Debug.Log("Switching to Bite state");
                     currentState = State.bite;
-                    //LookAtDetected();
                 }
                 else if (distanceToDetected <= weapons.spitRange && !weapons.SpitOnCoolDown())
                 {
                     //if (lastState != State.spit) Debug.Log("Switching to Spit state");
                     currentState = State.spit;
-                    //LookAtDetected();
                 }
                 else if (distanceToDetected <= weapons.meleeRange)
                 {
                     // just go idle then
                     //if (lastState != State.idle) Debug.Log("Switching to Idle state");
                     currentState = State.idle;
-                    //LookAtDetected();
                 }
                 else
                 {
