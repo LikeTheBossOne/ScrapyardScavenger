@@ -14,7 +14,7 @@ public class AcidSpit : MonoBehaviour
     public LayerMask hardLayers;
 
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (PhotonNetwork.IsMasterClient)
         {
@@ -32,23 +32,26 @@ public class AcidSpit : MonoBehaviour
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            
-            GameObject collObj = collision.gameObject;
-            if (collObj.CompareTag("Player"))
-            {
-                collObj.GetPhotonView().RPC("TakeDamage", RpcTarget.All, Shooter.GetComponent<ShamblerAttacks>().spitDamage);
-                PhotonNetwork.Destroy(gameObject);
-            }
-            else if (collObj.CompareTag("Truck")) 
-            {
-                collObj.GetPhotonView().RPC("TakeDamage", RpcTarget.All, Shooter.GetComponent<ShamblerAttacks>().spitDamage);
-                PhotonNetwork.Destroy(gameObject);
-            }
-            else if (((1 << collObj.layer) & hardLayers.value) != 0)
-            {
-                PhotonNetwork.Destroy(gameObject);
-            }
-            
+            SpitCollide(collision);
+        }
+    }
+
+    private void SpitCollide(Collision collision)
+    {
+        GameObject collObj = collision.gameObject;
+        if (collObj.CompareTag("Player"))
+        {
+            collObj.GetPhotonView().RPC("TakeDamage", RpcTarget.All, Shooter.GetComponent<ShamblerAttacks>().spitDamage);
+            PhotonNetwork.Destroy(gameObject);
+        }
+        else if (collObj.CompareTag("Truck"))
+        {
+            collObj.GetPhotonView().RPC("TakeDamage", RpcTarget.All, Shooter.GetComponent<ShamblerAttacks>().spitDamage);
+            PhotonNetwork.Destroy(gameObject);
+        }
+        else if (((1 << collObj.layer) & hardLayers.value) != 0)
+        {
+            PhotonNetwork.Destroy(gameObject);
         }
     }
 }
