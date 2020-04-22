@@ -29,6 +29,8 @@ TagManager:
   - Buyables
   - Truck
   - TruckHealth
+  - PlayerCollider
+  - Pistol
   layers:
   - Default
   - TransparentFX
