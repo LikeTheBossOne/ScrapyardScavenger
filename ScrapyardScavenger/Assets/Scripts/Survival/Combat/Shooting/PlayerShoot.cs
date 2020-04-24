@@ -196,7 +196,7 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
                     GameObject enemy;
                     if (hit.collider.gameObject.transform.parent)
                     {
-                        enemy = hit.collider.gameObject.transform.parent.gameObject;
+                        enemy = hit.collider.transform.root.gameObject;
 
                     }
                     else
