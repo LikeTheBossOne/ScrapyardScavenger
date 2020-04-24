@@ -10,7 +10,8 @@ public class GunIkController : MonoBehaviour
     private Transform LeftTarget;
     private Transform RightTarget;
     public Transform Guns;
-    private Transform current;
+    public Transform Grenades;
+    public Transform current;
     protected Animator animator;
     private int slot;
     private InGameDataManager manager;
@@ -39,15 +40,35 @@ public class GunIkController : MonoBehaviour
             if (IkActive)
             {
                 //right hand
-                animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
-                animator.SetIKPosition(AvatarIKGoal.RightHand, current.Find("Anchor").GetChild(0).position);
-                animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
-                animator.SetIKRotation(AvatarIKGoal.RightHand,current.Find("Anchor").GetChild(0).rotation);
+                Transform right = current.Find("Anchor").Find("RightHand");
+                Transform left = current.Find("Anchor").Find("LeftHand");
+                if (right)
+                {
+                    animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
+                    animator.SetIKPosition(AvatarIKGoal.RightHand, right.position);
+                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
+                    animator.SetIKRotation(AvatarIKGoal.RightHand, right.rotation);
+                }
+                else
+                {
+                    animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 0);
+                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0);
+                }
+
                 //left hand
-                animator.SetIKPositionWeight(AvatarIKGoal.LeftHand,1);
-                animator.SetIKPosition(AvatarIKGoal.LeftHand, current.Find("Anchor").GetChild(1).position);
-                animator.SetIKRotationWeight(AvatarIKGoal.LeftHand,1);
-                animator.SetIKRotation(AvatarIKGoal.LeftHand, current.Find("Anchor").GetChild(1).rotation);
+                if (left)
+                {
+                    animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+                    animator.SetIKPosition(AvatarIKGoal.LeftHand, left.position);
+                    animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
+                    animator.SetIKRotation(AvatarIKGoal.LeftHand, left.rotation);
+                }
+                else
+                {
+                    animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0);
+                    animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0);
+                }
+               
             }
             else
             {
@@ -80,6 +101,14 @@ public class GunIkController : MonoBehaviour
             if (gun.gameObject.activeSelf)
             {
                 current = gun;
+            }
+        }
+        foreach (Transform boom in Grenades)
+        {
+            Debug.Log(boom);
+            if (boom.gameObject.activeSelf)
+            {
+                current = boom;
             }
         }
     }
