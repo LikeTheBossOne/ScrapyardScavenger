@@ -64,7 +64,8 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         isSprinting = false;
         isCoolingDown = false;
         pastSprintPressed = false;
-        animator = GetComponentInChildren<Animator>();
+        //animator = GetComponentInChildren<Animator>();
+        
         deadZone = 0.01f;
         justFell = false;
         // check to see if the player has the Endurance skill?
@@ -102,12 +103,12 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         }
         if ((myRigidbody.velocity.magnitude > .1) && (myRigidbody.velocity.y < .1 && myRigidbody.velocity.y > -.1) && !source.isPlaying)
         {
-            source.volume = 1.0f;
+            source.volume = .03f;
             source.Play();
         }
         if (((myRigidbody.velocity.magnitude < .1) || (myRigidbody.velocity.y > .1 || myRigidbody.velocity.y < -.1)) && source.isPlaying)
         {
-            source.volume -= .05f;
+            source.volume -= .005f;
             if (source.volume == 0)
             {
                 source.Stop();
@@ -201,12 +202,13 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
 
         if (animator)
         {
+            //might need to move this out of fixedUpdate
             if (isGrounded)
             {
                 if (!justFell)
                 {
                     justFell = true;
-                    gameObject.GetPhotonView().RPC("Land", RpcTarget.All);
+                    photonView.RPC("Land", RpcTarget.All);
                     //animator.SetBool("Grounded", true);
                 }
                 else if (!isJumping)
@@ -225,11 +227,11 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
                     //}
                     if (isSprinting || Mathf.Abs(verticalInput) > deadZone || Mathf.Abs(horizontalInput) > deadZone)
                     {
-                        gameObject.GetPhotonView().RPC("Move", RpcTarget.All, adjustedSpeed);
+                        photonView.RPC("Move", RpcTarget.All, adjustedSpeed);
                     }
                     else
                     {
-                        gameObject.GetPhotonView().RPC("Idle", RpcTarget.All);
+                        photonView.RPC("Idle", RpcTarget.All);
                     }
                 }
 
@@ -237,12 +239,12 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
             else if (isJumping)
             {
                 //animator.SetBool("Jump", true);
-                gameObject.GetPhotonView().RPC("Jump", RpcTarget.All);
+                photonView.RPC("Jump", RpcTarget.All);
             }
             else if(justFell)
             {
                 //animator.SetBool("Grounded", false);
-                gameObject.GetPhotonView().RPC("Fall", RpcTarget.All);
+                photonView.RPC("Fall", RpcTarget.All);
                 justFell = false;
             }
 
@@ -322,6 +324,10 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         //animator.SetBool("walk", false);
         //animator.SetBool("run", false);
         animator.SetBool("Idle", true);
+        if (!photonView.IsMine)
+        {
+            Debug.Log("Other idle");
+        }
     }
 
     [PunRPC]
@@ -335,12 +341,20 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
             calculated = 1;
         }
         animator.SetFloat("speed", calculated);
+        if (!photonView.IsMine)
+        {
+            Debug.Log("Other moving");
+        }
     }
 
     [PunRPC]
     public void Jump()
     {
         animator.SetBool("Jump", true);
+        if (!photonView.IsMine)
+        {
+            Debug.Log("Other jumped");
+        }
     }
 
     [PunRPC]
@@ -348,11 +362,19 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     {
         animator.SetBool("Grounded", true);
         animator.SetBool("Jump", false);
+        if (!photonView.IsMine)
+        {
+            Debug.Log("Other landed");
+        }
     }
 
     [PunRPC]
     public void Fall()
     {
         animator.SetBool("Grounded", false);
+        if (!photonView.IsMine)
+        {
+            Debug.Log("Other fell");
+        }
     }
 }
