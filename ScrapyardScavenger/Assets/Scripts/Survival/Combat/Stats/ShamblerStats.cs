@@ -80,7 +80,9 @@ public class ShamblerStats : Stats, IPunObservable
     [PunRPC]
     public void CleanUp()
     {
-        Debug.Log("Shambler Cleaned Up.");
-        PhotonNetwork.Destroy(gameObject);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 }
