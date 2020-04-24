@@ -65,7 +65,7 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         isCoolingDown = false;
         pastSprintPressed = false;
         //animator = GetComponentInChildren<Animator>();
-        
+
         deadZone = 0.01f;
         justFell = false;
         // check to see if the player has the Endurance skill?
@@ -301,21 +301,30 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
 
     public void JumpEnd()
     {
-        animator.SetBool("Jump", false);
+        if (animator != null)
+        {
+            animator.SetBool("Jump", false);
+        }
     }
 
     [PunRPC]
     public void Walk()
     {
-        animator.SetBool("walk", true);
-        animator.SetBool("run", false);
+        if (animator != null)
+        {
+            animator.SetBool("walk", true);
+            animator.SetBool("run", false);
+        }
     }
 
     [PunRPC]
     public void Run()
     {
-        animator.SetBool("walk", false);
-        animator.SetBool("run", true);
+        if (animator != null)
+        {
+            animator.SetBool("walk", false);
+            animator.SetBool("run", true);
+        }
     }
 
     [PunRPC]
@@ -323,7 +332,10 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     {
         //animator.SetBool("walk", false);
         //animator.SetBool("run", false);
-        animator.SetBool("Idle", true);
+        if (animator != null)
+        {
+            animator.SetBool("Idle", true);
+        }
         if (!photonView.IsMine)
         {
             Debug.Log("Other idle");
@@ -334,13 +346,21 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
 
     public void Move( float spd)
     {
-        animator.SetBool("Idle", false);
+        if (animator != null)
+        {
+            animator.SetBool("Idle", false);
+        }
+
         float calculated = spd / (speed * sprintModifier);
         if (calculated > 1)
         {
             calculated = 1;
         }
-        animator.SetFloat("speed", calculated);
+
+        if (animator != null)
+        {
+            animator.SetFloat("speed", calculated);
+        }
         if (!photonView.IsMine)
         {
             Debug.Log("Other moving");
@@ -350,7 +370,10 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     [PunRPC]
     public void Jump()
     {
-        animator.SetBool("Jump", true);
+        if (animator != null)
+        {
+            animator.SetBool("Jump", true);
+        }
         if (!photonView.IsMine)
         {
             Debug.Log("Other jumped");
@@ -360,8 +383,11 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     [PunRPC]
     public void Land()
     {
-        animator.SetBool("Grounded", true);
-        animator.SetBool("Jump", false);
+        if (animator != null)
+        {
+            animator.SetBool("Grounded", true);
+            animator.SetBool("Jump", false);
+        }
         if (!photonView.IsMine)
         {
             Debug.Log("Other landed");
@@ -371,7 +397,10 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     [PunRPC]
     public void Fall()
     {
-        animator.SetBool("Grounded", false);
+        if (animator != null)
+        {
+            animator.SetBool("Grounded", false);
+        }
         if (!photonView.IsMine)
         {
             Debug.Log("Other fell");

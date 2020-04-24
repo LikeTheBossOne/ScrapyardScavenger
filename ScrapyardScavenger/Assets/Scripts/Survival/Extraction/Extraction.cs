@@ -22,6 +22,8 @@ public class Extraction : MonoBehaviourPunCallbacks
     private GameObject evacuateCanvas;
     private GameObject truck;
 
+    private InGamePlayerManager playerManager;
+
     private bool isLookingAtTruck;
 
     // Start is called before the first frame update
@@ -46,6 +48,8 @@ public class Extraction : MonoBehaviourPunCallbacks
         truck = GameObject.Find("ExtractionTruck");
 
         GetComponent<Death>().OnPlayerDeath += OnDeath;
+
+        playerManager = GameObject.Find("PlayerList").GetComponent<InGamePlayerManager>();
     }
 
     #region Regular Update
@@ -117,7 +121,7 @@ public class Extraction : MonoBehaviourPunCallbacks
                 {
                     // call cancel leave on the other player's photon view
                     leaving = false;
-                    GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetPhotonView().RPC("CancelLeave", RpcTarget.All);
+                    playerManager.GetOtherPlayer().GetPhotonView().RPC("CancelLeave", RpcTarget.All);
                 }
 
             }
@@ -178,7 +182,7 @@ public class Extraction : MonoBehaviourPunCallbacks
             {
                 // then (as you are the 2nd person), start the countdown
                 // on the other player's photonView
-                GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetPhotonView().RPC("BeginLeave", RpcTarget.All);
+                playerManager.GetOtherPlayer().GetPhotonView().RPC("BeginLeave", RpcTarget.All);
             }
             else // other player is not ready to leave, but you are
             {
@@ -189,7 +193,7 @@ public class Extraction : MonoBehaviourPunCallbacks
         else
         {
             // the other player is ready to leave
-            GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetComponent<Extraction>().SetLeaving(true);
+            playerManager.GetOtherPlayer().GetComponent<Extraction>().SetLeaving(true);
             if (evacCircle == null) SpawnCircle();
         }
     }
@@ -197,6 +201,7 @@ public class Extraction : MonoBehaviourPunCallbacks
     [PunRPC]
     public void BeginLeave()
     {
+        Debug.Log("LEAVING");
         // start the countdown
         leaveCoroutine = StartCoroutine(LeaveGame());
 
@@ -212,16 +217,27 @@ public class Extraction : MonoBehaviourPunCallbacks
         leaving = false;
         isLeader = false;
         if (GameControllerSingleton.instance.aliveCount == 2)
-            GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetComponent<Extraction>().SetLeaving(false);
+            playerManager.GetOtherPlayer().GetComponent<Extraction>().SetLeaving(false);
 
         // reset the UI's text since the dead player's UI won't update after this
         evacuateCanvas.GetComponentInChildren<Text>().text = "";
     }
 
+    [PunRPC]
+    public void Leave()
+    {
+        playerController.GetComponent<SkillManager>().TransferXP();
+        playerController.GetComponent<InGameDataManager>().TransferToStorage();
+
+        evacuateCanvas.SetActive(false);
+        playerManager.PlayersEscaped();
+        
+    }
+
     public bool IsOtherPlayerLeaving()
     {
         if (GameControllerSingleton.instance.aliveCount != 2) return false;
-        return GetComponent<PlayerManager>().inGamePlayerManager.GetOtherPlayer().GetComponent<Extraction>().IsLeaving();
+        return playerManager.GetOtherPlayer().GetComponent<Extraction>().IsLeaving();
     }
 
     public bool IsLeaving()
@@ -236,7 +252,6 @@ public class Extraction : MonoBehaviourPunCallbacks
 
     private IEnumerator LeaveGame()
     {
-        Debug.Log("Leaving Game");
         float time = 0;
         float totalWaitTime = 4.0f;
         GameObject evacuateCanvas = GameObject.Find("Exit Canvas");
@@ -247,18 +262,14 @@ public class Extraction : MonoBehaviourPunCallbacks
             yield return new WaitForSeconds(1);
         }
         leaving = false;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
 
-        // Then return to Home Base
-        if (GameControllerSingleton.instance.aliveCount == 2)
+        PhotonNetwork.Destroy(evacCircle);
+
+        if (playerManager.players.Count > 1)
         {
-			otherPlayerController.GetPhotonView().RPC("MasterClientGoToHomeBase", RpcTarget.All);
+            playerManager.GetOtherPlayer().GetPhotonView().RPC("Leave", RpcTarget.All);
         }
-        playerController.GetPhotonView().RPC("MasterClientGoToHomeBase", RpcTarget.All);
-
-        if (photonView.IsMine)
-            PhotonNetwork.Destroy(this.gameObject);
+        photonView.RPC("Leave", RpcTarget.All);
     }
 
     public void SpawnCircle()

@@ -36,6 +36,9 @@ public class ShamblerAI : MonoBehaviourPun
     public Animator animator;
     public float maxSpd;
     public Transform extractionTruck;
+    private Coroutine spitTimingCoroutine;
+    private bool isSpitting;
+
     // Start is called before the first frame update
     private void OnEnable()
     {
@@ -51,11 +54,15 @@ public class ShamblerAI : MonoBehaviourPun
         weapons = GetComponent<ShamblerAttacks>();
         animator = GetComponentInChildren<Animator>();
         maxSpd = GetComponent<NavMeshAgent>().speed;
+        isSpitting = false;
         if (animator)
         {
             Debug.Log(animator.parameters);
         }
         extractionTruck = GameObject.Find("ExtractionTruck").GetComponent<Transform>();
+
+        // delete this after figuring out why the shambler won't move to the truck sometimes
+        moveTo = gameObject.transform.position;
         //playerOffset = 5;
     }
 
@@ -63,10 +70,17 @@ public class ShamblerAI : MonoBehaviourPun
     {
         if (PhotonNetwork.IsMasterClient && currentState != State.dead)
         {
+            if (animator.GetBool("Spit"))
+            {
+                LookAtDetected();
+                return;
+            }
             ChangeState();
             HandleState();
         }
     }
+
+    
 
     public void ChangeState()
     {
@@ -75,64 +89,59 @@ public class ShamblerAI : MonoBehaviourPun
         {
             if (senses.VisionCheck())
             {
-                if (DistanceToOther(senses.detected) <= weapons.meleeRange)
+                double distanceToDetected = DistanceToOther(senses.detected);
+                if (distanceToDetected <= weapons.meleeRange && !weapons.MeleeOnCoolDown())
                 {
-                    //&& !weapons.meleeOnCoolDown()
+                    //if (lastState != State.bite) Debug.Log("Switching to Bite state");
                     currentState = State.bite;
-
                 }
-                else if (DistanceToOther(senses.detected) <= weapons.spitRange)
+                else if (distanceToDetected <= weapons.spitRange && !weapons.SpitOnCoolDown())
                 {
-                    // target in attack range/
-                    //currentState = State.attack;
-                    //&& !weapons.spitOnCoolDown()
+                    //if (lastState != State.spit) Debug.Log("Switching to Spit state");
                     currentState = State.spit;
-
+                }
+                else if (distanceToDetected <= weapons.meleeRange)
+                {
+                    // just go idle then
+                    //if (lastState != State.idle) Debug.Log("Switching to Idle state");
+                    currentState = State.idle;
                 }
                 else
                 {
+                    //if (lastState != State.chase) Debug.Log("Switching to Chase state");
                     currentState = State.chase;
 
                 }
-                //currentState = State.chase;
             }
             else
             {
+                //if (lastState != State.wander) Debug.Log("Switching to Wander state");
                 currentState = State.wander;
 
             }
         }
         else
         {
+            //if (lastState != State.idle) Debug.Log("Switching to Idle state");
             currentState = State.idle;
-
-
         }
-
     }
 
     // Update is called once per frame
     public void HandleState()
     {
+
         if (currentState == State.chase)
         {
             //set target destination to detected/aggressing player or use follow command if there is one
             //Need to add reorientation/ "lockon camera" for enemy
-            //System.Console.WriteLine("Player seen.");
-            Vector3 lookSpot = senses.detected.position;
-            lookSpot.y = gameObject.transform.position.y;
-            transform.LookAt(lookSpot, transform.up);
-            SetDestination(senses.detected.position);
-            if (animator && currentState != lastState)
-            {
-
+            LookAtDetected();
+            moveTo = senses.detected.position;
+            MoveToDetected();
+            if (animator)
                 photonView.RPC("Walk", RpcTarget.All);
-
-                //animator.SetBool("walking", true);
-
-            }
         }
-        if (currentState == State.wander)
+        if (currentState == State.wander && currentState != lastState)
         {
             //wander in the direction of closest player
             //need to rethink this with unity in mind
@@ -170,60 +179,76 @@ public class ShamblerAI : MonoBehaviourPun
             //close.position = moveTarg;
             //transform.LookAt(moveTarg, transform.up);
             moveTo = moveTarg;
-            SetDestination(moveTo);
-            if (animator && currentState != lastState)
-            {
 
+            MoveToDetected();
+            
+            if (animator)
                 photonView.RPC("Walk", RpcTarget.All);
-
-                //animator.SetBool("walking", true);
-
-            }
         }
         if (currentState == State.spit)
         {
-            Vector3 lookSpot = senses.detected.position;
-            lookSpot.y = gameObject.transform.position.y;
-            transform.LookAt(lookSpot, transform.up);
-            SetDestination(senses.detected.position);
-            if (animator && currentState != lastState)
+            LookAtDetected();
+
+            if (currentState != lastState)
             {
+                //SetDestination(senses.detected.position); << this happens in the Spit method
 
-                photonView.RPC("Spit", RpcTarget.All);
-                //animator.SetBool("walking", true);
-
+                if (animator)
+                {
+                    if (!animator.GetBool("Spit"))
+                    {
+                        photonView.RPC("Spit", RpcTarget.All);
+                    }
+                }
+                else
+                {
+                    weapons.Spit(senses.detected.gameObject);
+                }
             }
-            weapons.Spit(senses.detected.gameObject);
+
+
         }
-        if (currentState == State.bite)
+        if (currentState == State.bite && currentState != lastState)
         {
             SetDestination(GetComponentInParent<Transform>().position);
-            Vector3 lookSpot = senses.detected.position;
-            lookSpot.y = gameObject.transform.position.y;
-            gameObject.transform.LookAt(lookSpot, gameObject.transform.up);
-            weapons.Bite(senses.detected.gameObject);
-            if (animator && currentState != lastState)
-            {
+            LookAtDetected();
+            
+            /*if (animator && !animator.GetBool("Spit"))
+                photonView.RPC("Spit", RpcTarget.All);*/
 
-                photonView.RPC("Spit", RpcTarget.All);
-
-                //animator.SetBool("walking", false);
-
-            }
+            if (senses.detected.gameObject.tag == "Player")
+                weapons.Bite(senses.detected.gameObject);
+            else // this is a point on the truck, so pass in the truck's gameObject
+                weapons.Bite(extractionTruck.gameObject);
         }
-        if (currentState == State.idle)
+        if (currentState == State.idle && currentState != lastState)
         {
             SetDestination(gameObject.transform.position);
-            if (animator && currentState != lastState)
+            if (animator && !animator.GetBool("Spit"))
             {
-
                 photonView.RPC("Idle", RpcTarget.All);
-
-                //animator.SetBool("walking", false);
-
             }
         }
 
+    }
+
+    private void MoveToDetected()
+    {
+        if (moveTo.y < 0)
+        {
+            Vector3 temp = moveTo;
+            temp.y = 0f;
+            moveTo = temp;
+        }
+
+        SetDestination(moveTo);
+    }
+
+    private void LookAtDetected()
+    {
+        Vector3 lookSpot = senses.detected.position;
+        lookSpot.y = gameObject.transform.position.y;
+        gameObject.transform.LookAt(lookSpot, gameObject.transform.up);
     }
 
     Transform FindClosestPlayer()
@@ -234,6 +259,8 @@ public class ShamblerAI : MonoBehaviourPun
         // Find closest player or vehicle
         foreach (GameObject obj in pManager.players)
         {
+            if (obj == null) continue;
+
             Transform player = obj.GetComponent<Transform>();
 
             double dist = DistanceToOther(player);
@@ -250,7 +277,7 @@ public class ShamblerAI : MonoBehaviourPun
         return closest;
     }
 
-    void SetDestination(Vector3 destination)
+    public void SetDestination(Vector3 destination)
     {
         nav.SetDestination(destination);
     }

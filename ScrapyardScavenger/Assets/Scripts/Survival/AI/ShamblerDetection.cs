@@ -18,6 +18,7 @@ public class ShamblerDetection : MonoBehaviour
     public Collider[] hitBox;
     private bool rigid;
     public Transform extractionTruck;
+    private Transform TruckAttackPoints;
 
     // Start is called before the first frame update
     private void OnEnable()
@@ -28,6 +29,16 @@ public class ShamblerDetection : MonoBehaviour
         run = false;
         rigid = false;
         extractionTruck = GameObject.Find("ExtractionTruck").GetComponent<Transform>();
+        for (int i = 0; i < extractionTruck.childCount; i++)
+        {
+            if (extractionTruck.GetChild(i).name == "AttackPoints")
+            {
+                TruckAttackPoints = extractionTruck.GetChild(i);
+                break;
+            }
+        }
+        if (TruckAttackPoints == null) Debug.Log("Could not find AttackPoints object on truck");
+        
     }
     // Handles seeing, capped distance ray cast, currently a detection sphere
     // try looking for rectangle transform
@@ -43,6 +54,8 @@ public class ShamblerDetection : MonoBehaviour
         closest.distance = Mathf.Infinity;
         foreach (GameObject obj in pManager.players)
         {
+            if (obj == null) continue;
+
             Transform p = obj.GetComponent<Transform>();
 
             if (distance(p) < visionLimit) {
@@ -112,7 +125,8 @@ public class ShamblerDetection : MonoBehaviour
                 if (closest.rigidbody && closest.rigidbody.detectCollisions && GameObject.Find("ExtractionTruck").transform == (closest.rigidbody.gameObject.transform))
                 {
                     success = true;
-                    detected = closest.rigidbody.GetComponentInParent<Transform>();
+                    //detected = closest.rigidbody.GetComponentInParent<Transform>();
+                    detected = GetClosestPointOnTruck();
                 }
             }
             else
@@ -121,13 +135,32 @@ public class ShamblerDetection : MonoBehaviour
                 {
                     success = true;
                     //detected = the playerObject that hit belongs to
-                    detected = closest.collider.GetComponentInParent<Transform>();
+                    detected = GetClosestPointOnTruck();
+                    //detected = closest.collider.GetComponentInParent<Transform>();
+                    //detected = GetClosestPointOnTruck(closest.collider.transform.parent.gameObject);
                 }
             }
         }
 
        
         return success;
+    }
+
+    private Transform GetClosestPointOnTruck()
+    {
+        Transform closestPoint = null;
+        double closestDistance = Mathf.Infinity;
+        double distanceToPoint = 0;
+        for (int i = 0; i < TruckAttackPoints.childCount; i++)
+        {
+            distanceToPoint = distance(TruckAttackPoints.GetChild(i));
+            if (distanceToPoint < closestDistance)
+            {
+                closestPoint = TruckAttackPoints.GetChild(i);
+                closestDistance = distanceToPoint;
+            }
+        }
+        return closestPoint;
     }
 
     public void GotShot(GameObject shooter)

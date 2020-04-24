@@ -7,9 +7,6 @@ using UnityEngine.UI;
 
 public class Death : MonoBehaviourPun
 {
-    public Camera deathCam;
-    public int homeBaseSceneIndex;
-    
     private GameObject UI;
 
     public delegate void PlayerDeath(GameObject player);
@@ -33,7 +30,6 @@ public class Death : MonoBehaviourPun
     [PunRPC]
     public void PlayerDied()
     {
-
 		// Hit all death events
         try
         {
@@ -48,7 +44,9 @@ public class Death : MonoBehaviourPun
 
         if (photonView.IsMine)
         {
-            GetComponent<PlayerMotor>().normalCam = deathCam;
+            GameObject deathCam = GameObject.Find("PlayerList").GetComponent<InGamePlayerManager>().deathCam;
+            deathCam.SetActive(true);
+            GetComponent<PlayerMotor>().normalCam = deathCam.GetComponent<Camera>();
             GetComponent<PlayerMotor>().speed = 0;
             GetComponent<PlayerMotor>().speedModifier = 0;
             GetComponent<PlayerMotor>().sprintModifier = 0;
@@ -63,13 +61,6 @@ public class Death : MonoBehaviourPun
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-        }
-
-
-        GameControllerSingleton.instance.aliveCount--;
-        if (GameControllerSingleton.instance.aliveCount <= 0)
-        {            
-			PhotonNetwork.LoadLevel(homeBaseSceneIndex);
         }
 
         if (photonView.IsMine)

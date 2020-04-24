@@ -37,6 +37,7 @@ public class InGameDataManager : MonoBehaviourPun
 	public bool refreshInv = false;
 
 	// Array of inventory image slots
+	[SerializeField]
 	private GameObject[] slots;
 
 	// Variables necessary for swapping inventory views
