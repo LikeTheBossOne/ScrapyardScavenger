@@ -262,10 +262,7 @@ public class Extraction : MonoBehaviourPunCallbacks
             yield return new WaitForSeconds(1);
         }
         leaving = false;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
 
-        
         PhotonNetwork.Destroy(evacCircle);
 
         if (playerManager.players.Count > 1)

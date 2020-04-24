@@ -111,6 +111,9 @@ public class InGamePlayerManager : MonoBehaviour
     {
         yield return new WaitForSeconds(7);
 
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         foreach (GameObject playerController in playerControllers)
         {
             playerController.GetPhotonView().RPC("MasterClientGoToHomeBase", RpcTarget.All);
