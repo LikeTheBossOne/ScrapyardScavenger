@@ -40,10 +40,10 @@ public class BuyDebris : MonoBehaviourPun
 				if (Input.GetJoystickNames().Length > 0 && Input.GetJoystickNames()[0] != "") {
 					buyText.text = $"Press X to clear Debris\n[Cost: {cost} XP]";
 				} else {
-					buyText.text = $"Press B to clear Debris\n[Cost: {cost} XP]";
+					buyText.text = $"Press C to clear Debris\n[Cost: {cost} XP]";
 				}
 
-				if (Input.GetKeyDown(KeyCode.B) || Input.GetKeyDown("joystick button 0"))
+				if (Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown("joystick button 0"))
                 {
                     if (skillManager.BuyWithTemp(cost))
                     {
