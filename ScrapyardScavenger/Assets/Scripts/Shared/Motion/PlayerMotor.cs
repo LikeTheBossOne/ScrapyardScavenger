@@ -377,4 +377,15 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
             Debug.Log("Other fell");
         }
     }
+
+
+    [PunRPC]
+    public void StartHeal()
+    {
+        Debug.Log("Med animation start");
+        //gameObject.GetComponentInChildren<Gun>().;
+        transform.GetChild(1).gameObject.SetActive(false);
+        GetComponentInChildren<GunIkController>().IkActive = false;
+        animator.SetBool("Medkit", true);
+    }
 }

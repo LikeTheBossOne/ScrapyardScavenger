@@ -76,4 +76,13 @@ public class AnimationUtilities : MonoBehaviour
             }
         }
     }
+
+
+    public void EndHeal()
+    {
+        Debug.Log("Med animation");
+        GetComponent<GunIkController>().IkActive = true;
+        transform.GetChild(1).gameObject.SetActive(true);
+        animator.SetBool("Medkit", false);
+    }
 }
