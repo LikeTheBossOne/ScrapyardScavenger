@@ -108,12 +108,8 @@ public class EnemySpawner : MonoBehaviourPun
 
                     // make this an RPC
                     shambler.GetPhotonView().RPC("ModifyHealth", RpcTarget.All, waveModifier);
-                    //shambler.GetComponent<Stats>().ModifyHealth(waveModifier);
-                    Debug.Log("Spawned a Shambler in Zone " + pointsToSpawn[selected].Zone + " with health: " + shambler.GetComponent<Stats>().GetCurrentHealth());
                     shamblerCount++;
-                    Debug.Log("There are now " + shamblerCount + " shamblers");
                 }
-                //else Debug.Log("Reached Shambler limit");
                 shamblerCoolDown = shamblerInterval;
             }
             else
@@ -139,7 +135,6 @@ public class EnemySpawner : MonoBehaviourPun
     {
         if (PersistentZoneManager.Instance.UnlockedZones.Count == ActiveZones.Count)
         {
-            Debug.Log("Returning full list of active spawn points");
             return ActiveSpawnPoints;
         }
         List<SpawnPoint> pointsToSpawn = new List<SpawnPoint>();

@@ -3,58 +3,55 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Photon.Pun;
+
 [RequireComponent(typeof(Collider))]
 public class AcidSpit : MonoBehaviour
 {
     public Collider Shooter { get; set; }
     public int maxExistTime = 5;
-    public int velocity = 10;
-    public Vector3 direction;
-
+    public int velocity = 15;
 
     public LayerMask hardLayers;
 
-    private void Update()
+
+    private void FixedUpdate()
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            transform.position += direction * velocity * Time.deltaTime;
+            transform.position += gameObject.transform.forward * velocity * Time.deltaTime; // instead of direction
         }
 
     }
     private void OnEnable()
     {
+        transform.position = new Vector3(transform.position.x, transform.position.y + 1, transform.position.z);
         Destroy(gameObject, maxExistTime);
-    }
-
-    public void Shoot(Vector3 dir)
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            direction = transform.forward.normalized;
-        }
     }
 
     void OnCollisionEnter(Collision collision)
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            GameObject collObj = collision.gameObject;
-            if (collObj.CompareTag("Player"))
-            {
-                //gameObject.GetPhotonView().RPC("CleanUpProjectiles", RpcTarget.All);
-                collObj.GetPhotonView().RPC("TakeDamage", RpcTarget.All, Shooter.GetComponent<ShamblerAttacks>().spitDamage);
-                PhotonNetwork.Destroy(gameObject);
-            }
-            else if (collObj.CompareTag("Truck")) 
-            {
-                collObj.GetPhotonView().RPC("TakeDamage", RpcTarget.All, Shooter.GetComponent<ShamblerAttacks>().spitDamage);
-                PhotonNetwork.Destroy(gameObject);
-            }
-            else if (((1 << collObj.layer) & hardLayers.value) != 0)
-            {
-                PhotonNetwork.Destroy(gameObject);
-            }
+            SpitCollide(collision);
+        }
+    }
+
+    private void SpitCollide(Collision collision)
+    {
+        GameObject collObj = collision.gameObject;
+        if (collObj.CompareTag("Player"))
+        {
+            collObj.GetPhotonView().RPC("TakeDamage", RpcTarget.All, Shooter.GetComponent<ShamblerAttacks>().spitDamage);
+            PhotonNetwork.Destroy(gameObject);
+        }
+        else if (collObj.CompareTag("Truck"))
+        {
+            collObj.GetPhotonView().RPC("TakeDamage", RpcTarget.All, Shooter.GetComponent<ShamblerAttacks>().spitDamage);
+            PhotonNetwork.Destroy(gameObject);
+        }
+        else if (((1 << collObj.layer) & hardLayers.value) != 0)
+        {
+            PhotonNetwork.Destroy(gameObject);
         }
     }
 }
