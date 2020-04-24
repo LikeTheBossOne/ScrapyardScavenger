@@ -16,12 +16,14 @@ public class HomeBaseNetworkManager : MonoBehaviourPunCallbacks
     public GameObject notReadyButton;
 
     public Text readyAmountText;
+    public Text countdownText;
 
     public int readyCount = 0;
 
     void Start()
     {
         SetReadyText();
+        countdownText.text = "";
     }
 
     public void ReadyPressed()
@@ -71,8 +73,8 @@ public class HomeBaseNetworkManager : MonoBehaviourPunCallbacks
             {
                 PhotonNetwork.CurrentRoom.IsOpen = false;
                 PhotonNetwork.CurrentRoom.IsVisible = false;
-                StartCoroutine(StartGame());
             }
+            StartCoroutine(StartGame());
 
             BaseDataManager bData = playerController.GetComponent<BaseDataManager>();
             int[] equipmentEnums = new int[5];
@@ -147,16 +149,52 @@ public class HomeBaseNetworkManager : MonoBehaviourPunCallbacks
         Debug.Log("Starting Game");
         float time = 0;
         float totalWaitTime = 3;
+        Color originalColor = countdownText.color;
+        float fadeOutInTime = 0.5f;
+        float pauseTime = 0.15f;
+        countdownText.color = Color.clear;
+        countdownText.fontSize = 32;
+        countdownText.text = $"{totalWaitTime}";
+        for (float t = 0.01f; t < fadeOutInTime; t += Time.deltaTime)
+        {
+            countdownText.color = Color.Lerp(Color.clear, originalColor, Mathf.Min(1, t / fadeOutInTime));
+            yield return null;
+        }
+        yield return new WaitForSeconds(pauseTime);
+
         while (time < totalWaitTime)
         {
-            Debug.Log($"{totalWaitTime - time}");
+            // fade out
+            for (float t = 0.01f; t < fadeOutInTime; t += Time.deltaTime)
+            {
+                countdownText.color = Color.Lerp(originalColor, Color.clear, Mathf.Min(1, t / fadeOutInTime));
+                yield return null;
+            }
+            yield return new WaitForSeconds(pauseTime);
             time++;
-            yield return new WaitForSeconds(1);
+            if (time == totalWaitTime)
+            {
+                countdownText.fontSize = 20;
+                countdownText.text = "Loading...";//break; // don't display "0"
+
+            }
+            else countdownText.text = $"{totalWaitTime - time}";
+            // fade in
+            for (float t = 0.01f; t < fadeOutInTime; t += Time.deltaTime)
+            {
+                countdownText.color = Color.Lerp(Color.clear, originalColor, Mathf.Min(1, t / fadeOutInTime));
+                yield return null;
+            }
+            yield return new WaitForSeconds(pauseTime);
         }
 
-		playerController.GetComponent<InGameDataManager>().refreshInv = false;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            playerController.GetComponent<InGameDataManager>().refreshInv = false;
 
-        PhotonNetwork.LoadLevel(multiplayerIndex);
+            PhotonNetwork.LoadLevel(multiplayerIndex);
+        }
+        yield return null;
     }
 
     #endregion
