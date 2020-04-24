@@ -67,7 +67,7 @@ public class InGameDataManager : MonoBehaviourPun
 		}
 
         // Keycode check for switching inventory views
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.F))
         {
 			firstView = !firstView;
 			foreach (GameObject slot in slots) {
@@ -80,10 +80,6 @@ public class InGameDataManager : MonoBehaviourPun
 			RefreshInventoryView();
         }
 
-        if (Input.GetKeyDown(KeyCode.H)) {
-            PrintResources();
-        }
-
 		if (Input.GetKeyDown(KeyCode.Alpha1)
 			&& currentWeaponIndex != 0
 			&& currentWeapons[0] != null)
@@ -92,16 +88,18 @@ public class InGameDataManager : MonoBehaviourPun
 			&& currentWeaponIndex != 1
 			&& currentWeapons[1] != null)
 			photonView.RPC("EquipWeapon", RpcTarget.All, 1);
+		/* No longer valid
 		if (Input.GetKeyDown(KeyCode.Alpha3)
 			&& currentWeaponIndex != 2
 			&& currentWeapons[2] != null)
 			photonView.RPC("EquipWeapon", RpcTarget.All, 2);
+		*/
 		if (Input.GetKeyDown(KeyCode.Alpha4)
 			&& currentWeaponIndex != 3
 			&& currentWeapons[3] != null)
 			photonView.RPC("EquipWeapon", RpcTarget.All, 3);
 
-		if (Input.GetKeyDown(KeyCode.L) || Input.GetKeyDown("joystick button 1")) {
+		if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown("joystick button 1")) {
 			currentItem.Use(this);
 			GetComponent<BaseDataManager>().itemCounts[GetComponent<BaseDataManager>().equipment[4].id]--;
 			GetComponent<BaseDataManager>().equipment[4] = null;
