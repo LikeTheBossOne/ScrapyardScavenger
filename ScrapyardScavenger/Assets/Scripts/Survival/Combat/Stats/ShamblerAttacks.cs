@@ -20,6 +20,7 @@ public class ShamblerAttacks : MonoBehaviour
     public string projectileName = "Magic fire 0";
 
     public Transform mouth;
+    public Transform head;
     // Start is called before the first frame update
     private void OnEnable()
     {
@@ -44,40 +45,24 @@ public class ShamblerAttacks : MonoBehaviour
 
     public void Spit(GameObject target)
     {
-        
-        if (spitCoolDown <= 0)
+        if (PhotonNetwork.IsMasterClient)
         {
-            
-            Vector3 toTarg = mouth.position - target.transform.position;
-            if (toTarg.magnitude <= spitRange)
-            {
-                spitCoolDown = spitRecharge;
-                Vector3 offset = new Vector3(0,spitSize + 5.1F,0);
-                offset += GetComponent<Collider>().bounds.size;
-                offset.Scale(toTarg.normalized);
+            GetComponent<ShamblerAI>().SetDestination(gameObject.transform.position);
 
-                GameObject shot = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", projectileName), mouth.position, gameObject.transform.rotation);
-                AcidSpit spit = shot.GetComponent<AcidSpit>();
-                spit.Shooter = gameObject.GetComponent<Collider>();
-                spit.Shoot(-toTarg);
-            }
-            
+            Vector3 toTarg = target.transform.position - head.position;
+            spitCoolDown = spitRecharge;
+
+            GameObject shot = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", projectileName), head.position, gameObject.transform.rotation);
+            AcidSpit spit = shot.GetComponent<AcidSpit>();
+            spit.Shooter = gameObject.GetComponent<Collider>();            
         }
     } 
 
     public void Bite(GameObject target)
     {
-        if (meleeCoolDown <= 0)
-        {
-            Vector3 toTarg = gameObject.transform.position - target.transform.position;
-            if (toTarg.magnitude <= meleeRange)
-            {
-                meleeCoolDown = meleeRecharge;
-
-                target.GetPhotonView().RPC("TakeDamage", RpcTarget.All, meleeDamage);
-                // Insert Animation
-            }
-        }
+        meleeCoolDown = meleeRecharge;
+        target.GetPhotonView().RPC("TakeDamage", RpcTarget.All, meleeDamage);
+        // Insert Animation
     }
     public bool MeleeOnCoolDown()
     {

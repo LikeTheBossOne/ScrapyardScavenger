@@ -9,6 +9,7 @@ public class TruckHealth : MonoBehaviourPunCallbacks
     public int currentHealth { get; private set; }
 
     public InGameDataManager dataManager;
+    public InGamePlayerManager pManager;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +20,9 @@ public class TruckHealth : MonoBehaviourPunCallbacks
         maxHealth = 500;
         currentHealth = maxHealth;
         Debug.Log("Truck is starting with current health: " + currentHealth);
+
+        // consider using this:
+        pManager = FindObjectOfType<InGamePlayerManager>();
     }
 
     // Update is called once per frame
@@ -35,36 +39,16 @@ public class TruckHealth : MonoBehaviourPunCallbacks
             currentHealth -= damage;
             Debug.Log("Truck took " + damage + " damage! Truck has " + currentHealth + " left!!");
             
-            GameObject[] playersArray = GameObject.FindGameObjectsWithTag("Player");
-            Debug.Log("Player obj length: " + playersArray.Length);
-            foreach (GameObject player in playersArray)
+            foreach (GameObject player in pManager.players)
             {
-                if (player.name == "Body")
-                {
-                    Debug.Log("Ignoring body");
-                    continue;
-                }
-                else
-                {
-                    player.GetPhotonView().RPC("TruckTakeDamage", RpcTarget.All, (float) damage);
-                }
+                player.GetPhotonView().RPC("TruckTakeDamage", RpcTarget.All, (float) damage);
             }
 
             if (currentHealth <= 0)
             {
-                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-                Debug.Log("Player obj length: " + players.Length);
-                foreach (GameObject player in players)
+                foreach (GameObject player in pManager.players)
                 {
-                    if (player.name == "Body")
-                    {
-                        Debug.Log("Ignoring body");
-                        continue;
-                    }
-                    else
-                    {
-                        player.GetPhotonView().RPC("PlayerDied", RpcTarget.All);
-                    }
+                    player.GetPhotonView().RPC("PlayerDied", RpcTarget.All);
                 }
                 /*
                 Debug.Log("The truck ran out of health, causing both players to die!");

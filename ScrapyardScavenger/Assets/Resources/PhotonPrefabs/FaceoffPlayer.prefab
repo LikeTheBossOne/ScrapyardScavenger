@@ -157,6 +157,7 @@ MonoBehaviour:
   ground:
     serializedVersion: 2
     m_Bits: 512
+  animator: {fileID: 0}
 --- !u!114 &2724544771462636879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,6 +173,7 @@ MonoBehaviour:
   player: {fileID: 1260225194326574506}
   cams: {fileID: 6148081038592269367}
   weapon: {fileID: 2210166939918232469}
+  grenade: {fileID: 0}
   playerDeath: {fileID: 0}
   xSensitivity: 100
   ySensitivity: 100
