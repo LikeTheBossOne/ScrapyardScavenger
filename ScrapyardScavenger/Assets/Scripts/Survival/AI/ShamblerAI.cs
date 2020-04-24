@@ -259,6 +259,8 @@ public class ShamblerAI : MonoBehaviourPun
         // Find closest player or vehicle
         foreach (GameObject obj in pManager.players)
         {
+            if (obj == null) continue;
+
             Transform player = obj.GetComponent<Transform>();
 
             double dist = DistanceToOther(player);

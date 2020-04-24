@@ -80,5 +80,7 @@ MonoBehaviour:
   - TruckTakeDamage
   - ThrowGrenade
   - InstantiateGrenade
+  - Leave
+  - DestroySelf
   DisableAutoOpenWizard: 1
   ShowSettings: 0
