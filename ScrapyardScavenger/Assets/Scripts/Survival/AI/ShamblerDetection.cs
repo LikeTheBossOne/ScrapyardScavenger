@@ -43,6 +43,8 @@ public class ShamblerDetection : MonoBehaviour
         closest.distance = Mathf.Infinity;
         foreach (GameObject obj in pManager.players)
         {
+            if (obj == null) continue;
+
             Transform p = obj.GetComponent<Transform>();
 
             if (distance(p) < visionLimit) {

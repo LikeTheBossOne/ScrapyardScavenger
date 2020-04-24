@@ -157,6 +157,7 @@ MonoBehaviour:
   isReloading: 0
   isOpen: 0
   refreshInv: 0
+  slots: []
 --- !u!114 &6704274942547728805
 MonoBehaviour:
   m_ObjectHideFlags: 0
