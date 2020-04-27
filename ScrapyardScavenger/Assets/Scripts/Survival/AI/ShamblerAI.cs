@@ -55,10 +55,6 @@ public class ShamblerAI : MonoBehaviourPun
         animator = GetComponentInChildren<Animator>();
         maxSpd = GetComponent<NavMeshAgent>().speed;
         isSpitting = false;
-        if (animator)
-        {
-            Debug.Log(animator.parameters);
-        }
         extractionTruck = GameObject.Find("ExtractionTruck").GetComponent<Transform>();
 
         // delete this after figuring out why the shambler won't move to the truck sometimes
