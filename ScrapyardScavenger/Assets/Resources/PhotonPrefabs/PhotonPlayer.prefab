@@ -572,7 +572,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4930504106331632773}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.49, z: 0.136}
+  m_LocalPosition: {x: 0, y: 1.734, z: 0.136}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1260225194326574506}
@@ -674,6 +674,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Guns: {fileID: 2210166939918232469}
+  Grenades: {fileID: 7547109781367294326}
 --- !u!114 &3208884340483378852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -688,6 +689,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IkActive: 1
   Guns: {fileID: 2210166939918232469}
+  Grenades: {fileID: 7547109781367294326}
+  current: {fileID: 0}
 --- !u!1 &8490948758121710019
 GameObject:
   m_ObjectHideFlags: 0
