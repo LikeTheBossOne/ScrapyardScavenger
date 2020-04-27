@@ -55,10 +55,6 @@ public class ShamblerAI : MonoBehaviourPun
         animator = GetComponentInChildren<Animator>();
         maxSpd = GetComponent<NavMeshAgent>().speed;
         isSpitting = false;
-        if (animator)
-        {
-            Debug.Log(animator.parameters);
-        }
         extractionTruck = GameObject.Find("ExtractionTruck").GetComponent<Transform>();
 
         // delete this after figuring out why the shambler won't move to the truck sometimes
@@ -138,23 +134,11 @@ public class ShamblerAI : MonoBehaviourPun
             LookAtDetected();
             moveTo = senses.detected.position;
             MoveToDetected();
-            if (animator)
-            //System.Console.WriteLine("Player seen.");
-            Vector3 lookSpot = senses.detected.position;
-            lookSpot.y = gameObject.transform.position.y;
-            transform.LookAt(lookSpot, transform.up);
-            //SetDestination(senses.detected.position);
-            moveTo = senses.detected.position;
-            if (moveTo.y < 0)
-            {
-                Vector3 temp = moveTo;
-                temp.y = 0f;
-                moveTo = temp;
-            }
-            SetDestination(moveTo);
+
             if (animator && currentState != lastState)
             {
                 photonView.RPC("Walk", RpcTarget.All);
+            }
         }
         if (currentState == State.wander && currentState != lastState)
         {
