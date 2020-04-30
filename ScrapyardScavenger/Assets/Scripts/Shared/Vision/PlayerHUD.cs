@@ -42,7 +42,7 @@ public class PlayerHUD : MonoBehaviourPunCallbacks
 		// The photon view is mine check is necessary here, otherwise everyone's health bar will be reset
 		if (!photonView.IsMine) return;
 		playerHealthSlider.value = 100;
-		truckHealthSlider.value = 500;
+		truckHealthSlider.value = 750;
 
         Gun startGun = GetComponent<PlayerControllerLoader>().inGameDataManager.getCurrentEquipment() as Gun;
         if (startGun != null)
