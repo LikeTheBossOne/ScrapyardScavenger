@@ -72,6 +72,7 @@ public class EquipPopupGenerator : MonoBehaviour
 				unEqButton.SetActive(false);
 			}
 		} else if (pController != null && idxFocus == 5) {
+			co = null;
 			Armor a = pController.GetComponent<BaseDataManager>().equippedArmor;
 			if(a != null) {
 				eImage.sprite = a.icon;
