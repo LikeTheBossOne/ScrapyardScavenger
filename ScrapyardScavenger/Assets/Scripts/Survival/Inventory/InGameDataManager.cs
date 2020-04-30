@@ -292,6 +292,9 @@ public class InGameDataManager : MonoBehaviourPun
     public void grenadeThrown()
     {
         currentObject = null;
+		GetComponent<BaseDataManager>().weaponCounts[GetComponent<BaseDataManager>().equipment[3].id]--;
+		GetComponent<BaseDataManager>().equipment[3] = null;
+		currentWeapons[3] = null;
         EquipWeapon(0);
     }
 }
