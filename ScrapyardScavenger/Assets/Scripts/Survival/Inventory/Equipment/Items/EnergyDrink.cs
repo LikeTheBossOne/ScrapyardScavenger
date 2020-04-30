@@ -24,6 +24,7 @@ public class EnergyDrink : Item
 		}
 		// use energy drink
         myPlayer.GetComponent<PlayerMotor>().Energize(seconds);
+		NotificationSystem.Instance.Notify(new Notification("Used Energy Drink", NotificationType.Good));
 
         // remove this from the manager?
 		manager.currentItem = null;
