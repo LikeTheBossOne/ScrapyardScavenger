@@ -7,6 +7,7 @@ public class AnimationUtilities : MonoBehaviour
 {
     private Animator animator;
     public Transform Guns;
+    public Transform Grenades;
     private InGameDataManager manager;
     // Start is called before the first frame update
     void Start()
@@ -68,12 +69,30 @@ public class AnimationUtilities : MonoBehaviour
                 if (gun.tag.Equals("Pistol"))
                 {
                     animator.SetBool("Pistol", true);
+                    
                 }
                 else
                 {
                     animator.SetBool("Pistol", false);
                 }
+                animator.SetBool("Grenade", false);
             }
         }
+        foreach (Transform boom in Grenades)
+        {
+            if (boom.gameObject.activeSelf)
+            {
+                animator.SetBool("Grenade", true);
+            }
+        }
+    }
+
+
+    public void EndHeal()
+    {
+        Debug.Log("Med animation");
+        GetComponent<GunIkController>().IkActive = true;
+        transform.GetChild(1).gameObject.SetActive(true);
+        animator.SetBool("Medkit", false);
     }
 }

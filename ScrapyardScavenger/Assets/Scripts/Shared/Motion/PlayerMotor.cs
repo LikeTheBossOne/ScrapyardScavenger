@@ -332,14 +332,12 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
     {
         //animator.SetBool("walk", false);
         //animator.SetBool("run", false);
+
         if (animator != null)
         {
             animator.SetBool("Idle", true);
         }
-        if (!photonView.IsMine)
-        {
-            Debug.Log("Other idle");
-        }
+        
     }
 
     [PunRPC]
@@ -357,41 +355,35 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
             calculated = 1;
         }
 
+
         if (animator != null)
         {
             animator.SetFloat("speed", calculated);
         }
-        if (!photonView.IsMine)
-        {
-            Debug.Log("Other moving");
-        }
+        
     }
 
     [PunRPC]
     public void Jump()
     {
+
         if (animator != null)
         {
             animator.SetBool("Jump", true);
         }
-        if (!photonView.IsMine)
-        {
-            Debug.Log("Other jumped");
-        }
+        
     }
 
     [PunRPC]
     public void Land()
     {
+
         if (animator != null)
         {
             animator.SetBool("Grounded", true);
             animator.SetBool("Jump", false);
         }
-        if (!photonView.IsMine)
-        {
-            Debug.Log("Other landed");
-        }
+        
     }
 
     [PunRPC]
@@ -401,9 +393,21 @@ public class PlayerMotor : MonoBehaviourPunCallbacks
         {
             animator.SetBool("Grounded", false);
         }
-        if (!photonView.IsMine)
-        {
-            Debug.Log("Other fell");
+       
+    }
+
+
+    [PunRPC]
+    public void StartHeal()
+    {
+        Debug.Log("Med animation start");
+        //gameObject.GetComponentInChildren<Gun>().;
+        transform.GetChild(1).gameObject.SetActive(false);
+        GetComponentInChildren<GunIkController>().IkActive = false;
+        if(animator != null){
+          animator.SetBool("Medkit", true);
         }
+        
+
     }
 }

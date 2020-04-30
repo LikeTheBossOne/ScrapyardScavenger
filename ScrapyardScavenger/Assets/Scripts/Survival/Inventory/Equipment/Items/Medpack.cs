@@ -22,6 +22,7 @@ public class Medpack : Item
 			}
 		}
 
+        //myPlayer.GetPhotonView().RPC("StartHeal", RpcTarget.All);
         float difference = myPlayer.GetComponent<Health>().maxHealth - myPlayer.GetComponent<Health>().currentHealth;
         myPlayer.GetComponent<Health>().Heal((int) difference);
 

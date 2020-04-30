@@ -256,7 +256,11 @@ public class PlayerShoot : MonoBehaviourPunCallbacks
         
         inGameManager.isReloading = false;
 		this.GetComponent<PlayerHUD>().crossHairReloaded();
-        GunState gunState = gunParent.GetChild(inGameManager.currentWeaponIndex).GetComponent<GunState>();
-        pHud.AmmoChanged(gunState.ammoCount, gunState.baseAmmo);
+        if (inGameManager.currentWeaponIndex != 3)
+        {
+            GunState gunState = gunParent.GetChild(inGameManager.currentWeaponIndex).GetComponent<GunState>();
+            pHud.AmmoChanged(gunState.ammoCount, gunState.baseAmmo);
+        }
+        
     }
 }
