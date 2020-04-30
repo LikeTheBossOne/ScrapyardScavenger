@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TruckHealth : MonoBehaviourPunCallbacks
 {
-    public int maxHealth = 500;
+    public int maxHealth;
     public int currentHealth { get; private set; }
 
     public InGameDataManager dataManager;
@@ -17,7 +17,6 @@ public class TruckHealth : MonoBehaviourPunCallbacks
        // if (photonView.IsMine)
             //dataManager = GetComponent<PlayerControllerLoader>().inGameDataManager;
 
-        maxHealth = 500;
         currentHealth = maxHealth;
         Debug.Log("Truck is starting with current health: " + currentHealth);
 
