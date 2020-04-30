@@ -637,6 +637,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grenadeType: {fileID: 11400000, guid: be1e568827325594ba3dd28cc9f823dd, type: 2}
   c: []
+  layer:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!114 &-8945923036312276266
 MonoBehaviour:
   m_ObjectHideFlags: 0

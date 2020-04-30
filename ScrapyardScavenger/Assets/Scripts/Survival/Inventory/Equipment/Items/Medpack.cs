@@ -27,8 +27,9 @@ public class Medpack : Item
 
         // change the health in the UI as well
         myPlayer.GetComponent<PlayerHUD>().heal(difference);
+        NotificationSystem.Instance.Notify(new Notification("Used Medpack", NotificationType.Good));
 
         // remove this from the manager
-		manager.currentItem = null;
+        manager.currentItem = null;
     }
 }

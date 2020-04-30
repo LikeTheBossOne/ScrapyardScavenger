@@ -13,6 +13,7 @@ public class GrenadeState : MonoBehaviourPun
     private GameObject player;
     private Rigidbody r;
 
+    public LayerMask layer;
     private float aoe;
     private float detTime;
     private float damage;
@@ -68,18 +69,22 @@ public class GrenadeState : MonoBehaviourPun
     {
         yield return new WaitForSeconds(detTime);
         Debug.Log("Boom!");
-        c = Physics.OverlapSphere(GetComponent<Transform>().position, aoe);
-        for(int i = 0; i < c.Length; i++)
+        c = Physics.OverlapSphere(GetComponent<Transform>().position, aoe, layer);
+        HashSet<int> enemiesHit = new HashSet<int>();
+        foreach (var hit in c)
         {
-            if(c[i].gameObject.layer == 11)
+            if (hit.transform.root.tag == "Shambler"/* && c[i].GetType() == typeof(CharacterController)*/ )
             {
-                if (c[i].gameObject.tag == "Shambler" && c[i].GetType() == typeof(CharacterController) )
+                if (enemiesHit.Add(hit.transform.root.gameObject.GetPhotonView().ViewID))
                 {
-                    c[i].gameObject.GetPhotonView().RPC("TakeDamageShambler", RpcTarget.All, (int)damage, player.GetComponent<PhotonView>().ViewID);
+                    hit.transform.root.gameObject.GetPhotonView().RPC("TakeDamageShambler", RpcTarget.All, (int)damage, player.GetComponent<PhotonView>().ViewID);
                 }
-                else if (c[i].gameObject.tag == "Player")
+            }
+            else if (hit.transform.parent.gameObject.tag == "Player")
+            {
+                if (enemiesHit.Add(hit.transform.parent.gameObject.GetPhotonView().ViewID))
                 {
-                    c[i].gameObject.GetComponent<Transform>().parent.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (int)damage);
+                    hit.transform.parent.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, (int)damage);
                 }
             }
         }
